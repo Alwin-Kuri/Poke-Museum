@@ -1,10 +1,3 @@
-<%-- ═══════════════════════════════════════════════════════
-     card-edit.jsp — Admin Edit Card Form
-     Served by : CardServlet (GET /cards?action=edit&id=X)
-     Requires  : admin role session
-     JSTL used : c:if, c:out, c:choose, c:when
-     Author    : Alwin Maharjan | CS5003NI
-═══════════════════════════════════════════════════════ --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -80,31 +73,50 @@
             <%-- Type --%>
             <div class="form-group">
               <label class="form-label" for="type">Type *</label>
-              <select class="form-control" id="type" name="type" required>
-                <c:forEach var="t" items="${['Fire','Water','Electric','Psychic','Grass','Dragon','Ghost','Normal','Fighting','Fairy','Rock','Ground','Ice','Dark','Steel']}">
-                  <option value="${t}" <c:if test="${editCard.type eq t}">selected</c:if>>${t}</option>
-                </c:forEach>
-              </select>
+				<select class="form-control" id="type" name="type" required>
+				  <option value="Fire"     <c:if test="${editCard.type eq 'Fire'}">selected</c:if>>🔥 Fire</option>
+				  <option value="Water"    <c:if test="${editCard.type eq 'Water'}">selected</c:if>>🌊 Water</option>
+				  <option value="Electric" <c:if test="${editCard.type eq 'Electric'}">selected</c:if>>⚡ Electric</option>
+				  <option value="Psychic"  <c:if test="${editCard.type eq 'Psychic'}">selected</c:if>>🔮 Psychic</option>
+				  <option value="Grass"    <c:if test="${editCard.type eq 'Grass'}">selected</c:if>>🌿 Grass</option>
+				  <option value="Dragon"   <c:if test="${editCard.type eq 'Dragon'}">selected</c:if>>🐉 Dragon</option>
+				  <option value="Ghost"    <c:if test="${editCard.type eq 'Ghost'}">selected</c:if>>👻 Ghost</option>
+				  <option value="Normal"   <c:if test="${editCard.type eq 'Normal'}">selected</c:if>>⭕ Normal</option>
+				  <option value="Fighting" <c:if test="${editCard.type eq 'Fighting'}">selected</c:if>>🥊 Fighting</option>
+				  <option value="Fairy"    <c:if test="${editCard.type eq 'Fairy'}">selected</c:if>>🌸 Fairy</option>
+				  <option value="Rock"     <c:if test="${editCard.type eq 'Rock'}">selected</c:if>>🪨 Rock</option>
+				  <option value="Ground"   <c:if test="${editCard.type eq 'Ground'}">selected</c:if>>🌍 Ground</option>
+				  <option value="Ice"      <c:if test="${editCard.type eq 'Ice'}">selected</c:if>>🧊 Ice</option>
+				  <option value="Dark"     <c:if test="${editCard.type eq 'Dark'}">selected</c:if>>🌑 Dark</option>
+				  <option value="Steel"    <c:if test="${editCard.type eq 'Steel'}">selected</c:if>>⚙️ Steel</option>
+				</select>
             </div>
 
             <%-- Rarity --%>
             <div class="form-group">
               <label class="form-label" for="rarity">Rarity *</label>
               <select class="form-control" id="rarity" name="rarity" required>
-                <c:forEach var="r" items="${['Common','Rare','Epic','Legendary']}">
-                  <option value="${r}" <c:if test="${editCard.rarity eq r}">selected</c:if>>${r}</option>
-                </c:forEach>
-              </select>
+				  <option value="Common"    
+				  	<c:if test="${editCard.rarity eq 'Common'}">selected</c:if>>Common</option>
+				  <option value="Rare"      
+				  	<c:if test="${editCard.rarity eq 'Rare'}">selected</c:if>>Rare</option>
+				  <option value="Epic"      
+				  	<c:if test="${editCard.rarity eq 'Epic'}">selected</c:if>>Epic</option>
+				  <option value="Legendary" 
+				  	<c:if test="${editCard.rarity eq 'Legendary'}">selected</c:if>>Legendary</option>
+			  </select>
             </div>
 
             <%-- Condition --%>
             <div class="form-group">
               <label class="form-label" for="conditionState">Condition *</label>
-              <select class="form-control" id="conditionState" name="conditionState" required>
-                <c:forEach var="c" items="${['Mint','Near Mint','Good','Fair','Poor']}">
-                  <option value="${c}" <c:if test="${editCard.conditionState eq c}">selected</c:if>>${c}</option>
-                </c:forEach>
-              </select>
+				<select class="form-control" id="conditionState" name="conditionState" required>
+				  <option value="Mint"      <c:if test="${editCard.conditionState eq 'Mint'}">selected</c:if>>Mint</option>
+				  <option value="Near Mint" <c:if test="${editCard.conditionState eq 'Near Mint'}">selected</c:if>>Near Mint</option>
+				  <option value="Good"      <c:if test="${editCard.conditionState eq 'Good'}">selected</c:if>>Good</option>
+				  <option value="Fair"      <c:if test="${editCard.conditionState eq 'Fair'}">selected</c:if>>Fair</option>
+				  <option value="Poor"      <c:if test="${editCard.conditionState eq 'Poor'}">selected</c:if>>Poor</option>
+				</select>
             </div>
 
             <%-- Value --%>
