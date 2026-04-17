@@ -1,12 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PokéMuseum – Add Card</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/poke.css">
+  <title>PokéMuseum – Digital Card Museum</title>
+  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/poke.css">
   <style>/*
  * vortex.css — PokéMuseum Master Stylesheet
  * ─────────────────────────────────────────────────────
@@ -1315,160 +1316,197 @@ img { max-width: 100%; }
 </head>
 <body data-ctx="${pageContext.request.contextPath}">
 
+  <%-- ── Topbar ─────────────────────────────────────── --%>
   <div class="topbar">
-    <a href="${pageContext.request.contextPath}/admin/dashboard" class="topbar-logo">
+    <a href="${pageContext.request.contextPath}/" class="topbar-logo">
       Pokémon <span>Museum</span>
     </a>
+    <div class="topbar-meta">
+      <a href="#">Discord</a>
+      <a href="#">Twitter</a>
+    </div>
     <nav class="topbar-nav">
-      <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-btn">DASHBOARD</a>
-      <a href="${pageContext.request.contextPath}/cards"           class="nav-btn">CARDS</a>
-      <a href="${pageContext.request.contextPath}/cards?action=add" class="nav-btn active">ADD CARD</a>
+      <a href="${pageContext.request.contextPath}/"         class="nav-btn active">HOME</a>
+      <a href="${pageContext.request.contextPath}/register" class="nav-btn">SIGN UP</a>
+      <a href="${pageContext.request.contextPath}/login"    class="nav-btn">LOG IN</a>
+      <a href="#"                                           class="nav-btn">WIKI</a>
     </nav>
-    <div class="topbar-right">
-      <a href="${pageContext.request.contextPath}/logout" class="logout-btn">⇥</a>
+  </div>
+
+  <%-- ── Hero section ────────────────────────────────── --%>
+  <div class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">◆ Digital Pokémon Card Museum ◆</div>
+      <div class="hero-title">
+        Pokémon<br><span class="red">Museum</span>
+      </div>
+      <div class="hero-sub">
+        Collect, catch, and trade Pokémon cards in the ultimate
+        digital museum experience. Build your deck, complete quests,
+        and become the greatest Trainer.
+      </div>
+      <div class="hero-btns">
+        <a href="${pageContext.request.contextPath}/register" class="btn-red btn-lg">
+          SIGN UP FREE
+        </a>
+        <a href="${pageContext.request.contextPath}/login" class="btn-ghost btn-lg">
+          LOG IN
+        </a>
+      </div>
+    </div>
+
+    <%-- Floating Pokémon circles (right side) --%>
+    <div class="hero-pokemons">
+      <div class="hero-poke">🔥</div>
+      <div class="hero-poke">🌊</div>
+      <div class="hero-poke">⚡</div>
+      <div class="hero-poke">🔮</div>
+      <div class="hero-poke">🐉</div>
+      <div class="hero-poke">🌿</div>
+      <div class="hero-poke">🌑</div>
+      <div class="hero-poke">🪨</div>
+      <div class="hero-poke">🧊</div>
     </div>
   </div>
 
-  <div class="page-layout">
-    <nav class="sidebar">
-      <a href="${pageContext.request.contextPath}/admin/dashboard" class="sidebar-tab">DASH</a>
-      <a href="${pageContext.request.contextPath}/cards"           class="sidebar-tab">CARDS</a>
-      <a href="${pageContext.request.contextPath}/cards?action=add" class="sidebar-tab active">ADD</a>
-      <a href="${pageContext.request.contextPath}/admin/users"     class="sidebar-tab">USERS</a>
-    </nav>
-
-    <main class="main-content">
-      <div class="section-header">
-        ➕ Add New Card
-        <a href="${pageContext.request.contextPath}/cards" class="btn-ghost btn-sm">← Back to Cards</a>
-      </div>
-
-      <div style="padding:20px;max-width:680px;">
-
-        <%-- Error alert --%>
-        <c:if test="${not empty errorMsg}">
-          <div class="alert-error" style="margin-bottom:16px;">
-            ⚠️ <c:out value="${errorMsg}"/>
-          </div>
-        </c:if>
-
-        <%-- Form — multipart for image upload --%>
-        <form method="post"
-              action="${pageContext.request.contextPath}/cards"
-              enctype="multipart/form-data">
-          <input type="hidden" name="action" value="add">
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-
-            <%-- Card Code --%>
-            <div class="form-group">
-              <label class="form-label" for="cardCode">Card Code *</label>
-              <input class="form-control" type="text" id="cardCode" name="cardCode"
-                     placeholder="e.g. PC021" required
-                     pattern="PC\d{3,6}" title="Format: PC followed by numbers">
-              <div class="form-hint">Format: PC001, PC021 etc.</div>
-            </div>
-
-            <%-- Name --%>
-            <div class="form-group">
-              <label class="form-label" for="name">Pokémon Name *</label>
-              <input class="form-control" type="text" id="name" name="name"
-                     placeholder="e.g. Charizard" required maxlength="100">
-            </div>
-
-            <%-- Type --%>
-            <div class="form-group">
-              <label class="form-label" for="type">Type *</label>
-              <select class="form-control" id="type" name="type" required>
-                <option value="">Select type...</option>
-                <option value="Fire">🔥 Fire</option>
-                <option value="Water">🌊 Water</option>
-                <option value="Electric">⚡ Electric</option>
-                <option value="Psychic">🔮 Psychic</option>
-                <option value="Grass">🌿 Grass</option>
-                <option value="Dragon">🐉 Dragon</option>
-                <option value="Ghost">👻 Ghost</option>
-                <option value="Normal">⭕ Normal</option>
-                <option value="Fighting">🥊 Fighting</option>
-                <option value="Fairy">🌸 Fairy</option>
-                <option value="Rock">🪨 Rock</option>
-                <option value="Ground">🌍 Ground</option>
-                <option value="Ice">🧊 Ice</option>
-                <option value="Dark">🌑 Dark</option>
-                <option value="Steel">⚙️ Steel</option>
-              </select>
-            </div>
-
-            <%-- Rarity --%>
-            <div class="form-group">
-              <label class="form-label" for="rarity">Rarity *</label>
-              <select class="form-control" id="rarity" name="rarity" required>
-                <option value="">Select rarity...</option>
-                <option value="Common">Common</option>
-                <option value="Rare">Rare</option>
-                <option value="Epic">Epic</option>
-                <option value="Legendary">Legendary</option>
-              </select>
-            </div>
-
-            <%-- Condition --%>
-            <div class="form-group">
-              <label class="form-label" for="conditionState">Condition *</label>
-              <select class="form-control" id="conditionState" name="conditionState" required>
-                <option value="Mint">Mint</option>
-                <option value="Near Mint">Near Mint</option>
-                <option value="Good">Good</option>
-                <option value="Fair">Fair</option>
-                <option value="Poor">Poor</option>
-              </select>
-            </div>
-
-            <%-- Value --%>
-            <div class="form-group">
-              <label class="form-label" for="value">Market Value ($) *</label>
-              <input class="form-control" type="number" id="value" name="value"
-                     placeholder="e.g. 420.00" min="0" step="0.01" required>
-            </div>
-
-            <%-- Catch Rate --%>
-            <div class="form-group">
-              <label class="form-label" for="catchRate">Catch Rate (1–255) *</label>
-              <input class="form-control" type="number" id="catchRate" name="catchRate"
-                     placeholder="e.g. 45" min="1" max="255" required>
-              <div class="form-hint">Lower = harder to catch. Legendary = 3–5, Common = 150–200</div>
-            </div>
-
-            <%-- Image upload --%>
-            <div class="form-group">
-              <label class="form-label" for="cardImage">Card Image (optional)</label>
-              <input class="form-control" type="file" id="cardImage" name="cardImage"
-                     accept="image/*" onchange="previewImage(this)">
-              <img id="img-preview" src="" alt="Preview"
-                   style="display:none;margin-top:8px;width:80px;height:80px;object-fit:contain;border:1px solid var(--border);border-radius:4px;">
-            </div>
-          </div>
-
-          <%-- Description — full width --%>
-          <div class="form-group">
-            <label class="form-label" for="description">Description</label>
-            <textarea class="form-control" id="description" name="description"
-                      rows="3" placeholder="Optional flavour text about this Pokémon..."
-                      maxlength="500"></textarea>
-          </div>
-
-          <div style="display:flex;gap:10px;margin-top:6px;">
-            <button type="submit" class="btn-red">➕ Add Card to Museum</button>
-            <a href="${pageContext.request.contextPath}/cards" class="btn-ghost">Cancel</a>
-          </div>
-
-        </form>
-      </div>
-    </main>
+  <%-- ── Stats strip ──────────────────────────────────── --%>
+  <div class="stat-strip">
+    <div class="stat-cell">
+      <span class="stat-val"><c:out value="${totalCards}"/></span>
+      <div class="stat-lbl">Cards in Museum</div>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-val">
+        $<fmt:formatNumber value="${totalValue}" maxFractionDigits="0"/>
+      </span>
+      <div class="stat-lbl">Total Collection Value</div>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-val">Free</span>
+      <div class="stat-lbl">Always &amp; Forever</div>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-val">24/7</span>
+      <div class="stat-lbl">Museum is Open</div>
+    </div>
   </div>
 
+  <%-- ── Featured Cards ──────────────────────────────── --%>
+  <div class="section-header">
+    ✦ Featured Cards
+    <a href="${pageContext.request.contextPath}/login"
+       style="font-size:11px;opacity:0.75;">Login to add →</a>
+  </div>
+
+  <div class="poke-grid">
+    <c:choose>
+      <c:when test="${empty featuredCards}">
+        <div class="empty-state" style="grid-column:1/-1;">
+          <span class="empty-icon">📭</span>
+          <p>Museum is being set up. Check back soon!</p>
+        </div>
+      </c:when>
+      <c:otherwise>
+        <c:forEach var="card" items="${featuredCards}">
+          <div class="poke-card ${card.rarityCssClass}">
+            <div class="card-img-area">
+              <div class="pokeball-bg">
+                <c:choose>
+                  <c:when test="${not empty card.imagePath}">
+                    <img class="card-poke-img"
+                         src="${pageContext.request.contextPath}/images/<c:out value='${card.imagePath}'/>"
+                         alt="<c:out value='${card.name}'/>">
+                  </c:when>
+                  <c:otherwise>
+                    <span class="card-poke-emoji">
+                      <c:choose>
+                        <c:when test="${card.type eq 'Fire'}">🔥</c:when>
+                        <c:when test="${card.type eq 'Water'}">🌊</c:when>
+                        <c:when test="${card.type eq 'Electric'}">⚡</c:when>
+                        <c:when test="${card.type eq 'Psychic'}">🔮</c:when>
+                        <c:when test="${card.type eq 'Grass'}">🌿</c:when>
+                        <c:when test="${card.type eq 'Dragon'}">🐉</c:when>
+                        <c:when test="${card.type eq 'Ghost'}">👻</c:when>
+                        <c:when test="${card.type eq 'Fairy'}">🌸</c:when>
+                        <c:when test="${card.type eq 'Fighting'}">🥊</c:when>
+                        <c:otherwise>🃏</c:otherwise>
+                      </c:choose>
+                    </span>
+                  </c:otherwise>
+                </c:choose>
+              </div>
+              <span class="rar-badge rar-${card.rarityCssClass}">
+                <c:out value="${card.rarity}"/>
+              </span>
+            </div>
+            <div class="card-name-bar">
+              <c:out value="${card.name}"/>
+              <span class="card-type-tag">
+                <c:out value="${card.type}"/> · <c:out value="${card.conditionState}"/>
+              </span>
+            </div>
+            <div class="card-stats-row">
+              <span><c:out value="${card.conditionState}"/></span>
+              <span class="card-val">
+                $<fmt:formatNumber value="${card.value}" minFractionDigits="2" maxFractionDigits="2"/>
+              </span>
+            </div>
+            <div class="card-actions">
+              <a href="${pageContext.request.contextPath}/login"
+                 class="card-btn">Login to Collect</a>
+            </div>
+          </div>
+        </c:forEach>
+      </c:otherwise>
+    </c:choose>
+  </div>
+
+  <%-- ── Features strip ──────────────────────────────── --%>
+  <div class="section-header" style="margin-top:4px;">✦ What You Can Do</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);">
+    <div style="background:var(--bg-panel);padding:20px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:10px;">🎯</div>
+      <div style="font-family:'Oxanium',monospace;font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;">Catch Pokémon</div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">Throw Pokéballs at wild Pokémon with realistic shake mechanics.</div>
+    </div>
+    <div style="background:var(--bg-panel);padding:20px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:10px;">📦</div>
+      <div style="font-family:'Oxanium',monospace;font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;">Open Booster Packs</div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">Pull cards with real rarity odds — Basic, Elite, and Master packs.</div>
+    </div>
+    <div style="background:var(--bg-panel);padding:20px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:10px;">🔄</div>
+      <div style="font-family:'Oxanium',monospace;font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;">Trade Cards</div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">List your cards and offer trades with other trainers.</div>
+    </div>
+    <div style="background:var(--bg-panel);padding:20px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:10px;">🎯</div>
+      <div style="font-family:'Oxanium',monospace;font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;">Complete Quests</div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">Daily, weekly, and permanent achievements with real rewards.</div>
+    </div>
+  </div>
+
+  <%-- ── CTA ─────────────────────────────────────────── --%>
+  <div style="text-align:center;padding:36px 20px;background:var(--bg-panel);border-top:1px solid var(--border);">
+    <div style="font-family:'Oxanium',monospace;font-size:22px;font-weight:800;color:var(--white);margin-bottom:8px;">
+      Ready to become a Trainer?
+    </div>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:20px;">
+      Sign up free and start building your collection today.
+    </div>
+    <a href="${pageContext.request.contextPath}/register" class="btn-red btn-lg">
+      GET STARTED →
+    </a>
+  </div>
+
+  <%-- ── Chatbar ──────────────────────────────────────── --%>
   <div class="chatbar">
-    <span class="chatbar-icon">➕</span>
-    <span class="chatbar-label">Add New Card</span>
+    <span class="chatbar-icon">🏛️</span>
+    <span class="chatbar-label">
+      <span class="online-dot"></span> Museum is Online
+    </span>
     <div class="chatbar-right">
       <span class="clock-display">🕐 <span class="js-clock">--:--</span></span>
     </div>

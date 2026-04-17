@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title>PokéMuseum – 500</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vortex.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/poke.css">
 </head>
 <body>
   <div class="topbar">

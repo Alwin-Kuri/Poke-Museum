@@ -49,5 +49,15 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/main_fa61a0a3-e64c-4eca-b718-7a542ec2d7f5_278170_/main/webapp/WEB-INF/lib/jbcrypt-0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kuri/Documents/Java Jar Files/itextpdf-5.5.13.5.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Kuri/Documents/Java Jar Files/jbcrypt-0.4.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -7,7 +7,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PokéMuseum – Edit Card</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vortex.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/poke.css">
 </head>
 <body data-ctx="${pageContext.request.contextPath}">
 

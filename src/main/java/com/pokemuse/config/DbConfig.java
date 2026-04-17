@@ -5,23 +5,32 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConfig {
-	private static final String DB_NAME = "pokemuse";
-	private static final String URL = "jdbc:mysql://localhost:3306/" + DB_NAME;
-	private static final String USERNAME = "root";
-	private static final String PASSWORD = "";
-	
+
+    // ── Database credentials ───────────────────────────────
+    private static final String DRIVER   = "com.mysql.cj.jdbc.Driver";
+    private static final String URL      = "jdbc:mysql://localhost:3306/pokemuse_db"
+                                         + "?useSSL=false"
+                                         + "&serverTimezone=UTC"
+                                         + "&allowPublicKeyRetrieval=true"
+                                         + "&characterEncoding=UTF-8";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "";           // change for production
+
     /*
-     * Loads the MySQL JDBC driver once
+     * Static initialiser — loads the MySQL JDBC driver once
+     * when the class is first used.
      */
     static {
         try {
-            Class.forName(DB_NAME);
+            Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             throw new ExceptionInInitializerError(
                 "MySQL JDBC Driver not found. Add mysql-connector-j-*.jar to WEB-INF/lib.\n" + e
             );
         }
     }
+	
+
 
     /**
      * Returns fresh JDBC Connection
