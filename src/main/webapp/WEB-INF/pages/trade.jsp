@@ -1,36 +1,23 @@
+<%-- ═══════════════════════════════════════════════════════
+     trade.jsp — Trading Marketplace
+     Served by : TradeServlet (GET /trade)
+     JSTL used : c:forEach, c:if, c:out, c:choose, fmt
+     Author    : Alwin Maharjan | CS5003NI
+═══════════════════════════════════════════════════════ --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PokéMuseum – Add Card</title>
+  <title>PokéMuseum – Trading Station</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/poke.css">
-  <style>/*
- * vortex.css — PokéMuseum Master Stylesheet
- * ─────────────────────────────────────────────────────
- * Pokémon Vortex-inspired design:
- *   • Black/charcoal backgrounds
- *   • Blood-red navigation with angled clip-path buttons
- *   • Pokéball card circles
- *   • Vertical sidebar tabs (rotated text)
- *   • Bottom chatbar strip
- *   • Oxanium monospace for headers
- *   • Rarity colour system (Common→Legendary)
- *
- * Author  : Alwin Maharjan | CS5003NI
- * ─────────────────────────────────────────────────────
- */
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap');
 
-/*  
-   0. GOOGLE FONTS IMPORT
-  */
-@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap');
-
-/*  
-   1. DESIGN TOKENS
-  */
+/*Design Token*/
 :root {
   /* Backgrounds */
   --bg:           #1a1a1a;
@@ -84,9 +71,6 @@
   --radius-lg:    8px;
 }
 
-/*  
-   2. RESET & BASE
-  */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { height: 100%; scroll-behavior: smooth; }
 
@@ -113,9 +97,6 @@ img { max-width: 100%; }
 ::-webkit-scrollbar-thumb         { background: var(--red-dark); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover   { background: var(--red); }
 
-/*  
-   3. TOPBAR — Exact Vortex DNA
-  */
 .topbar {
   background: var(--nav);
   border-bottom: 3px solid var(--red);
@@ -229,9 +210,7 @@ img { max-width: 100%; }
 }
 .logout-btn:hover { color: var(--red); }
 
-/*  
-   4. SUB-TOPBAR (info strip below nav)
-  */
+
 .sub-topbar {
   background: #161616;
   border-bottom: 1px solid var(--border);
@@ -252,9 +231,7 @@ img { max-width: 100%; }
   font-size: 12px;
 }
 
-/*  
-   5. PAGE LAYOUT — sidebar + main
-  */
+/* Page Layout */
 .page-layout {
   display: flex;
   flex: 1;
@@ -262,9 +239,7 @@ img { max-width: 100%; }
   min-height: 0;
 }
 
-/*  
-   6. SIDEBAR — Vortex vertical tabs
-  */
+/* vertical sidebar*/
 .sidebar {
   width: var(--sidebar-w);
   background: var(--red-dark);
@@ -301,9 +276,7 @@ img { max-width: 100%; }
 .sidebar-tab:hover  { background: var(--red-light); }
 .sidebar-tab.active { background: #111; color: var(--red); }
 
-/*  
-   7. MAIN CONTENT AREA
-  */
+
 .main-content {
   flex: 1;
   overflow-y: auto;
@@ -313,9 +286,6 @@ img { max-width: 100%; }
   flex-direction: column;
 }
 
-/*  
-   8. SECTION HEADER — red gradient bar (Vortex signature)
-  */
 .section-header {
   background: linear-gradient(90deg, var(--red) 0%, var(--red-dark) 100%);
   padding: 10px 18px;
@@ -349,9 +319,7 @@ img { max-width: 100%; }
 .header-tab:hover  { background: rgba(0,0,0,0.5); color: var(--white); }
 .header-tab.active { background: rgba(0,0,0,0.65); color: var(--white); }
 
-/*  
-   9. POKÉMON CARD GRID
-  */
+
 .poke-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -528,7 +496,7 @@ img { max-width: 100%; }
 
 /*  
    10. TRADE CARD GRID
-  */
+ */
 .trade-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
@@ -1316,13 +1284,16 @@ img { max-width: 100%; }
 <body data-ctx="${pageContext.request.contextPath}">
 
   <div class="topbar">
-    <a href="${pageContext.request.contextPath}/admin/dashboard" class="topbar-logo">
-      Pokémon <span>Museum</span>
-    </a>
+    <a href="${pageContext.request.contextPath}/home" class="topbar-logo">Pokémon <span>Museum</span></a>
+    <div class="topbar-meta">
+      <span><span class="user-online-dot"></span><c:out value="${sessionScope.loggedInUser.username}"/></span>
+      <span>🔄 Active Listings <strong><c:out value="${openCount}"/></strong></span>
+    </div>
     <nav class="topbar-nav">
-      <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-btn">DASHBOARD</a>
-      <a href="${pageContext.request.contextPath}/cards"           class="nav-btn">CARDS</a>
-      <a href="${pageContext.request.contextPath}/cards?action=add" class="nav-btn active">ADD CARD</a>
+      <a href="${pageContext.request.contextPath}/home"  class="nav-btn">EXPLORE</a>
+      <a href="${pageContext.request.contextPath}/trade" class="nav-btn active">TRADE</a>
+      <a href="${pageContext.request.contextPath}/catch" class="nav-btn">CATCH</a>
+      <a href="${pageContext.request.contextPath}/booster" class="nav-btn">PACKS</a>
     </nav>
     <div class="topbar-right">
       <a href="${pageContext.request.contextPath}/logout" class="logout-btn">⇥</a>
@@ -1331,145 +1302,293 @@ img { max-width: 100%; }
 
   <div class="page-layout">
     <nav class="sidebar">
-      <a href="${pageContext.request.contextPath}/admin/dashboard" class="sidebar-tab">DASH</a>
-      <a href="${pageContext.request.contextPath}/cards"           class="sidebar-tab">CARDS</a>
-      <a href="${pageContext.request.contextPath}/cards?action=add" class="sidebar-tab active">ADD</a>
-      <a href="${pageContext.request.contextPath}/admin/users"     class="sidebar-tab">USERS</a>
+      <a href="${pageContext.request.contextPath}/home"      class="sidebar-tab">EXPLORE</a>
+      <a href="${pageContext.request.contextPath}/inventory" class="sidebar-tab">MY CARDS</a>
+      <a href="${pageContext.request.contextPath}/trade"     class="sidebar-tab active">TRADE</a>
+      <a href="${pageContext.request.contextPath}/deck"      class="sidebar-tab">DECKS</a>
     </nav>
 
     <main class="main-content">
+
+      <%-- Toast messages --%>
+      <c:if test="${param.success eq 'listed'}">       <script>document.addEventListener('DOMContentLoaded',()=>showToast('Card listed on the marketplace! 🔄'));</script></c:if>
+      <c:if test="${param.success eq 'tradeComplete'}"><script>document.addEventListener('DOMContentLoaded',()=>showToast('Trade completed! Cards swapped! 🎉'));</script></c:if>
+      <c:if test="${param.success eq 'offerSent'}">    <script>document.addEventListener('DOMContentLoaded',()=>showToast('Offer sent! Waiting for response...'));</script></c:if>
+      <c:if test="${param.success eq 'cancelled'}">    <script>document.addEventListener('DOMContentLoaded',()=>showToast('Listing cancelled.'));</script></c:if>
+
+      <%-- Section header with tabs --%>
       <div class="section-header">
-        ➕ Add New Card
-        <a href="${pageContext.request.contextPath}/cards" class="btn-ghost btn-sm">← Back to Cards</a>
+        🔄 Trading Station
+        <div class="header-tabs">
+          <a href="${pageContext.request.contextPath}/trade?tab=home"
+             class="header-tab <c:if test="${activeTab eq 'home'}">active</c:if>">Trade Home</a>
+          <a href="${pageContext.request.contextPath}/trade?tab=mine"
+             class="header-tab <c:if test="${activeTab eq 'mine'}">active</c:if>">Listed Pokémon</a>
+          <a href="${pageContext.request.contextPath}/trade?tab=offers"
+             class="header-tab <c:if test="${activeTab eq 'offers'}">active</c:if>">
+            Offers
+            <c:if test="${not empty myOffers}">
+              (<c:out value="${myOffers.size()}"/>)
+            </c:if>
+          </a>
+        </div>
       </div>
 
-      <div style="padding:20px;max-width:680px;">
+      <%-- ══════════════════════════════════════════
+           TAB: TRADE HOME — browse open listings
+      ══════════════════════════════════════════ --%>
+      <c:if test="${activeTab eq 'home'}">
 
-        <%-- Error alert --%>
-        <c:if test="${not empty errorMsg}">
-          <div class="alert-error" style="margin-bottom:16px;">
-            ⚠️ <c:out value="${errorMsg}"/>
-          </div>
-        </c:if>
+        <div class="search-row">
+          <input type="text" id="live-search" class="search-input"
+                 placeholder="Search trades..." oninput="liveSearch(this)">
+          <select id="filter-rarity" class="filter-select">
+            <option value="">All Rarities</option>
+            <option value="Legendary">Legendary</option>
+            <option value="Epic">Epic</option>
+            <option value="Rare">Rare</option>
+            <option value="Common">Common</option>
+          </select>
+          <button class="search-btn">🔍</button>
+        </div>
 
-        <%-- Form — multipart for image upload --%>
-        <form method="post"
-              action="${pageContext.request.contextPath}/cards"
-              enctype="multipart/form-data">
-          <input type="hidden" name="action" value="add">
+        <div class="section-header" style="font-size:12px;padding:8px 16px;">
+          Recently Listed Trades
+          <span style="font-size:10px;opacity:0.6;"><c:out value="${openCount}"/> open listings</span>
+        </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-
-            <%-- Card Code --%>
-            <div class="form-group">
-              <label class="form-label" for="cardCode">Card Code *</label>
-              <input class="form-control" type="text" id="cardCode" name="cardCode"
-                     placeholder="e.g. PC021" required
-                     pattern="PC\d{3,6}" title="Format: PC followed by numbers">
-              <div class="form-hint">Format: PC001, PC021 etc.</div>
+        <c:choose>
+          <c:when test="${empty openListings}">
+            <div class="empty-state">
+              <span class="empty-icon">🔄</span>
+              <p>No cards listed for trade right now. Be the first to list one!</p>
+              <a href="${pageContext.request.contextPath}/inventory"
+                 class="btn-red" style="margin-top:14px;">List a Card</a>
             </div>
+          </c:when>
+          <c:otherwise>
+            <div class="trade-grid">
+              <c:forEach var="listing" items="${openListings}">
+                <div class="trade-card">
+                  <div class="trade-card-top">
+                    <div class="trade-ball">
+                      <c:choose>
+                        <c:when test="${not empty listing.card.imagePath}">
+                          <img src="${pageContext.request.contextPath}/images/<c:out value='${listing.card.imagePath}'/>"
+                               alt="<c:out value='${listing.card.name}'/>">
+                        </c:when>
+                        <c:otherwise>
+                          <span class="ball-emoji">
+                            <c:choose>
+                              <c:when test="${listing.card.type eq 'Fire'}">🔥</c:when>
+                              <c:when test="${listing.card.type eq 'Water'}">🌊</c:when>
+                              <c:when test="${listing.card.type eq 'Electric'}">⚡</c:when>
+                              <c:when test="${listing.card.type eq 'Psychic'}">🔮</c:when>
+                              <c:when test="${listing.card.type eq 'Grass'}">🌿</c:when>
+                              <c:when test="${listing.card.type eq 'Dragon'}">🐉</c:when>
+                              <c:when test="${listing.card.type eq 'Ghost'}">👻</c:when>
+                              <c:otherwise>🃏</c:otherwise>
+                            </c:choose>
+                          </span>
+                        </c:otherwise>
+                      </c:choose>
+                    </div>
+                    <span class="rar-badge rar-${listing.rarityCss}"
+                          style="position:absolute;top:8px;right:8px;">
+                      <c:out value="${listing.card.rarity}"/>
+                    </span>
+                  </div>
+                  <div class="trade-info">
+                    <div class="trade-name"><c:out value="${listing.card.name}"/></div>
+                    <div class="trade-meta">
+                      <c:out value="${listing.card.type}"/> ·
+                      Lvl <c:out value="${listing.card.conditionState}"/> ·
+                      Value:
+                      <span style="color:var(--gold);font-family:'Oxanium',monospace;font-weight:800;">
+                        $<fmt:formatNumber value="${listing.card.value}" maxFractionDigits="0"/>
+                      </span>
+                    </div>
 
-            <%-- Name --%>
-            <div class="form-group">
-              <label class="form-label" for="name">Pokémon Name *</label>
-              <input class="form-control" type="text" id="name" name="name"
-                     placeholder="e.g. Charizard" required maxlength="100">
+                    <%-- Offer form — user picks a card from their inventory --%>
+                    <form method="post" action="${pageContext.request.contextPath}/trade">
+                      <input type="hidden" name="action"  value="offer">
+                      <input type="hidden" name="tradeId" value="${listing.tradeId}">
+                      <select name="offeredCardId" class="filter-select"
+                              style="width:100%;margin-bottom:6px;font-size:11px;"
+                              required>
+                        <option value="">Offer one of your cards...</option>
+                        <c:forEach var="myCard" items="${myInventory}">
+                          <option value="${myCard.cardId}">
+                            <c:out value="${myCard.name}"/> —
+                            <c:out value="${myCard.rarity}"/> —
+                            $<fmt:formatNumber value="${myCard.value}" maxFractionDigits="0"/>
+                          </option>
+                        </c:forEach>
+                      </select>
+                      <button type="submit" class="btn-red"
+                              style="width:100%;font-size:11px;padding:7px;">
+                        OFFER
+                      </button>
+                    </form>
+
+                    <div class="listed-by">
+                      Listed By: <span><c:out value="${listing.listerUsername}"/></span>
+                    </div>
+                  </div>
+                </div>
+              </c:forEach>
             </div>
+          </c:otherwise>
+        </c:choose>
+      </c:if>
 
-            <%-- Type --%>
-            <div class="form-group">
-              <label class="form-label" for="type">Type *</label>
-              <select class="form-control" id="type" name="type" required>
-                <option value="">Select type...</option>
-                <option value="Fire">🔥 Fire</option>
-                <option value="Water">🌊 Water</option>
-                <option value="Electric">⚡ Electric</option>
-                <option value="Psychic">🔮 Psychic</option>
-                <option value="Grass">🌿 Grass</option>
-                <option value="Dragon">🐉 Dragon</option>
-                <option value="Ghost">👻 Ghost</option>
-                <option value="Normal">⭕ Normal</option>
-                <option value="Fighting">🥊 Fighting</option>
-                <option value="Fairy">🌸 Fairy</option>
-                <option value="Rock">🪨 Rock</option>
-                <option value="Ground">🌍 Ground</option>
-                <option value="Ice">🧊 Ice</option>
-                <option value="Dark">🌑 Dark</option>
-                <option value="Steel">⚙️ Steel</option>
-              </select>
+      <%-- ══════════════════════════════════════════
+           TAB: MY LISTINGS
+      ══════════════════════════════════════════ --%>
+      <c:if test="${activeTab eq 'mine'}">
+
+        <div style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:var(--bg-panel);border-bottom:1px solid var(--border);">
+          <span style="font-size:12px;color:var(--text-dim);">
+            Cards you have listed for trade
+          </span>
+          <a href="${pageContext.request.contextPath}/inventory"
+             class="btn-red btn-sm">+ List a Card</a>
+        </div>
+
+        <c:choose>
+          <c:when test="${empty myListings}">
+            <div class="empty-state">
+              <span class="empty-icon">📋</span>
+              <p>You haven't listed any cards for trade yet.</p>
+              <a href="${pageContext.request.contextPath}/inventory"
+                 class="btn-red" style="margin-top:14px;">Go to Inventory</a>
             </div>
-
-            <%-- Rarity --%>
-            <div class="form-group">
-              <label class="form-label" for="rarity">Rarity *</label>
-              <select class="form-control" id="rarity" name="rarity" required>
-                <option value="">Select rarity...</option>
-                <option value="Common">Common</option>
-                <option value="Rare">Rare</option>
-                <option value="Epic">Epic</option>
-                <option value="Legendary">Legendary</option>
-              </select>
+          </c:when>
+          <c:otherwise>
+            <div class="trade-grid">
+              <c:forEach var="listing" items="${myListings}">
+                <div class="trade-card" style="<c:if test="${listing.status ne 'open'}">opacity:0.6;</c:if>">
+                  <div class="trade-card-top">
+                    <div class="trade-ball">
+                      <span class="ball-emoji">
+                        <c:choose>
+                          <c:when test="${listing.card.type eq 'Fire'}">🔥</c:when>
+                          <c:when test="${listing.card.type eq 'Water'}">🌊</c:when>
+                          <c:when test="${listing.card.type eq 'Electric'}">⚡</c:when>
+                          <c:when test="${listing.card.type eq 'Psychic'}">🔮</c:when>
+                          <c:when test="${listing.card.type eq 'Grass'}">🌿</c:when>
+                          <c:otherwise>🃏</c:otherwise>
+                        </c:choose>
+                      </span>
+                    </div>
+                    <%-- Status badge --%>
+                    <span style="position:absolute;top:8px;right:8px;font-size:9px;font-weight:800;
+                          font-family:'Oxanium',monospace;padding:2px 8px;border-radius:10px;
+                          background:<c:choose>
+                            <c:when test="${listing.status eq 'open'}">rgba(76,175,80,0.15)</c:when>
+                            <c:when test="${listing.status eq 'completed'}">rgba(79,195,247,0.15)</c:when>
+                            <c:otherwise>rgba(204,26,26,0.15)</c:otherwise>
+                          </c:choose>;
+                          color:<c:choose>
+                            <c:when test="${listing.status eq 'open'}">var(--green)</c:when>
+                            <c:when test="${listing.status eq 'completed'}">var(--blue)</c:when>
+                            <c:otherwise>#ff6b6b</c:otherwise>
+                          </c:choose>;">
+                      <c:out value="${listing.status}"/>
+                    </span>
+                  </div>
+                  <div class="trade-info">
+                    <div class="trade-name"><c:out value="${listing.card.name}"/></div>
+                    <div class="trade-meta" style="margin-bottom:8px;">
+                      <c:out value="${listing.card.rarity}"/> ·
+                      $<fmt:formatNumber value="${listing.card.value}" maxFractionDigits="0"/>
+                    </div>
+                    <c:if test="${listing.status eq 'open'}">
+                      <form method="post" action="${pageContext.request.contextPath}/trade">
+                        <input type="hidden" name="action"  value="cancel">
+                        <input type="hidden" name="tradeId" value="${listing.tradeId}">
+                        <button type="submit" class="card-btn danger"
+                                style="width:100%;font-size:10px;">
+                          Cancel Listing
+                        </button>
+                      </form>
+                    </c:if>
+                  </div>
+                </div>
+              </c:forEach>
             </div>
+          </c:otherwise>
+        </c:choose>
+      </c:if>
 
-            <%-- Condition --%>
-            <div class="form-group">
-              <label class="form-label" for="conditionState">Condition *</label>
-              <select class="form-control" id="conditionState" name="conditionState" required>
-                <option value="Mint">Mint</option>
-                <option value="Near Mint">Near Mint</option>
-                <option value="Good">Good</option>
-                <option value="Fair">Fair</option>
-                <option value="Poor">Poor</option>
-              </select>
+      <%-- ══════════════════════════════════════════
+           TAB: INCOMING OFFERS
+      ══════════════════════════════════════════ --%>
+      <c:if test="${activeTab eq 'offers'}">
+        <c:choose>
+          <c:when test="${empty myOffers}">
+            <div class="empty-state">
+              <span class="empty-icon">📭</span>
+              <p>No pending offers on your listings right now.</p>
             </div>
+          </c:when>
+          <c:otherwise>
+            <div style="display:flex;flex-direction:column;gap:0;">
+              <c:forEach var="offer" items="${myOffers}">
+                <div style="background:var(--bg-panel);border-bottom:1px solid var(--border);
+                            padding:14px 18px;display:flex;align-items:center;gap:16px;">
 
-            <%-- Value --%>
-            <div class="form-group">
-              <label class="form-label" for="value">Market Value ($) *</label>
-              <input class="form-control" type="number" id="value" name="value"
-                     placeholder="e.g. 420.00" min="0" step="0.01" required>
+                  <%-- Offer summary --%>
+                  <div style="flex:1;">
+                    <div style="font-weight:800;font-size:13px;color:var(--white);margin-bottom:4px;">
+                      <c:out value="${offer.offererName}"/> wants to trade for your
+                      <span style="color:var(--gold);"><c:out value="${offer.listedCardName}"/></span>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-dim);">
+                      They're offering:
+                      <strong style="color:var(--white);">
+                        <c:out value="${offer.offeredCardName}"/>
+                      </strong>
+                      (<c:out value="${offer.offeredRarity}"/> ·
+                      $<fmt:formatNumber value="${offer.offeredValue}" maxFractionDigits="0"/>)
+                    </div>
+                    <div style="font-size:10px;color:var(--text-dark);margin-top:4px;">
+                      Your card value: $<fmt:formatNumber value="${offer.listedValue}" maxFractionDigits="0"/> |
+                      Their card value: $<fmt:formatNumber value="${offer.offeredValue}" maxFractionDigits="0"/>
+                    </div>
+                  </div>
+
+                  <%-- Accept / Reject --%>
+                  <div style="display:flex;gap:8px;">
+                    <form method="post" action="${pageContext.request.contextPath}/trade">
+                      <input type="hidden" name="action"  value="accept">
+                      <input type="hidden" name="offerId" value="${offer.offerId}">
+                      <button type="submit" class="btn-red btn-sm">✓ Accept</button>
+                    </form>
+                    <form method="post" action="${pageContext.request.contextPath}/trade">
+                      <input type="hidden" name="action"  value="reject">
+                      <input type="hidden" name="offerId" value="${offer.offerId}">
+                      <button type="submit" class="card-btn danger btn-sm"
+                              style="padding:5px 14px;font-size:10px;">
+                        ✕ Reject
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </c:forEach>
             </div>
+          </c:otherwise>
+        </c:choose>
+      </c:if>
 
-            <%-- Catch Rate --%>
-            <div class="form-group">
-              <label class="form-label" for="catchRate">Catch Rate (1–255) *</label>
-              <input class="form-control" type="number" id="catchRate" name="catchRate"
-                     placeholder="e.g. 45" min="1" max="255" required>
-              <div class="form-hint">Lower = harder to catch. Legendary = 3–5, Common = 150–200</div>
-            </div>
-
-            <%-- Image upload --%>
-            <div class="form-group">
-              <label class="form-label" for="cardImage">Card Image (optional)</label>
-              <input class="form-control" type="file" id="cardImage" name="cardImage"
-                     accept="image/*" onchange="previewImage(this)">
-              <img id="img-preview" src="" alt="Preview"
-                   style="display:none;margin-top:8px;width:80px;height:80px;object-fit:contain;border:1px solid var(--border);border-radius:4px;">
-            </div>
-          </div>
-
-          <%-- Description — full width --%>
-          <div class="form-group">
-            <label class="form-label" for="description">Description</label>
-            <textarea class="form-control" id="description" name="description"
-                      rows="3" placeholder="Optional flavour text about this Pokémon..."
-                      maxlength="500"></textarea>
-          </div>
-
-          <div style="display:flex;gap:10px;margin-top:6px;">
-            <button type="submit" class="btn-red">➕ Add Card to Museum</button>
-            <a href="${pageContext.request.contextPath}/cards" class="btn-ghost">Cancel</a>
-          </div>
-
-        </form>
-      </div>
     </main>
   </div>
 
   <div class="chatbar">
-    <span class="chatbar-icon">➕</span>
-    <span class="chatbar-label">Add New Card</span>
+    <span class="chatbar-icon">🔄</span>
+    <span class="chatbar-label"><span class="online-dot"></span> Trading Station</span>
     <div class="chatbar-right">
+      <span class="coins-display">🪙 <c:out value="${sessionScope.loggedInUser.coins}"/></span>
       <span class="clock-display">🕐 <span class="js-clock">--:--</span></span>
     </div>
   </div>

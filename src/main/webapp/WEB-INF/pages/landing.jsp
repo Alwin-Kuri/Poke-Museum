@@ -24,14 +24,14 @@
  * ─────────────────────────────────────────────────────
  */
 
-/* ═══════════════════════════════════════════════════════
+/*  
    0. GOOGLE FONTS IMPORT
-═══════════════════════════════════════════════════════ */
+  */
 @import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap');
 
-/* ═══════════════════════════════════════════════════════
+/*  
    1. DESIGN TOKENS
-═══════════════════════════════════════════════════════ */
+  */
 :root {
   /* Backgrounds */
   --bg:           #1a1a1a;
@@ -85,9 +85,9 @@
   --radius-lg:    8px;
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    2. RESET & BASE
-═══════════════════════════════════════════════════════ */
+  */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { height: 100%; scroll-behavior: smooth; }
 
@@ -114,9 +114,9 @@ img { max-width: 100%; }
 ::-webkit-scrollbar-thumb         { background: var(--red-dark); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover   { background: var(--red); }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    3. TOPBAR — Exact Vortex DNA
-═══════════════════════════════════════════════════════ */
+  */
 .topbar {
   background: var(--nav);
   border-bottom: 3px solid var(--red);
@@ -230,9 +230,9 @@ img { max-width: 100%; }
 }
 .logout-btn:hover { color: var(--red); }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    4. SUB-TOPBAR (info strip below nav)
-═══════════════════════════════════════════════════════ */
+  */
 .sub-topbar {
   background: #161616;
   border-bottom: 1px solid var(--border);
@@ -253,9 +253,9 @@ img { max-width: 100%; }
   font-size: 12px;
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    5. PAGE LAYOUT — sidebar + main
-═══════════════════════════════════════════════════════ */
+  */
 .page-layout {
   display: flex;
   flex: 1;
@@ -263,9 +263,9 @@ img { max-width: 100%; }
   min-height: 0;
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    6. SIDEBAR — Vortex vertical tabs
-═══════════════════════════════════════════════════════ */
+  */
 .sidebar {
   width: var(--sidebar-w);
   background: var(--red-dark);
@@ -302,9 +302,9 @@ img { max-width: 100%; }
 .sidebar-tab:hover  { background: var(--red-light); }
 .sidebar-tab.active { background: #111; color: var(--red); }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    7. MAIN CONTENT AREA
-═══════════════════════════════════════════════════════ */
+  */
 .main-content {
   flex: 1;
   overflow-y: auto;
@@ -314,9 +314,9 @@ img { max-width: 100%; }
   flex-direction: column;
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    8. SECTION HEADER — red gradient bar (Vortex signature)
-═══════════════════════════════════════════════════════ */
+  */
 .section-header {
   background: linear-gradient(90deg, var(--red) 0%, var(--red-dark) 100%);
   padding: 10px 18px;
@@ -350,9 +350,9 @@ img { max-width: 100%; }
 .header-tab:hover  { background: rgba(0,0,0,0.5); color: var(--white); }
 .header-tab.active { background: rgba(0,0,0,0.65); color: var(--white); }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    9. POKÉMON CARD GRID
-═══════════════════════════════════════════════════════ */
+  */
 .poke-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -527,9 +527,9 @@ img { max-width: 100%; }
 .card-btn.danger        { background: rgba(204,26,26,0.15); color: #ff6b6b; border: 1px solid rgba(204,26,26,0.3); }
 .card-btn.danger:hover  { background: rgba(204,26,26,0.3); }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    10. TRADE CARD GRID
-═══════════════════════════════════════════════════════ */
+  */
 .trade-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
@@ -574,9 +574,9 @@ img { max-width: 100%; }
 .listed-by  { font-size:9px; color:var(--text-dark); margin-top:8px; }
 .listed-by span { color:var(--red); font-weight:700; }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    11. SEARCH ROW
-═══════════════════════════════════════════════════════ */
+  */
 .search-row {
   display: flex;
   gap: 8px;
@@ -614,9 +614,9 @@ img { max-width: 100%; }
 }
 .search-btn:hover { background: var(--red-light); }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    12. ADMIN TABLE
-═══════════════════════════════════════════════════════ */
+  */
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -654,9 +654,9 @@ img { max-width: 100%; }
 .tbl-view  { background:rgba(76,175,80,0.15); color:var(--green); }
 .tbl-view:hover { background:rgba(76,175,80,0.25); }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    13. METRICS CARDS (Admin Dashboard)
-═══════════════════════════════════════════════════════ */
+  */
 .admin-metrics {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -692,9 +692,9 @@ img { max-width: 100%; }
 .stat-val { font-family: 'Oxanium', monospace; font-size: 22px; font-weight: 800; color: var(--red); display: block; }
 .stat-lbl { font-size: 9px; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.8px; }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    14. PROGRESS BAR
-═══════════════════════════════════════════════════════ */
+  */
 .progress-wrap { }
 .progress-meta {
   display: flex;
@@ -719,9 +719,9 @@ img { max-width: 100%; }
 .progress-fill.blue  { background: linear-gradient(90deg, #0277bd, var(--blue)); }
 .progress-fill.gold  { background: linear-gradient(90deg, #e65100, var(--gold)); }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    15. QUEST ITEMS
-═══════════════════════════════════════════════════════ */
+  */
 .quest-list { display: flex; flex-direction: column; }
 .quest-item {
   background: var(--bg-panel);
@@ -788,9 +788,9 @@ img { max-width: 100%; }
 .tag-weekly  { background:rgba(176,110,245,0.15); color:var(--rar-epic); border:1px solid rgba(176,110,245,0.3); }
 .tag-achieve { background:rgba(255,215,0,0.15);   color:var(--gold);     border:1px solid rgba(255,215,0,0.3); }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    16. BOOSTER PACK CARDS
-═══════════════════════════════════════════════════════ */
+  */
 .pack-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -836,9 +836,9 @@ img { max-width: 100%; }
 .rev-name  { font-size: 10px; font-weight: 800; color: var(--white); margin-bottom: 3px; }
 .rev-rarity { font-size: 8px; font-weight: 800; font-family: 'Oxanium', monospace; text-transform: uppercase; letter-spacing: 0.8px; }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    17. CATCH ARENA
-═══════════════════════════════════════════════════════ */
+  */
 .catch-arena {
   background: var(--bg-panel);
   border: 1px solid var(--border);
@@ -915,9 +915,9 @@ img { max-width: 100%; }
 .catch-success { color: var(--gold); background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); display:block; }
 .catch-fail    { color: #ff6b6b;    background:rgba(204,26,26,0.1);  border:1px solid var(--border-red); display:block; }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    18. CHATBAR (Vortex bottom strip)
-═══════════════════════════════════════════════════════ */
+  */
 .chatbar {
   height: var(--chatbar-h);
   background: var(--nav);
@@ -945,9 +945,9 @@ img { max-width: 100%; }
   color: var(--gold);
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    19. FORMS & INPUTS
-═══════════════════════════════════════════════════════ */
+  */
 .form-card {
   background: var(--bg-panel);
   border: 1px solid var(--border);
@@ -992,9 +992,9 @@ img { max-width: 100%; }
 }
 .form-hint { font-size: 10px; color: var(--text-dim); margin-top: 3px; }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    20. BUTTONS
-═══════════════════════════════════════════════════════ */
+  */
 .btn-red {
   background: var(--red);
   color: var(--white);
@@ -1035,9 +1035,9 @@ img { max-width: 100%; }
 .btn-lg { padding: 13px 36px; font-size: 14px; }
 .btn-full { width: 100%; justify-content: center; }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    21. LOGIN PAGE SPECIFIC
-═══════════════════════════════════════════════════════ */
+  */
 .login-page {
   flex: 1;
   display: flex;
@@ -1101,9 +1101,9 @@ img { max-width: 100%; }
   margin-bottom: 14px;
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    22. HERO (landing page)
-═══════════════════════════════════════════════════════ */
+  */
 .hero {
   position: relative;
   min-height: 380px;
@@ -1183,9 +1183,9 @@ img { max-width: 100%; }
 .hero-poke:nth-child(8) { animation-delay: 0.8s; }
 .hero-poke:nth-child(9) { animation-delay: 0.9s; }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    23. TOAST NOTIFICATIONS
-═══════════════════════════════════════════════════════ */
+  */
 .toast {
   position: fixed;
   bottom: 55px; right: 18px;
@@ -1204,9 +1204,9 @@ img { max-width: 100%; }
 }
 .toast.error { border-color: var(--red); border-left-color: var(--red); }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    24. CONFETTI
-═══════════════════════════════════════════════════════ */
+  */
 .confetti-piece {
   position: fixed;
   width: 8px; height: 8px;
@@ -1216,9 +1216,9 @@ img { max-width: 100%; }
   animation: confettiFall 1.6s ease forwards;
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    25. UTILITY CLASSES
-═══════════════════════════════════════════════════════ */
+  */
 .mt-8  { margin-top: 8px; }
 .mt-14 { margin-top: 14px; }
 .mb-8  { margin-bottom: 8px; }
@@ -1245,9 +1245,9 @@ img { max-width: 100%; }
 .empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; display: block; }
 .empty-state p { font-size: 13px; }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    26. KEYFRAME ANIMATIONS
-═══════════════════════════════════════════════════════ */
+  */
 @keyframes slideUp {
   from { transform: translateY(24px); opacity: 0; }
   to   { transform: translateY(0);    opacity: 1; }
@@ -1293,9 +1293,9 @@ img { max-width: 100%; }
   100% { transform: translateY(220px) rotate(720deg); opacity:0; }
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    27. RESPONSIVE — basic mobile adjustments
-═══════════════════════════════════════════════════════ */
+  */
 @media (max-width: 900px) {
   .hero-pokemons { display: none; }
   .hero-title    { font-size: 38px; }

@@ -1,36 +1,23 @@
+<%-- ═══════════════════════════════════════════════════════
+     admin-users.jsp — Admin User Management
+     Served by : AdminUserServlet (GET /admin/users)
+     Requires  : admin role session
+     JSTL used : c:forEach, c:if, c:out, c:choose
+     Author    : Alwin Maharjan | CS5003NI
+═══════════════════════════════════════════════════════ --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PokéMuseum – Add Card</title>
+  <title>PokéMuseum – Admin: Users</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/poke.css">
-  <style>/*
- * vortex.css — PokéMuseum Master Stylesheet
- * ─────────────────────────────────────────────────────
- * Pokémon Vortex-inspired design:
- *   • Black/charcoal backgrounds
- *   • Blood-red navigation with angled clip-path buttons
- *   • Pokéball card circles
- *   • Vertical sidebar tabs (rotated text)
- *   • Bottom chatbar strip
- *   • Oxanium monospace for headers
- *   • Rarity colour system (Common→Legendary)
- *
- * Author  : Alwin Maharjan | CS5003NI
- * ─────────────────────────────────────────────────────
- */
+  <style>@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap');
 
-/*  
-   0. GOOGLE FONTS IMPORT
-  */
-@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap');
-
-/*  
-   1. DESIGN TOKENS
-  */
+/*Design Token*/
 :root {
   /* Backgrounds */
   --bg:           #1a1a1a;
@@ -84,9 +71,6 @@
   --radius-lg:    8px;
 }
 
-/*  
-   2. RESET & BASE
-  */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { height: 100%; scroll-behavior: smooth; }
 
@@ -113,9 +97,6 @@ img { max-width: 100%; }
 ::-webkit-scrollbar-thumb         { background: var(--red-dark); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover   { background: var(--red); }
 
-/*  
-   3. TOPBAR — Exact Vortex DNA
-  */
 .topbar {
   background: var(--nav);
   border-bottom: 3px solid var(--red);
@@ -229,9 +210,7 @@ img { max-width: 100%; }
 }
 .logout-btn:hover { color: var(--red); }
 
-/*  
-   4. SUB-TOPBAR (info strip below nav)
-  */
+
 .sub-topbar {
   background: #161616;
   border-bottom: 1px solid var(--border);
@@ -252,9 +231,7 @@ img { max-width: 100%; }
   font-size: 12px;
 }
 
-/*  
-   5. PAGE LAYOUT — sidebar + main
-  */
+/* Page Layout */
 .page-layout {
   display: flex;
   flex: 1;
@@ -262,9 +239,7 @@ img { max-width: 100%; }
   min-height: 0;
 }
 
-/*  
-   6. SIDEBAR — Vortex vertical tabs
-  */
+/* vertical sidebar*/
 .sidebar {
   width: var(--sidebar-w);
   background: var(--red-dark);
@@ -301,9 +276,7 @@ img { max-width: 100%; }
 .sidebar-tab:hover  { background: var(--red-light); }
 .sidebar-tab.active { background: #111; color: var(--red); }
 
-/*  
-   7. MAIN CONTENT AREA
-  */
+
 .main-content {
   flex: 1;
   overflow-y: auto;
@@ -313,9 +286,6 @@ img { max-width: 100%; }
   flex-direction: column;
 }
 
-/*  
-   8. SECTION HEADER — red gradient bar (Vortex signature)
-  */
 .section-header {
   background: linear-gradient(90deg, var(--red) 0%, var(--red-dark) 100%);
   padding: 10px 18px;
@@ -349,9 +319,7 @@ img { max-width: 100%; }
 .header-tab:hover  { background: rgba(0,0,0,0.5); color: var(--white); }
 .header-tab.active { background: rgba(0,0,0,0.65); color: var(--white); }
 
-/*  
-   9. POKÉMON CARD GRID
-  */
+
 .poke-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -528,7 +496,7 @@ img { max-width: 100%; }
 
 /*  
    10. TRADE CARD GRID
-  */
+ */
 .trade-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
@@ -1319,10 +1287,16 @@ img { max-width: 100%; }
     <a href="${pageContext.request.contextPath}/admin/dashboard" class="topbar-logo">
       Pokémon <span>Museum</span>
     </a>
+    <div class="topbar-meta">
+      <span><span class="user-online-dot"></span>
+        <c:out value="${sessionScope.loggedInUser.username}"/>
+      </span>
+      <span style="color:var(--gold);font-family:'Oxanium',monospace;font-size:10px;font-weight:800;">⚙️ ADMIN</span>
+    </div>
     <nav class="topbar-nav">
       <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-btn">DASHBOARD</a>
       <a href="${pageContext.request.contextPath}/cards"           class="nav-btn">CARDS</a>
-      <a href="${pageContext.request.contextPath}/cards?action=add" class="nav-btn active">ADD CARD</a>
+      <a href="${pageContext.request.contextPath}/admin/users"     class="nav-btn active">USERS</a>
     </nav>
     <div class="topbar-right">
       <a href="${pageContext.request.contextPath}/logout" class="logout-btn">⇥</a>
@@ -1333,142 +1307,174 @@ img { max-width: 100%; }
     <nav class="sidebar">
       <a href="${pageContext.request.contextPath}/admin/dashboard" class="sidebar-tab">DASH</a>
       <a href="${pageContext.request.contextPath}/cards"           class="sidebar-tab">CARDS</a>
-      <a href="${pageContext.request.contextPath}/cards?action=add" class="sidebar-tab active">ADD</a>
-      <a href="${pageContext.request.contextPath}/admin/users"     class="sidebar-tab">USERS</a>
+      <a href="${pageContext.request.contextPath}/cards?action=add" class="sidebar-tab">ADD</a>
+      <a href="${pageContext.request.contextPath}/admin/users"     class="sidebar-tab active">USERS</a>
     </nav>
 
     <main class="main-content">
+
+      <c:if test="${param.success eq 'unlocked'}">
+        <script>document.addEventListener('DOMContentLoaded',()=>showToast('Account unlocked! ✅'));</script>
+      </c:if>
+
       <div class="section-header">
-        ➕ Add New Card
-        <a href="${pageContext.request.contextPath}/cards" class="btn-ghost btn-sm">← Back to Cards</a>
+        👥 User Management
+        <span style="font-size:11px;opacity:0.7;">
+          <c:out value="${allUsers.size()}"/> registered trainers
+        </span>
       </div>
 
-      <div style="padding:20px;max-width:680px;">
-
-        <%-- Error alert --%>
-        <c:if test="${not empty errorMsg}">
-          <div class="alert-error" style="margin-bottom:16px;">
-            ⚠️ <c:out value="${errorMsg}"/>
-          </div>
-        </c:if>
-
-        <%-- Form — multipart for image upload --%>
-        <form method="post"
-              action="${pageContext.request.contextPath}/cards"
-              enctype="multipart/form-data">
-          <input type="hidden" name="action" value="add">
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-
-            <%-- Card Code --%>
-            <div class="form-group">
-              <label class="form-label" for="cardCode">Card Code *</label>
-              <input class="form-control" type="text" id="cardCode" name="cardCode"
-                     placeholder="e.g. PC021" required
-                     pattern="PC\d{3,6}" title="Format: PC followed by numbers">
-              <div class="form-hint">Format: PC001, PC021 etc.</div>
-            </div>
-
-            <%-- Name --%>
-            <div class="form-group">
-              <label class="form-label" for="name">Pokémon Name *</label>
-              <input class="form-control" type="text" id="name" name="name"
-                     placeholder="e.g. Charizard" required maxlength="100">
-            </div>
-
-            <%-- Type --%>
-            <div class="form-group">
-              <label class="form-label" for="type">Type *</label>
-              <select class="form-control" id="type" name="type" required>
-                <option value="">Select type...</option>
-                <option value="Fire">🔥 Fire</option>
-                <option value="Water">🌊 Water</option>
-                <option value="Electric">⚡ Electric</option>
-                <option value="Psychic">🔮 Psychic</option>
-                <option value="Grass">🌿 Grass</option>
-                <option value="Dragon">🐉 Dragon</option>
-                <option value="Ghost">👻 Ghost</option>
-                <option value="Normal">⭕ Normal</option>
-                <option value="Fighting">🥊 Fighting</option>
-                <option value="Fairy">🌸 Fairy</option>
-                <option value="Rock">🪨 Rock</option>
-                <option value="Ground">🌍 Ground</option>
-                <option value="Ice">🧊 Ice</option>
-                <option value="Dark">🌑 Dark</option>
-                <option value="Steel">⚙️ Steel</option>
-              </select>
-            </div>
-
-            <%-- Rarity --%>
-            <div class="form-group">
-              <label class="form-label" for="rarity">Rarity *</label>
-              <select class="form-control" id="rarity" name="rarity" required>
-                <option value="">Select rarity...</option>
-                <option value="Common">Common</option>
-                <option value="Rare">Rare</option>
-                <option value="Epic">Epic</option>
-                <option value="Legendary">Legendary</option>
-              </select>
-            </div>
-
-            <%-- Condition --%>
-            <div class="form-group">
-              <label class="form-label" for="conditionState">Condition *</label>
-              <select class="form-control" id="conditionState" name="conditionState" required>
-                <option value="Mint">Mint</option>
-                <option value="Near Mint">Near Mint</option>
-                <option value="Good">Good</option>
-                <option value="Fair">Fair</option>
-                <option value="Poor">Poor</option>
-              </select>
-            </div>
-
-            <%-- Value --%>
-            <div class="form-group">
-              <label class="form-label" for="value">Market Value ($) *</label>
-              <input class="form-control" type="number" id="value" name="value"
-                     placeholder="e.g. 420.00" min="0" step="0.01" required>
-            </div>
-
-            <%-- Catch Rate --%>
-            <div class="form-group">
-              <label class="form-label" for="catchRate">Catch Rate (1–255) *</label>
-              <input class="form-control" type="number" id="catchRate" name="catchRate"
-                     placeholder="e.g. 45" min="1" max="255" required>
-              <div class="form-hint">Lower = harder to catch. Legendary = 3–5, Common = 150–200</div>
-            </div>
-
-            <%-- Image upload --%>
-            <div class="form-group">
-              <label class="form-label" for="cardImage">Card Image (optional)</label>
-              <input class="form-control" type="file" id="cardImage" name="cardImage"
-                     accept="image/*" onchange="previewImage(this)">
-              <img id="img-preview" src="" alt="Preview"
-                   style="display:none;margin-top:8px;width:80px;height:80px;object-fit:contain;border:1px solid var(--border);border-radius:4px;">
-            </div>
-          </div>
-
-          <%-- Description — full width --%>
-          <div class="form-group">
-            <label class="form-label" for="description">Description</label>
-            <textarea class="form-control" id="description" name="description"
-                      rows="3" placeholder="Optional flavour text about this Pokémon..."
-                      maxlength="500"></textarea>
-          </div>
-
-          <div style="display:flex;gap:10px;margin-top:6px;">
-            <button type="submit" class="btn-red">➕ Add Card to Museum</button>
-            <a href="${pageContext.request.contextPath}/cards" class="btn-ghost">Cancel</a>
-          </div>
-
-        </form>
+      <%-- Quick stats --%>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);">
+        <c:set var="adminCount"  value="0"/>
+        <c:set var="lockedCount" value="0"/>
+        <c:forEach var="u" items="${allUsers}">
+          <c:if test="${u.role eq 'admin'}">  <c:set var="adminCount"  value="${adminCount + 1}"/></c:if>
+          <c:if test="${u.locked}">           <c:set var="lockedCount" value="${lockedCount + 1}"/></c:if>
+        </c:forEach>
+        <div class="stat-cell">
+          <span class="stat-val"><c:out value="${allUsers.size()}"/></span>
+          <div class="stat-lbl">Total Users</div>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-val" style="color:var(--blue);">
+            <c:out value="${allUsers.size() - adminCount}"/>
+          </span>
+          <div class="stat-lbl">Trainers</div>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-val" style="color:var(--gold);">
+            <c:out value="${adminCount}"/>
+          </span>
+          <div class="stat-lbl">Admins</div>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-val" style="color:#ff6b6b;">
+            <c:out value="${lockedCount}"/>
+          </span>
+          <div class="stat-lbl">Locked Accounts</div>
+        </div>
       </div>
+
+      <%-- Search row --%>
+      <div class="search-row">
+        <input type="text" class="search-input" placeholder="Search users by username...">
+        <select class="filter-select">
+          <option value="">All Roles</option>
+          <option value="user">Trainer</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <%-- Users table --%>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Coins</th>
+              <th>Streak</th>
+              <th>Last Login</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <c:choose>
+              <c:when test="${empty allUsers}">
+                <tr>
+                  <td colspan="9" class="text-center text-dim" style="padding:28px;">
+                    No users registered yet.
+                  </td>
+                </tr>
+              </c:when>
+              <c:otherwise>
+                <c:forEach var="u" items="${allUsers}">
+                  <tr>
+                    <td class="td-dim mono"><c:out value="${u.userId}"/></td>
+                    <td class="td-name"><c:out value="${u.username}"/></td>
+                    <td class="td-dim"><c:out value="${u.email}"/></td>
+                    <td>
+                      <c:choose>
+                        <c:when test="${u.role eq 'admin'}">
+                          <span style="color:var(--gold);font-weight:800;font-family:'Oxanium',monospace;font-size:10px;">
+                            ⚙️ Admin
+                          </span>
+                        </c:when>
+                        <c:otherwise>
+                          <span style="color:var(--blue);font-weight:700;font-size:11px;">
+                            🎮 Trainer
+                          </span>
+                        </c:otherwise>
+                      </c:choose>
+                    </td>
+                    <td class="td-gold"><c:out value="${u.coins}"/></td>
+                    <td>
+                      <span style="color:var(--orange);font-weight:700;">
+                        🔥 <c:out value="${u.loginStreak}"/>
+                      </span>
+                    </td>
+                    <td class="td-dim">
+                      <c:choose>
+                        <c:when test="${not empty u.lastLogin}">
+                          <c:out value="${u.lastLogin}"/>
+                        </c:when>
+                        <c:otherwise>Never</c:otherwise>
+                      </c:choose>
+                    </td>
+                    <td>
+                      <c:choose>
+                        <c:when test="${u.locked}">
+                          <span style="color:#ff6b6b;font-size:10px;font-weight:800;
+                                       font-family:'Oxanium',monospace;
+                                       background:rgba(204,26,26,0.12);
+                                       padding:2px 8px;border-radius:10px;
+                                       border:1px solid rgba(204,26,26,0.3);">
+                            🔒 LOCKED
+                          </span>
+                        </c:when>
+                        <c:otherwise>
+                          <span style="color:var(--green);font-size:10px;font-weight:800;
+                                       font-family:'Oxanium',monospace;
+                                       background:rgba(76,175,80,0.12);
+                                       padding:2px 8px;border-radius:10px;
+                                       border:1px solid rgba(76,175,80,0.3);">
+                            ✓ Active
+                          </span>
+                        </c:otherwise>
+                      </c:choose>
+                    </td>
+                    <td>
+                      <div class="td-actions">
+                        <%-- Unlock if locked --%>
+                        <c:if test="${u.locked}">
+                          <form method="post"
+                                action="${pageContext.request.contextPath}/admin/users">
+                            <input type="hidden" name="action" value="unlock">
+                            <input type="hidden" name="userId" value="${u.userId}">
+                            <button type="submit" class="tbl-btn tbl-view">Unlock</button>
+                          </form>
+                        </c:if>
+                        <button class="tbl-btn tbl-edit">View</button>
+                      </div>
+                    </td>
+                  </tr>
+                </c:forEach>
+              </c:otherwise>
+            </c:choose>
+          </tbody>
+        </table>
+      </div>
+
     </main>
   </div>
 
   <div class="chatbar">
-    <span class="chatbar-icon">➕</span>
-    <span class="chatbar-label">Add New Card</span>
+    <span class="chatbar-icon">👥</span>
+    <span class="chatbar-label">User Management</span>
     <div class="chatbar-right">
       <span class="clock-display">🕐 <span class="js-clock">--:--</span></span>
     </div>

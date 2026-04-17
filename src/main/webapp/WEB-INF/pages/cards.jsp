@@ -1,36 +1,22 @@
+<%-- ═══════════════════════════════════════════════════════
+     cards.jsp — Museum Card Browse Page
+     Served by : CardServlet (GET /cards)
+     JSTL used : c:forEach, c:if, c:out, c:choose, fmt
+     Author    : Alwin Maharjan | CS5003NI
+═══════════════════════════════════════════════════════ --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PokéMuseum – Add Card</title>
+  <title>PokéMuseum – Card Collection</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/poke.css">
-  <style>/*
- * vortex.css — PokéMuseum Master Stylesheet
- * ─────────────────────────────────────────────────────
- * Pokémon Vortex-inspired design:
- *   • Black/charcoal backgrounds
- *   • Blood-red navigation with angled clip-path buttons
- *   • Pokéball card circles
- *   • Vertical sidebar tabs (rotated text)
- *   • Bottom chatbar strip
- *   • Oxanium monospace for headers
- *   • Rarity colour system (Common→Legendary)
- *
- * Author  : Alwin Maharjan | CS5003NI
- * ─────────────────────────────────────────────────────
- */
+  <style>@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap');
 
-/*  
-   0. GOOGLE FONTS IMPORT
-  */
-@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap');
-
-/*  
-   1. DESIGN TOKENS
-  */
+/*Design Token*/
 :root {
   /* Backgrounds */
   --bg:           #1a1a1a;
@@ -84,9 +70,6 @@
   --radius-lg:    8px;
 }
 
-/*  
-   2. RESET & BASE
-  */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { height: 100%; scroll-behavior: smooth; }
 
@@ -113,9 +96,6 @@ img { max-width: 100%; }
 ::-webkit-scrollbar-thumb         { background: var(--red-dark); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover   { background: var(--red); }
 
-/*  
-   3. TOPBAR — Exact Vortex DNA
-  */
 .topbar {
   background: var(--nav);
   border-bottom: 3px solid var(--red);
@@ -229,9 +209,7 @@ img { max-width: 100%; }
 }
 .logout-btn:hover { color: var(--red); }
 
-/*  
-   4. SUB-TOPBAR (info strip below nav)
-  */
+
 .sub-topbar {
   background: #161616;
   border-bottom: 1px solid var(--border);
@@ -252,9 +230,7 @@ img { max-width: 100%; }
   font-size: 12px;
 }
 
-/*  
-   5. PAGE LAYOUT — sidebar + main
-  */
+/* Page Layout */
 .page-layout {
   display: flex;
   flex: 1;
@@ -262,9 +238,7 @@ img { max-width: 100%; }
   min-height: 0;
 }
 
-/*  
-   6. SIDEBAR — Vortex vertical tabs
-  */
+/* vertical sidebar*/
 .sidebar {
   width: var(--sidebar-w);
   background: var(--red-dark);
@@ -301,9 +275,7 @@ img { max-width: 100%; }
 .sidebar-tab:hover  { background: var(--red-light); }
 .sidebar-tab.active { background: #111; color: var(--red); }
 
-/*  
-   7. MAIN CONTENT AREA
-  */
+
 .main-content {
   flex: 1;
   overflow-y: auto;
@@ -313,9 +285,6 @@ img { max-width: 100%; }
   flex-direction: column;
 }
 
-/*  
-   8. SECTION HEADER — red gradient bar (Vortex signature)
-  */
 .section-header {
   background: linear-gradient(90deg, var(--red) 0%, var(--red-dark) 100%);
   padding: 10px 18px;
@@ -349,9 +318,7 @@ img { max-width: 100%; }
 .header-tab:hover  { background: rgba(0,0,0,0.5); color: var(--white); }
 .header-tab.active { background: rgba(0,0,0,0.65); color: var(--white); }
 
-/*  
-   9. POKÉMON CARD GRID
-  */
+
 .poke-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -528,7 +495,7 @@ img { max-width: 100%; }
 
 /*  
    10. TRADE CARD GRID
-  */
+ */
 .trade-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
@@ -1316,160 +1283,184 @@ img { max-width: 100%; }
 <body data-ctx="${pageContext.request.contextPath}">
 
   <div class="topbar">
-    <a href="${pageContext.request.contextPath}/admin/dashboard" class="topbar-logo">
-      Pokémon <span>Museum</span>
-    </a>
+    <a href="${pageContext.request.contextPath}/home" class="topbar-logo">Pokémon <span>Museum</span></a>
+    <div class="topbar-meta">
+      <span><span class="user-online-dot"></span>
+        <c:out value="${sessionScope.loggedInUser.username}"/>
+      </span>
+    </div>
     <nav class="topbar-nav">
-      <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-btn">DASHBOARD</a>
-      <a href="${pageContext.request.contextPath}/cards"           class="nav-btn">CARDS</a>
-      <a href="${pageContext.request.contextPath}/cards?action=add" class="nav-btn active">ADD CARD</a>
+      <a href="${pageContext.request.contextPath}/home"  class="nav-btn">EXPLORE</a>
+      <a href="${pageContext.request.contextPath}/cards" class="nav-btn active">COLLECTION</a>
+      <a href="${pageContext.request.contextPath}/catch" class="nav-btn">CATCH</a>
+      <a href="${pageContext.request.contextPath}/trade" class="nav-btn">TRADE</a>
     </nav>
     <div class="topbar-right">
+      <span class="streak-badge">🔥 <c:out value="${sessionScope.loggedInUser.loginStreak}"/></span>
       <a href="${pageContext.request.contextPath}/logout" class="logout-btn">⇥</a>
     </div>
   </div>
 
   <div class="page-layout">
     <nav class="sidebar">
-      <a href="${pageContext.request.contextPath}/admin/dashboard" class="sidebar-tab">DASH</a>
-      <a href="${pageContext.request.contextPath}/cards"           class="sidebar-tab">CARDS</a>
-      <a href="${pageContext.request.contextPath}/cards?action=add" class="sidebar-tab active">ADD</a>
-      <a href="${pageContext.request.contextPath}/admin/users"     class="sidebar-tab">USERS</a>
+      <a href="${pageContext.request.contextPath}/home"      class="sidebar-tab">EXPLORE</a>
+      <a href="${pageContext.request.contextPath}/cards"     class="sidebar-tab active">BROWSE</a>
+      <a href="${pageContext.request.contextPath}/inventory" class="sidebar-tab">MY CARDS</a>
+      <a href="${pageContext.request.contextPath}/catch"     class="sidebar-tab">CATCH</a>
     </nav>
 
     <main class="main-content">
+
+      <%-- Admin quick-add button --%>
+      <c:if test="${sessionScope.userRole eq 'admin'}">
+        <div style="display:flex;justify-content:flex-end;padding:8px 14px;background:var(--bg-panel);border-bottom:1px solid var(--border);">
+          <a href="${pageContext.request.contextPath}/cards?action=add"
+             class="btn-red btn-sm">+ Add Card</a>
+        </div>
+      </c:if>
+
       <div class="section-header">
-        ➕ Add New Card
-        <a href="${pageContext.request.contextPath}/cards" class="btn-ghost btn-sm">← Back to Cards</a>
+        🃏 Museum Collection
+        <span style="font-size:11px;opacity:0.7;">
+          <c:out value="${totalCards}"/> cards
+        </span>
       </div>
 
-      <div style="padding:20px;max-width:680px;">
-
-        <%-- Error alert --%>
-        <c:if test="${not empty errorMsg}">
-          <div class="alert-error" style="margin-bottom:16px;">
-            ⚠️ <c:out value="${errorMsg}"/>
-          </div>
-        </c:if>
-
-        <%-- Form — multipart for image upload --%>
-        <form method="post"
-              action="${pageContext.request.contextPath}/cards"
-              enctype="multipart/form-data">
-          <input type="hidden" name="action" value="add">
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-
-            <%-- Card Code --%>
-            <div class="form-group">
-              <label class="form-label" for="cardCode">Card Code *</label>
-              <input class="form-control" type="text" id="cardCode" name="cardCode"
-                     placeholder="e.g. PC021" required
-                     pattern="PC\d{3,6}" title="Format: PC followed by numbers">
-              <div class="form-hint">Format: PC001, PC021 etc.</div>
-            </div>
-
-            <%-- Name --%>
-            <div class="form-group">
-              <label class="form-label" for="name">Pokémon Name *</label>
-              <input class="form-control" type="text" id="name" name="name"
-                     placeholder="e.g. Charizard" required maxlength="100">
-            </div>
-
-            <%-- Type --%>
-            <div class="form-group">
-              <label class="form-label" for="type">Type *</label>
-              <select class="form-control" id="type" name="type" required>
-                <option value="">Select type...</option>
-                <option value="Fire">🔥 Fire</option>
-                <option value="Water">🌊 Water</option>
-                <option value="Electric">⚡ Electric</option>
-                <option value="Psychic">🔮 Psychic</option>
-                <option value="Grass">🌿 Grass</option>
-                <option value="Dragon">🐉 Dragon</option>
-                <option value="Ghost">👻 Ghost</option>
-                <option value="Normal">⭕ Normal</option>
-                <option value="Fighting">🥊 Fighting</option>
-                <option value="Fairy">🌸 Fairy</option>
-                <option value="Rock">🪨 Rock</option>
-                <option value="Ground">🌍 Ground</option>
-                <option value="Ice">🧊 Ice</option>
-                <option value="Dark">🌑 Dark</option>
-                <option value="Steel">⚙️ Steel</option>
-              </select>
-            </div>
-
-            <%-- Rarity --%>
-            <div class="form-group">
-              <label class="form-label" for="rarity">Rarity *</label>
-              <select class="form-control" id="rarity" name="rarity" required>
-                <option value="">Select rarity...</option>
-                <option value="Common">Common</option>
-                <option value="Rare">Rare</option>
-                <option value="Epic">Epic</option>
-                <option value="Legendary">Legendary</option>
-              </select>
-            </div>
-
-            <%-- Condition --%>
-            <div class="form-group">
-              <label class="form-label" for="conditionState">Condition *</label>
-              <select class="form-control" id="conditionState" name="conditionState" required>
-                <option value="Mint">Mint</option>
-                <option value="Near Mint">Near Mint</option>
-                <option value="Good">Good</option>
-                <option value="Fair">Fair</option>
-                <option value="Poor">Poor</option>
-              </select>
-            </div>
-
-            <%-- Value --%>
-            <div class="form-group">
-              <label class="form-label" for="value">Market Value ($) *</label>
-              <input class="form-control" type="number" id="value" name="value"
-                     placeholder="e.g. 420.00" min="0" step="0.01" required>
-            </div>
-
-            <%-- Catch Rate --%>
-            <div class="form-group">
-              <label class="form-label" for="catchRate">Catch Rate (1–255) *</label>
-              <input class="form-control" type="number" id="catchRate" name="catchRate"
-                     placeholder="e.g. 45" min="1" max="255" required>
-              <div class="form-hint">Lower = harder to catch. Legendary = 3–5, Common = 150–200</div>
-            </div>
-
-            <%-- Image upload --%>
-            <div class="form-group">
-              <label class="form-label" for="cardImage">Card Image (optional)</label>
-              <input class="form-control" type="file" id="cardImage" name="cardImage"
-                     accept="image/*" onchange="previewImage(this)">
-              <img id="img-preview" src="" alt="Preview"
-                   style="display:none;margin-top:8px;width:80px;height:80px;object-fit:contain;border:1px solid var(--border);border-radius:4px;">
-            </div>
-          </div>
-
-          <%-- Description — full width --%>
-          <div class="form-group">
-            <label class="form-label" for="description">Description</label>
-            <textarea class="form-control" id="description" name="description"
-                      rows="3" placeholder="Optional flavour text about this Pokémon..."
-                      maxlength="500"></textarea>
-          </div>
-
-          <div style="display:flex;gap:10px;margin-top:6px;">
-            <button type="submit" class="btn-red">➕ Add Card to Museum</button>
-            <a href="${pageContext.request.contextPath}/cards" class="btn-ghost">Cancel</a>
-          </div>
-
-        </form>
+      <%-- Search & filter row --%>
+      <div class="search-row">
+        <input type="text" id="live-search" class="search-input"
+               placeholder="Search Pokémon by name..."
+               value="<c:out value='${searchQuery}'/>"
+               oninput="liveSearch(this)">
+        <select id="filter-rarity" class="filter-select"
+                onchange="liveSearch(document.getElementById('live-search'))">
+          <option value=""   <c:if test="${empty filterRarity}">selected</c:if>>All Rarities</option>
+          <option value="Legendary" <c:if test="${filterRarity eq 'Legendary'}">selected</c:if>>⭐ Legendary</option>
+          <option value="Epic"      <c:if test="${filterRarity eq 'Epic'}">selected</c:if>>💜 Epic</option>
+          <option value="Rare"      <c:if test="${filterRarity eq 'Rare'}">selected</c:if>>💙 Rare</option>
+          <option value="Common"    <c:if test="${filterRarity eq 'Common'}">selected</c:if>>💚 Common</option>
+        </select>
+        <select id="filter-type" class="filter-select"
+                onchange="liveSearch(document.getElementById('live-search'))">
+          <option value="">All Types</option>
+          <option value="Fire">🔥 Fire</option>
+          <option value="Water">🌊 Water</option>
+          <option value="Electric">⚡ Electric</option>
+          <option value="Psychic">🔮 Psychic</option>
+          <option value="Grass">🌿 Grass</option>
+          <option value="Dragon">🐉 Dragon</option>
+          <option value="Ghost">👻 Ghost</option>
+          <option value="Normal">⭕ Normal</option>
+          <option value="Fighting">🥊 Fighting</option>
+          <option value="Fairy">🌸 Fairy</option>
+        </select>
+        <select id="sort-by" class="filter-select"
+                onchange="liveSearch(document.getElementById('live-search'))">
+          <option value=""         <c:if test="${empty sortBy}">selected</c:if>>Sort: Value ↓</option>
+          <option value="value_asc"<c:if test="${sortBy eq 'value_asc'}">selected</c:if>>Sort: Value ↑</option>
+          <option value="name"     <c:if test="${sortBy eq 'name'}">selected</c:if>>Sort: Name A–Z</option>
+          <option value="rarity"   <c:if test="${sortBy eq 'rarity'}">selected</c:if>>Sort: Rarity</option>
+        </select>
+        <button class="search-btn">🔍</button>
       </div>
+
+      <%-- Card grid --%>
+      <div id="card-grid" class="poke-grid">
+        <c:choose>
+          <c:when test="${empty cards}">
+            <div class="empty-state" style="grid-column:1/-1;">
+              <span class="empty-icon">🔍</span>
+              <p>No cards match your search. Try different filters!</p>
+            </div>
+          </c:when>
+          <c:otherwise>
+            <c:forEach var="card" items="${cards}">
+              <div class="poke-card ${card.rarityCssClass}">
+                <div class="card-img-area">
+                  <div class="pokeball-bg">
+                    <c:choose>
+                      <c:when test="${not empty card.imagePath}">
+                        <img class="card-poke-img"
+                             src="${pageContext.request.contextPath}/images/<c:out value='${card.imagePath}'/>"
+                             alt="<c:out value='${card.name}'/>">
+                      </c:when>
+                      <c:otherwise>
+                        <span class="card-poke-emoji">
+                          <c:choose>
+                            <c:when test="${card.type eq 'Fire'}">🔥</c:when>
+                            <c:when test="${card.type eq 'Water'}">🌊</c:when>
+                            <c:when test="${card.type eq 'Electric'}">⚡</c:when>
+                            <c:when test="${card.type eq 'Psychic'}">🔮</c:when>
+                            <c:when test="${card.type eq 'Grass'}">🌿</c:when>
+                            <c:when test="${card.type eq 'Dragon'}">🐉</c:when>
+                            <c:when test="${card.type eq 'Ghost'}">👻</c:when>
+                            <c:when test="${card.type eq 'Fairy'}">🌸</c:when>
+                            <c:otherwise>🃏</c:otherwise>
+                          </c:choose>
+                        </span>
+                      </c:otherwise>
+                    </c:choose>
+                  </div>
+                  <span class="rar-badge rar-${card.rarityCssClass}">
+                    <c:out value="${card.rarity}"/>
+                  </span>
+                </div>
+
+                <div class="card-name-bar">
+                  <c:out value="${card.name}"/>
+                  <span class="card-type-tag">
+                    <c:out value="${card.type}"/> · <c:out value="${card.conditionState}"/>
+                  </span>
+                </div>
+
+                <div class="card-stats-row">
+                  <span class="td-dim"><c:out value="${card.conditionState}"/></span>
+                  <span class="card-val">
+                    $<fmt:formatNumber value="${card.value}" minFractionDigits="2" maxFractionDigits="2"/>
+                  </span>
+                </div>
+
+                <div class="card-actions">
+                  <%-- Add to inventory --%>
+                  <form method="post"
+                        action="${pageContext.request.contextPath}/inventory"
+                        style="flex:1;">
+                    <input type="hidden" name="action" value="add">
+                    <input type="hidden" name="cardId" value="${card.cardId}">
+                    <input type="hidden" name="via"    value="browse">
+                    <button type="submit" class="card-btn">+ Inv</button>
+                  </form>
+
+                  <%-- Admin: edit button --%>
+                  <c:if test="${sessionScope.userRole eq 'admin'}">
+                    <a href="${pageContext.request.contextPath}/cards?action=edit&id=${card.cardId}"
+                       class="card-btn ghost">✏️</a>
+                    <form method="post" id="del-${card.cardId}"
+                          action="${pageContext.request.contextPath}/cards"
+                          style="flex:0;">
+                      <input type="hidden" name="action" value="delete">
+                      <input type="hidden" name="cardId" value="${card.cardId}">
+                      <button type="button" class="card-btn danger"
+                              onclick="confirmDelete('del-${card.cardId}','<c:out value="${card.name}" escapeXml="true"/>')">
+                        🗑️
+                      </button>
+                    </form>
+                  </c:if>
+                </div>
+              </div>
+            </c:forEach>
+          </c:otherwise>
+        </c:choose>
+      </div>
+
     </main>
   </div>
 
   <div class="chatbar">
-    <span class="chatbar-icon">➕</span>
-    <span class="chatbar-label">Add New Card</span>
+    <span class="chatbar-icon">🃏</span>
+    <span class="chatbar-label"><span class="online-dot"></span> Museum Collection</span>
     <div class="chatbar-right">
+      <span class="coins-display">🪙 <c:out value="${sessionScope.loggedInUser.coins}"/></span>
       <span class="clock-display">🕐 <span class="js-clock">--:--</span></span>
     </div>
   </div>
