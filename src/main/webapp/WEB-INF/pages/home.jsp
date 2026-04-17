@@ -1421,7 +1421,7 @@ img { max-width: 100%; }
 
       <%-- Featured Cards section--%>
       <div class="section-header">
-        ✦ Featured Cards
+        Featured Cards
         <a href="${pageContext.request.contextPath}/cards"
            style="font-size:11px;opacity:0.75;">View All →</a>
       </div>
