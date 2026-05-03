@@ -90,7 +90,7 @@
 
   <%-- ── Featured Cards ──────────────────────────────── --%>
   <div class="section-header">
-    ✦ Featured Cards
+    Featured Cards
     <a href="${pageContext.request.contextPath}/login"
        style="font-size:11px;opacity:0.75;">Login to add →</a>
   </div>

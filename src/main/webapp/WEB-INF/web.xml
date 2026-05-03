@@ -8,15 +8,9 @@
 
     <display-name>PokéMuseum</display-name>
 
-    <!-- ════════════════════════════════════════════════════
-         STATIC RESOURCE SERVING — THIS FIXES THE CSS ISSUE
-         Explicitly tells Tomcat to serve files from:
-           /css/*    → src/main/webapp/css/
-           /js/*     → src/main/webapp/js/
-           /images/* → src/main/webapp/images/
-         Without this, some Tomcat configs block static files
-         when a /* filter (AuthFilter) is active.
-    ════════════════════════════════════════════════════ -->
+    <!-- /css/* -> src/main/webapp/css/
+         /js/* -> src/main/webapp/js/
+         /images/* -> src/main/webapp/images/-->
     <servlet>
         <servlet-name>default</servlet-name>
         <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
@@ -49,16 +43,10 @@
         <url-pattern>/favicon.ico</url-pattern>
     </servlet-mapping>
 
-    <!-- ════════════════════════════════════════════════════
-         WELCOME FILE — routes through HomeServlet
-    ════════════════════════════════════════════════════ -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <!-- ════════════════════════════════════════════════════
-         CUSTOM ERROR PAGES
-    ════════════════════════════════════════════════════ -->
     <error-page>
         <error-code>404</error-code>
         <location>/WEB-INF/pages/error404.jsp</location>
@@ -68,17 +56,10 @@
         <location>/WEB-INF/pages/error500.jsp</location>
     </error-page>
 
-    <!-- ════════════════════════════════════════════════════
-         SESSION CONFIG — 30 minute timeout
-    ════════════════════════════════════════════════════ -->
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
 
-    <!-- ════════════════════════════════════════════════════
-         FILTER — AuthFilter intercepts all requests
-         Must declare BEFORE servlet mappings
-    ════════════════════════════════════════════════════ -->
     <filter>
         <filter-name>AuthFilter</filter-name>
         <filter-class>com.pokemuse.util.AuthFilter</filter-class>
