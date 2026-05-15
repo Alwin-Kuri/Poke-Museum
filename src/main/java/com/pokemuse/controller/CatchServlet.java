@@ -10,7 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.*;
-import com.pokemuse.config.DbConfig;
+import com.pokemuse.config.DBConfig;
 
 @WebServlet("/catch")
 public class CatchServlet extends HttpServlet {
@@ -91,7 +91,7 @@ public class CatchServlet extends HttpServlet {
                                   boolean s1, boolean s2, boolean s3, boolean caught) {
         String sql = "INSERT INTO catch_log (user_id, card_id, shake_1, shake_2, shake_3, caught) "
                    + "VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt    (1, userId);
             ps.setInt    (2, cardId);
@@ -112,7 +112,7 @@ public class CatchServlet extends HttpServlet {
                    + "SET uqp.current_count = uqp.current_count + 1, "
                    + "    uqp.is_completed = IF(uqp.current_count + 1 >= q.target_count, 1, 0) "
                    + "WHERE uqp.user_id = ? AND q.action_type = ? AND uqp.is_claimed = 0";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt   (1, userId);
             ps.setString(2, actionType);

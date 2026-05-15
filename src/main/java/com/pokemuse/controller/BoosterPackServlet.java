@@ -1,6 +1,6 @@
 package com.pokemuse.controller;
 
-import com.pokemuse.config.DbConfig;
+import com.pokemuse.config.DBConfig;
 import com.pokemuse.dao.CardDao;
 import com.pokemuse.dao.InventoryDao;
 import com.pokemuse.model.PokeModel;
@@ -89,7 +89,7 @@ public class BoosterPackServlet extends HttpServlet {
     private int logPackOpening(int userId, String packType, List<PokeModel> cards) {
         int packId = -1;
         String insertPack = "INSERT INTO booster_packs (user_id, pack_type) VALUES (?, ?)";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(insertPack, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt   (1, userId);
             ps.setString(2, packType);
@@ -104,7 +104,7 @@ public class BoosterPackServlet extends HttpServlet {
 
         // Log individual cards
         String insertCards = "INSERT INTO booster_pack_cards (pack_id, card_id) VALUES (?, ?)";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(insertCards)) {
             for (PokeModel card : cards) {
                 ps.setInt(1, packId);
@@ -126,7 +126,7 @@ public class BoosterPackServlet extends HttpServlet {
             "SET uqp.current_count = uqp.current_count + 1, " +
             "    uqp.is_completed = IF(uqp.current_count + 1 >= q.target_count, 1, 0) " +
             "WHERE uqp.user_id = ? AND q.action_type = ? AND uqp.is_claimed = 0";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt   (1, userId);
             ps.setString(2, actionType);

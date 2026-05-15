@@ -18,13 +18,11 @@
     </a>
     <div class="topbar-meta">
       <a href="#">Discord</a>
-      <a href="#">Twitter</a>
     </div>
     <nav class="topbar-nav">
       <a href="${pageContext.request.contextPath}/"         class="nav-btn active">HOME</a>
       <a href="${pageContext.request.contextPath}/register" class="nav-btn">SIGN UP</a>
       <a href="${pageContext.request.contextPath}/login"    class="nav-btn">LOG IN</a>
-      <a href="#"                                           class="nav-btn">WIKI</a>
     </nav>
   </div>
 
@@ -33,7 +31,7 @@
     <div class="hero-grid-bg"></div>
     <div class="hero-vignette"></div>
     <div class="hero-content">
-      <div class="hero-eyebrow">◆ Digital Pokémon Card Museum ◆</div>
+      <div class="hero-eyebrow">Digital Pokémon Card Museum</div>
       <div class="hero-title">
         Pokémon<br><span class="red">Museum</span>
       </div>
@@ -54,15 +52,15 @@
 
     <%-- Floating Pokémon circles (right side) --%>
     <div class="hero-pokemons">
-      <div class="hero-poke">🔥</div>
-      <div class="hero-poke">🌊</div>
-      <div class="hero-poke">⚡</div>
-      <div class="hero-poke">🔮</div>
-      <div class="hero-poke">🐉</div>
-      <div class="hero-poke">🌿</div>
-      <div class="hero-poke">🌑</div>
-      <div class="hero-poke">🪨</div>
-      <div class="hero-poke">🧊</div>
+      <div class="hero-poke"><img src="${pageContext.request.contextPath}/images/util/chibi1.png"></div>
+      <div class="hero-poke"><img src="${pageContext.request.contextPath}/images/util/chibi2.png"></div>
+      <div class="hero-poke"><img src="${pageContext.request.contextPath}/images/util/chibi9.png"></div>
+      <div class="hero-poke"><img src="${pageContext.request.contextPath}/images/util/chibi69.png" width = "140px" height = "70px"></div>
+      <div class="hero-poke"><img src="${pageContext.request.contextPath}/images/util/chibi67.png"></div>
+      <div class="hero-poke"><img src="${pageContext.request.contextPath}/images/util/chibi420.png"></div>
+      <div class="hero-poke"><img src="${pageContext.request.contextPath}/images/util/chibi6.png"></div>
+      <div class="hero-poke"><img src="${pageContext.request.contextPath}/images/util/chibi10.png" width = "55px" height = "55px"></div>
+      <div class="hero-poke"><img src="${pageContext.request.contextPath}/images/util/chibi11.png"></div>
     </div>
   </div>
 
@@ -92,7 +90,7 @@
   <div class="section-header">
     Featured Cards
     <a href="${pageContext.request.contextPath}/login"
-       style="font-size:11px;opacity:0.75;">Login to add →</a>
+       style="font-size:11px;opacity:0.75;">Ready to experience the world of wild, cute Pokemons?</a>
   </div>
 
   <div class="poke-grid">
@@ -158,26 +156,34 @@
     </c:choose>
   </div>
 
-  <%-- ── Features strip ──────────────────────────────── --%>
-  <div class="section-header" style="margin-top:4px;">✦ What You Can Do</div>
+  <%-- ── Features strip --%>
+  <div class="section-header" style="margin-top:4px;">What You Can Do</div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);">
     <div style="background:var(--bg-panel);padding:20px;text-align:center;">
-      <div style="font-size:32px;margin-bottom:10px;">🎯</div>
+       <img class="card-poke-img"
+            src="${pageContext.request.contextPath}/images/util/pokeball.png"
+            alt="📦" style="width:32px;height:32px;margin-bottom:10px;">
       <div style="font-family:'Oxanium',monospace;font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;">Catch Pokémon</div>
       <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">Throw Pokéballs at wild Pokémon with realistic shake mechanics.</div>
     </div>
     <div style="background:var(--bg-panel);padding:20px;text-align:center;">
-      <div style="font-size:32px;margin-bottom:10px;">📦</div>
+       <img class="card-poke-img"
+            src="${pageContext.request.contextPath}/images/util/booster.png"
+            alt="📦" style="width:32px;height:32px;margin-bottom:10px;">
       <div style="font-family:'Oxanium',monospace;font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;">Open Booster Packs</div>
-      <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">Pull cards with real rarity odds — Basic, Elite, and Master packs.</div>
+      <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">Pull cards with real rarity odds: Basic, Elite, and Master packs.</div>
     </div>
     <div style="background:var(--bg-panel);padding:20px;text-align:center;">
-      <div style="font-size:32px;margin-bottom:10px;">🔄</div>
+       <img class="card-poke-img"
+            src="${pageContext.request.contextPath}/images/util/tradecentre.png"
+            alt="📦" style="width:32px;height:32px;margin-bottom:10px;">
       <div style="font-family:'Oxanium',monospace;font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;">Trade Cards</div>
       <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">List your cards and offer trades with other trainers.</div>
     </div>
     <div style="background:var(--bg-panel);padding:20px;text-align:center;">
-      <div style="font-size:32px;margin-bottom:10px;">🎯</div>
+       <img class="card-poke-img"
+            src="${pageContext.request.contextPath}/images/util/quest.png"
+            alt="📦" style="width:32px;height:32px;margin-bottom:10px;">
       <div style="font-family:'Oxanium',monospace;font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;">Complete Quests</div>
       <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">Daily, weekly, and permanent achievements with real rewards.</div>
     </div>
@@ -192,15 +198,15 @@
       Sign up free and start building your collection today.
     </div>
     <a href="${pageContext.request.contextPath}/register" class="btn-red btn-lg">
-      GET STARTED →
+      GET STARTED
     </a>
   </div>
 
   <%-- ── Chatbar ──────────────────────────────────────── --%>
   <div class="chatbar">
-    <span class="chatbar-icon">🏛️</span>
+    <span class="chatbar-icon"></span>
     <span class="chatbar-label">
-      <span class="online-dot"></span> Museum is Online
+         Developed by Alwin Maharjan
     </span>
     <div class="chatbar-right">
       <span class="clock-display">🕐 <span class="js-clock">--:--</span></span>

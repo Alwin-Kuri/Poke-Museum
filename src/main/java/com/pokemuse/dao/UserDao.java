@@ -1,6 +1,6 @@
 package com.pokemuse.dao;
 
-import com.pokemuse.config.DbConfig;
+import com.pokemuse.config.DBConfig;
 import com.pokemuse.model.User;
 import com.pokemuse.util.PasswordUtil;
 
@@ -30,7 +30,7 @@ public class UserDao {
     public boolean registerUser(User user) {
         String sql = "INSERT INTO users (username, password_hash, email, role, coins) "
                    + "VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPasswordHash());
@@ -53,7 +53,7 @@ public class UserDao {
     /** Returns a User by user_id, or null if not found. */
     public User getUserById(int userId) {
         String sql = "SELECT * FROM users WHERE user_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -68,7 +68,7 @@ public class UserDao {
     /** Returns a User by username, or null if not found. */
     public User getUserByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
@@ -84,7 +84,7 @@ public class UserDao {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users ORDER BY created_at DESC";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              Statement  st   = conn.createStatement();
              ResultSet  rs   = st.executeQuery(sql)) {
             while (rs.next()) users.add(mapRow(rs));
@@ -131,7 +131,7 @@ public class UserDao {
     private void recordFailedAttempt(int userId, int newCount) {
         boolean lock = newCount >= 5;
         String sql = "UPDATE users SET failed_attempts = ?, is_locked = ? WHERE user_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt    (1, newCount);
             ps.setBoolean(2, lock);
@@ -176,7 +176,7 @@ public class UserDao {
                 + "last_login = CURDATE(), login_streak = 1 WHERE user_id = ?";
         }
 
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ps.executeUpdate();
@@ -194,7 +194,7 @@ public class UserDao {
      */
     public boolean updateCoins(int userId, int delta) {
         String sql = "UPDATE users SET coins = coins + ? WHERE user_id = ? AND coins + ? >= 0";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, delta);
             ps.setInt(2, userId);
@@ -209,7 +209,7 @@ public class UserDao {
     /** Updates a user's password (after forgot-password flow). */
     public boolean updatePassword(int userId, String newHashedPassword) {
         String sql = "UPDATE users SET password_hash = ? WHERE user_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, newHashedPassword);
             ps.setInt   (2, userId);
@@ -223,7 +223,7 @@ public class UserDao {
     /** Unlocks a user account (admin action). */
     public boolean unlockAccount(int userId) {
         String sql = "UPDATE users SET is_locked = 0, failed_attempts = 0 WHERE user_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             return ps.executeUpdate() == 1;
@@ -245,7 +245,7 @@ public class UserDao {
 
     private int countWhere(String column, String value) {
         String sql = "SELECT COUNT(*) FROM users WHERE " + column + " = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, value);
             try (ResultSet rs = ps.executeQuery()) {

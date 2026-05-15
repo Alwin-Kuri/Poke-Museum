@@ -6,25 +6,6 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.Set;
 
-/**
- * AuthFilter.java — Servlet Filter
- * ─────────────────────────────────────────────────────
- * Intercepts all requests and enforces authentication
- * and role-based access at the URL level.
- *
- * Rules:
- *   • Public paths (/, /login, /register, /css, /js, /images)
- *     are always accessible without a session.
- *   • /admin/* requires an admin session — redirects to /home
- *     if a normal user tries to access it.
- *   • All other paths require a logged-in session — redirects
- *     to /login?redirect=<path> if session is missing.
- *
- * This is the "Redirect Management (Filter)" component
- * required by the CS5003NI coursework specification.
- *
- * Author : Alwin Maharjan | CS5003NI
- */
 @WebFilter("/*")
 public class AuthFilter implements Filter {
 
@@ -50,13 +31,13 @@ public class AuthFilter implements Filter {
         // Strip the context path to get the relative path
         String path = requestURI.substring(contextPath.length());
 
-        // ── Always allow public paths ──────────────────
+        // Always allow public paths
         if (isPublic(path)) {
             chain.doFilter(req, res);
             return;
         }
 
-        // ── Check for active session ───────────────────
+        // Check for active session
         if (!SessionUtil.isLoggedIn(request)) {
             // Redirect to login, preserve the intended destination
             response.sendRedirect(contextPath + "/login?redirect="
@@ -65,14 +46,14 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        // ── Check admin paths ──────────────────────────
+        // Check admin paths
         if (path.startsWith(ADMIN_PREFIX) && !SessionUtil.isAdmin(request)) {
             // Regular user trying to access admin — send home with error
             response.sendRedirect(contextPath + "/home?error=unauthorized");
             return;
         }
 
-        // ── All checks passed — continue request ───────
+        // All checks passed -> continue request
         chain.doFilter(req, res);
     }
 

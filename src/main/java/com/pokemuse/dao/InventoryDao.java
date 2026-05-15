@@ -1,6 +1,6 @@
 package com.pokemuse.dao;
 
-import com.pokemuse.config.DbConfig;
+import com.pokemuse.config.DBConfig;
 import com.pokemuse.model.PokeModel;
 
 import java.sql.*;
@@ -20,7 +20,7 @@ public class InventoryDao {
      */
     public boolean addToInventory(int userId, int cardId, String obtainedVia) {
         String sql = "INSERT IGNORE INTO user_inventory (user_id, card_id, obtained_via) VALUES (?, ?, ?)";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt   (1, userId);
             ps.setInt   (2, cardId);
@@ -38,7 +38,7 @@ public class InventoryDao {
      */
     public boolean removeFromInventory(int userId, int cardId) {
         String sql = "DELETE FROM user_inventory WHERE user_id = ? AND card_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ps.setInt(2, cardId);
@@ -59,7 +59,7 @@ public class InventoryDao {
                    + "WHERE ui.user_id = ? AND pc.is_available = 1 "
                    + "ORDER BY ui.obtained_at DESC";
         List<PokeModel> cards = new ArrayList<>();
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -76,7 +76,7 @@ public class InventoryDao {
      */
     public int getInventoryCount(int userId) {
         String sql = "SELECT COUNT(*) FROM user_inventory WHERE user_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -93,7 +93,7 @@ public class InventoryDao {
      */
     public boolean ownsCard(int userId, int cardId) {
         String sql = "SELECT COUNT(*) FROM user_inventory WHERE user_id = ? AND card_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ps.setInt(2, cardId);

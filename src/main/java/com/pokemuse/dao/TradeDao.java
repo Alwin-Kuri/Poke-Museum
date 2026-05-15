@@ -1,6 +1,6 @@
 package com.pokemuse.dao;
 
-import com.pokemuse.config.DbConfig;
+import com.pokemuse.config.DBConfig;
 import com.pokemuse.model.PokeModel;
 
 import java.sql.*;
@@ -34,7 +34,7 @@ public class TradeDao {
     public int listCard(int userId, int cardId) {
         // Check: user must own the card
         String sql = "INSERT INTO trades (offered_by, card_id) VALUES (?, ?)";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, userId);
             ps.setInt(2, cardId);
@@ -56,7 +56,7 @@ public class TradeDao {
     public boolean cancelListing(int tradeId, int userId) {
         String sql = "UPDATE trades SET status = 'cancelled' " +
                      "WHERE trade_id = ? AND offered_by = ? AND status = 'open'";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, tradeId);
             ps.setInt(2, userId);
@@ -84,7 +84,7 @@ public class TradeDao {
             "ORDER BY t.listed_at DESC";
 
         List<TradeListingView> list = new ArrayList<>();
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, excludeUserId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -111,7 +111,7 @@ public class TradeDao {
             "WHERE t.offered_by = ? ORDER BY t.listed_at DESC";
 
         List<TradeListingView> list = new ArrayList<>();
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -128,7 +128,7 @@ public class TradeDao {
      */
     public int getOpenListingCount() {
         String sql = "SELECT COUNT(*) FROM trades WHERE status = 'open'";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             if (rs.next()) return rs.getInt(1);
@@ -149,7 +149,7 @@ public class TradeDao {
      */
     public int makeOffer(int tradeId, int offeringUserId, int offeredCardId) {
         String sql = "INSERT INTO trade_offers (trade_id, offered_by, offered_card) VALUES (?, ?, ?)";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, tradeId);
             ps.setInt(2, offeringUserId);
@@ -183,7 +183,7 @@ public class TradeDao {
             "JOIN trades t ON to2.trade_id = t.trade_id " +
             "WHERE to2.offer_id = ? AND t.offered_by = ? AND to2.status = 'pending'";
 
-        try (Connection conn = DbConfig.getConnection()) {
+        try (Connection conn = DBConfig.getConnection()) {
             conn.setAutoCommit(false);
             try {
                 int offererId, offererCard, listerId, listerCard, tradeId;
@@ -247,7 +247,7 @@ public class TradeDao {
             "JOIN trades t ON to2.trade_id = t.trade_id " +
             "SET to2.status = 'rejected' " +
             "WHERE to2.offer_id = ? AND t.offered_by = ? AND to2.status = 'pending'";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, offerId);
             ps.setInt(2, listingOwnerId);
@@ -278,7 +278,7 @@ public class TradeDao {
             "ORDER BY to2.offered_at DESC";
 
         List<TradeOfferView> list = new ArrayList<>();
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {

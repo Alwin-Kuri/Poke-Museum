@@ -13,7 +13,7 @@ public class ValidationUtil {
         "^[a-zA-Z0-9_]{3,50}$"
     );
     private static final Pattern CARD_CODE_PATTERN = Pattern.compile(
-        "^PC\\d{3,6}$"                         // e.g. PC001, PC0123
+        "^PC\\d{3,6}$" // e.g. PC001, PC0123
     );
 
     // Prevent instantiation
@@ -45,10 +45,10 @@ public class ValidationUtil {
     public static String validatePassword(String password) {
         if (isEmpty(password))
             return "Password cannot be empty.";
-        if (password.length() < 6)
-            return "Password must be at least 6 characters.";
-        if (password.length() > 100)
-            return "Password must not exceed 100 characters.";
+        if (password.length() < 8)
+            return "Password must be at least 8 characters.";
+        if (password.length() > 67)
+            return "Password must not exceed 67 characters.";
         return null;
     }
 

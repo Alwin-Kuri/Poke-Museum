@@ -18,10 +18,10 @@
       </span>
     </div>
     <nav class="topbar-nav">
-      <a href="${pageContext.request.contextPath}/home"   class="nav-btn">EXPLORE</a>
+      <a href="${pageContext.request.contextPath}/home" class="nav-btn">EXPLORE</a>
       <a href="${pageContext.request.contextPath}/quests" class="nav-btn active">QUESTS</a>
-      <a href="${pageContext.request.contextPath}/catch"  class="nav-btn">CATCH</a>
-      <a href="${pageContext.request.contextPath}/trade"  class="nav-btn">TRADE</a>
+      <a href="${pageContext.request.contextPath}/catch" class="nav-btn">CATCH</a>
+      <a href="${pageContext.request.contextPath}/trade" class="nav-btn">TRADE</a>
       <a href="${pageContext.request.contextPath}/booster" class="nav-btn">PACKS</a>
     </nav>
     <div class="topbar-right">
@@ -32,10 +32,12 @@
 
   <div class="page-layout">
     <nav class="sidebar">
-      <a href="${pageContext.request.contextPath}/home"      class="sidebar-tab">EXPLORE</a>
+      <a href="${pageContext.request.contextPath}/home" class="sidebar-tab">EXPLORE</a>
       <a href="${pageContext.request.contextPath}/inventory" class="sidebar-tab">MY CARDS</a>
-      <a href="${pageContext.request.contextPath}/quests"    class="sidebar-tab active">QUESTS</a>
-      <a href="${pageContext.request.contextPath}/catch"     class="sidebar-tab">CATCH</a>
+      <a href="${pageContext.request.contextPath}/quests" class="sidebar-tab active">QUESTS</a>
+      <a href="${pageContext.request.contextPath}/catch" class="sidebar-tab">CATCH</a>
+      <a href="${pageContext.request.contextPath}/trade" class="sidebar-tab">TRADE</a>
+      <a href="${pageContext.request.contextPath}/booster" class="nav-btn">PACKS</a>
     </nav>
 
     <main class="main-content">

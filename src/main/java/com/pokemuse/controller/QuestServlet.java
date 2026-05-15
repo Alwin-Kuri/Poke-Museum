@@ -1,6 +1,6 @@
 package com.pokemuse.controller;
 
-import com.pokemuse.config.DbConfig;
+import com.pokemuse.config.DBConfig;
 import com.pokemuse.dao.UserDao;
 import com.pokemuse.model.Quest;
 import com.pokemuse.model.UserQuestProgress;
@@ -71,7 +71,7 @@ public class QuestServlet extends HttpServlet {
             "ORDER BY uqp.is_completed DESC, uqp.current_count DESC";
 
         List<UserQuestProgress> list = new ArrayList<>();
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt   (1, userId);
             ps.setString(2, type);
@@ -117,7 +117,7 @@ public class QuestServlet extends HttpServlet {
             "    ELSE NULL " +
             "  END " +
             "FROM quests WHERE is_active = 1";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ps.executeUpdate();
@@ -135,7 +135,7 @@ public class QuestServlet extends HttpServlet {
         String check = "SELECT q.reward_type, q.reward_value, uqp.is_completed, uqp.is_claimed " +
                        "FROM user_quest_progress uqp JOIN quests q ON uqp.quest_id = q.quest_id " +
                        "WHERE uqp.user_id = ? AND uqp.quest_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(check)) {
             ps.setInt(1, userId);
             ps.setInt(2, questId);
@@ -167,7 +167,7 @@ public class QuestServlet extends HttpServlet {
         String mark = "UPDATE user_quest_progress " +
                       "SET is_claimed = 1, claimed_at = NOW() " +
                       "WHERE user_id = ? AND quest_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(mark)) {
             ps.setInt(1, userId);
             ps.setInt(2, questId);

@@ -1,6 +1,6 @@
 package com.pokemuse.dao;
 
-import com.pokemuse.config.DbConfig;
+import com.pokemuse.config.DBConfig;
 import com.pokemuse.model.PokeModel;
 
 import java.sql.*;
@@ -37,7 +37,7 @@ public class DeckDao {
         if (getDeckCount(userId) >= 3) return -1;
 
         String sql = "INSERT INTO decks (user_id, deck_name) VALUES (?, ?)";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt   (1, userId);
             ps.setString(2, deckName.trim().isEmpty() ? "My Deck" : deckName.trim());
@@ -57,7 +57,7 @@ public class DeckDao {
      */
     public boolean renameDeck(int deckId, int userId, String newName) {
         String sql = "UPDATE decks SET deck_name = ? WHERE deck_id = ? AND user_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, newName.trim().isEmpty() ? "My Deck" : newName.trim());
             ps.setInt   (2, deckId);
@@ -74,7 +74,7 @@ public class DeckDao {
      */
     public boolean deleteDeck(int deckId, int userId) {
         String sql = "DELETE FROM decks WHERE deck_id = ? AND user_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, deckId);
             ps.setInt(2, userId);
@@ -101,7 +101,7 @@ public class DeckDao {
             "ORDER BY d.deck_id, dc.slot_position";
 
         Map<Integer, DeckView> deckMap = new LinkedHashMap<>();
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -158,7 +158,7 @@ public class DeckDao {
         int slot = getNextSlot(deckId);
 
         String sql = "INSERT IGNORE INTO deck_cards (deck_id, card_id, slot_position) VALUES (?, ?, ?)";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, deckId);
             ps.setInt(2, cardId);
@@ -176,7 +176,7 @@ public class DeckDao {
     public boolean removeCardFromDeck(int deckId, int userId, int cardId) {
         if (!ownsD(deckId, userId)) return false;
         String sql = "DELETE FROM deck_cards WHERE deck_id = ? AND card_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, deckId);
             ps.setInt(2, cardId);
@@ -193,7 +193,7 @@ public class DeckDao {
 
     public int getDeckCount(int userId) {
         String sql = "SELECT COUNT(*) FROM decks WHERE user_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -205,7 +205,7 @@ public class DeckDao {
 
     private int getCardCount(int deckId) {
         String sql = "SELECT COUNT(*) FROM deck_cards WHERE deck_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, deckId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -217,7 +217,7 @@ public class DeckDao {
 
     private int getNextSlot(int deckId) {
         String sql = "SELECT COALESCE(MAX(slot_position), -1) + 1 FROM deck_cards WHERE deck_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, deckId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -229,7 +229,7 @@ public class DeckDao {
 
     private boolean ownsD(int deckId, int userId) {
         String sql = "SELECT COUNT(*) FROM decks WHERE deck_id = ? AND user_id = ?";
-        try (Connection conn = DbConfig.getConnection();
+        try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, deckId);
             ps.setInt(2, userId);
