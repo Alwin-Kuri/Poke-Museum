@@ -16,19 +16,16 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * ExportPdfServlet.java — Controller
- * ─────────────────────────────────────────────────────
- * GET /export/pdf?type=inventory → exports user's inventory as PDF
- * GET /export/pdf?type=catalogue → exports full museum catalogue (admin)
+ * ExportPdfServlet.java 
+ * GET /export/pdf?type=inventory -> exports user's inventory as PDF
+ * GET /export/pdf?type=catalogue -> exports full museum catalogue (admin)
  *
  * Uses iTextPDF 5.5.x (itextpdf-5.5.13.jar in WEB-INF/lib).
  *
  * The PDF is styled to look like a professional card album:
- *   • Cover page with museum logo + trainer name
- *   • Card table with rarity-colored rows
- *   • Summary statistics footer
- *
- * Author : Alwin Maharjan | CS5003NI
+ * Cover page with museum logo + trainer name
+ * Card table with rarity-colored rows
+ * Summary statistics footer
  */
 @WebServlet("/export/pdf")
 public class ExportPdfServlet extends HttpServlet {
@@ -77,7 +74,7 @@ public class ExportPdfServlet extends HttpServlet {
             PdfWriter writer = PdfWriter.getInstance(doc, res.getOutputStream());
             doc.open();
 
-            // ── Cover / header ───────────────────────────
+            // Cover / header 
             Font titleFont  = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD,
                                        new BaseColor(255, 255, 255));
             Font subFont    = new Font(Font.FontFamily.HELVETICA, 11, Font.NORMAL,
@@ -109,7 +106,7 @@ public class ExportPdfServlet extends HttpServlet {
                 return;
             }
 
-            // ── Card table ───────────────────────────────
+            // Card table 
             PdfPTable table = new PdfPTable(6);
             table.setWidthPercentage(100);
             table.setWidths(new float[]{ 1.2f, 2.5f, 1.5f, 1.5f, 1.5f, 1.5f });
@@ -150,7 +147,7 @@ public class ExportPdfServlet extends HttpServlet {
             }
             doc.add(table);
 
-            // ── Summary footer ───────────────────────────
+            // Summary footer 
             doc.add(Chunk.NEWLINE);
             Font summaryFont = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD,
                                         new BaseColor(60, 60, 60));

@@ -17,9 +17,9 @@ import java.util.List;
 
 @WebServlet("/cards")
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024,      // 1MB before writing to disk
-    maxFileSize       = 1024 * 1024 * 5,  // 5MB max per file
-    maxRequestSize    = 1024 * 1024 * 10  // 10MB max request
+    fileSizeThreshold = 1024 * 1024, // 1MB before writing to disk
+    maxFileSize  = 1024 * 1024 * 5, // 5MB max per file
+    maxRequestSize  = 1024 * 1024 * 10  // 10MB max request
 )
 public class CardServlet extends HttpServlet {
 

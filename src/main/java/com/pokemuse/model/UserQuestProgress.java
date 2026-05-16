@@ -3,24 +3,15 @@ package com.pokemuse.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * UserQuestProgress.java — Model
- * ─────────────────────────────────────────────────────
- * Tracks a single user's progress on a single quest.
- * Maps to the `user_quest_progress` table.
- * Often paired with Quest for display (use QuestDAO.getProgressWithDetails).
- *
- * Author : Alwin Maharjan | CS5003NI
- */
 public class UserQuestProgress {
 
-    private int           progressId;
-    private int           userId;
-    private int           questId;
-    private int           currentCount;
-    private boolean       completed;
-    private boolean       claimed;
-    private LocalDate     resetDate;
+    private int progressId;
+    private int userId;
+    private int questId;
+    private int  currentCount;
+    private boolean completed;
+    private boolean claimed;
+    private LocalDate resetDate;
     private LocalDateTime completedAt;
     private LocalDateTime claimedAt;
 
@@ -29,7 +20,7 @@ public class UserQuestProgress {
 
     public UserQuestProgress() {}
 
-    // ── Getters & Setters ──────────────────────────────────
+    // Getters Setters 
 
     public int getProgressId()                    { return progressId; }
     public void setProgressId(int progressId)     { this.progressId = progressId; }

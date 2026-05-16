@@ -6,15 +6,7 @@ import java.util.Deque;
 
 /**
  * UndoStack.java — Session-based Undo Delete Stack
- * ─────────────────────────────────────────────────────
- * Stores the IDs of recently soft-deleted cards in the
- * admin's HTTP session, implementing a LIFO stack with
- * a fixed capacity of 10 entries.
- *
- * This is a handwritten stack (not java.util.Stack) to
- * align with the CS5003NI data structures requirement.
- *
- * Author : Alwin Maharjan | CS5003NI
+ * Stores the IDs of recently soft-deleted cards in the admin's HTTP session, implementing a LIFO stack with a fixed capacity of 10 entries
  */
 public class UndoStack {
 

@@ -1,11 +1,3 @@
-<%--
-     anime.jsp — PokéMuseum Anime Watch Page
-     Served by : AnimeServlet (GET /anime)
-     APIs used :
-       Jikan API v4 — episode list, anime metadata
-       YouTube API v3 — video search + embed player
-     JSTL used : c:forEach, c:if, c:out, c:choose
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>

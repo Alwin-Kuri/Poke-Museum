@@ -24,9 +24,9 @@ import java.util.Map;
  */
 public class DeckDao {
 
-    // ═══════════════════════════════════════════════
+    // 
     //  DECK CRUD
-    // ═══════════════════════════════════════════════
+    // 
 
     /**
      * Creates a new deck for the user.
@@ -139,9 +139,9 @@ public class DeckDao {
         return new ArrayList<>(deckMap.values());
     }
 
-    // ═══════════════════════════════════════════════
+    // 
     //  DECK CARDS
-    // ═══════════════════════════════════════════════
+    // 
 
     /**
      * Adds a card to a deck.
@@ -187,9 +187,9 @@ public class DeckDao {
         }
     }
 
-    // ═══════════════════════════════════════════════
+    // 
     //  HELPER QUERIES
-    // ═══════════════════════════════════════════════
+    // 
 
     public int getDeckCount(int userId) {
         String sql = "SELECT COUNT(*) FROM decks WHERE user_id = ?";
@@ -240,9 +240,9 @@ public class DeckDao {
         return false;
     }
 
-    // ═══════════════════════════════════════════════
+    // 
     //  VIEW MODEL
-    // ═══════════════════════════════════════════════
+    // 
 
     /** Represents a single deck with its card list for JSP rendering. */
     public static class DeckView {

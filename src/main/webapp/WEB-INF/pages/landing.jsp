@@ -11,13 +11,13 @@
 </head>
 <body data-ctx="${pageContext.request.contextPath}">
 
-  <%-- ── Topbar ─────────────────────────────────────── --%>
+  <%--  Topbar --%>
   <div class="topbar">
     <a href="${pageContext.request.contextPath}/" class="topbar-logo">
       Pokémon <span>Museum</span>
     </a>
     <div class="topbar-meta">
-      <a href="#">Discord</a>
+      <a href="https://discord.com/invite/pokecommunity">Discord</a>
     </div>
     <nav class="topbar-nav">
       <a href="${pageContext.request.contextPath}/"         class="nav-btn active">HOME</a>
@@ -26,7 +26,7 @@
     </nav>
   </div>
 
-  <%-- ── Hero section ────────────────────────────────── --%>
+  <%--  Hero section --%>
   <div class="hero">
     <div class="hero-grid-bg"><img src ="${pageContext.request.contextPath}/images/util/back.png"></div>
     <div class="hero-vignette"></div>
@@ -64,7 +64,7 @@
     </div>
   </div>
 
-  <%-- ── Stats strip ──────────────────────────────────── --%>
+  <%--  Stats strip --%>
   <div class="stat-strip">
     <div class="stat-cell">
       <span class="stat-val"><c:out value="${totalCards}"/></span>
@@ -86,7 +86,7 @@
     </div>
   </div>
 
-  <%-- ── Featured Cards ──────────────────────────────── --%>
+  <%--  Featured Cards --%>
   <div class="section-header">
     Featured Cards
     <a href="${pageContext.request.contextPath}/login"
@@ -156,7 +156,7 @@
     </c:choose>
   </div>
 
-  <%-- ── Features strip --%>
+  <%--  Features strip --%>
   <div class="section-header" style="margin-top:4px;">What You Can Do</div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);">
     <div style="background:var(--bg-panel);padding:20px;text-align:center;">
@@ -189,7 +189,7 @@
     </div>
   </div>
 
-  <%-- ── CTA ─────────────────────────────────────────── --%>
+  <%--  CTA--%>
   <div style="text-align:center;padding:36px 20px;background:var(--bg-panel);border-top:1px solid var(--border);">
     <div style="font-family:'Oxanium',monospace;font-size:22px;font-weight:800;color:var(--white);margin-bottom:8px;">
       Ready to become a Trainer?
@@ -202,7 +202,7 @@
     </a>
   </div>
 
-  <%-- ── Chatbar ──────────────────────────────────────── --%>
+  <%--  Chatbar ─--%>
   <div class="chatbar">
     <span class="chatbar-icon">🦇</span>
     <span class="chatbar-label">

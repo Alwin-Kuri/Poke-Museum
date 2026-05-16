@@ -1,9 +1,3 @@
-<%-- ═══════════════════════════════════════════════════════
-     deck.jsp — Deck Builder Page
-     Served by : DeckServlet (GET /deck)
-     JSTL used : c:forEach, c:if, c:out, c:choose, fmt
-     Author    : Alwin Maharjan | CS5003NI
-═══════════════════════════════════════════════════════ --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -87,7 +81,7 @@
         </button>
       </form>
 
-      <%-- ── Deck content --%>
+      <%-- Deck content --%>
       <c:choose>
         <c:when test="${empty myDecks}">
           <div class="empty-state" style="padding:48px 20px;">

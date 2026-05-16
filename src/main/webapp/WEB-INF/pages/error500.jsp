@@ -10,12 +10,12 @@
 </head>
 <body>
 
-  <!-- Full screen background image -->
+  <%-- Full screen background image --%>
   <img src="${pageContext.request.contextPath}/images/util/200.gif" 
        class="bg-image" 
        alt="">
 
-  <!-- Dark overlay -->
+  <%-- Dark overlay --%>
   <div class="overlay"></div>
 
   <div class="topbar">

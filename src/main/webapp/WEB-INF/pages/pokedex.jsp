@@ -1,10 +1,3 @@
-<%-- ═══════════════════════════════════════════════════════
-     pokedex.jsp — Pokédex Detail Page
-     Served by : PokedexServlet (GET /pokedex?name=charizard)
-     API used  : PokeAPI v2 — no key required
-     JSTL used : c:if, c:out, c:choose
-     Author    : Alwin Maharjan | CS5003NI
-═══════════════════════════════════════════════════════ --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>

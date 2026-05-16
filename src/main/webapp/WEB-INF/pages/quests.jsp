@@ -246,7 +246,7 @@
   </div>
 
   <div class="chatbar">
-    <span class="chatbar-icon">🎯</span>
+    <span class="chatbar-icon"> </span>
     <span class="chatbar-label"> Quests Active</span>
     <div class="chatbar-right">
       <span class="coins-display">🪙 <c:out value="${sessionScope.loggedInUser.coins}"/></span>

@@ -14,16 +14,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * DeckServlet.java — Controller
- * ─────────────────────────────────────────────────────
- * GET  /deck                     → deck builder page
- * POST /deck?action=create       → create a new deck
- * POST /deck?action=rename       → rename a deck
- * POST /deck?action=delete       → delete a deck
- * POST /deck?action=addCard      → add card to deck
- * POST /deck?action=removeCard   → remove card from deck
- *
- * Author : Alwin Maharjan | CS5003NI
+ * DeckServlet.java 
+ * GET  /deck  ->deck builder page
+ * POST /deck?action=create  ->create a new deck
+ * POST /deck?action=rename  ->rename a deck
+ * POST /deck?action=delete  ->delete a deck
+ * POST /deck?action=addCard  ->add card to deck
+ * POST /deck?action=removeCard->remove card from deck
  */
 @WebServlet("/deck")
 public class DeckServlet extends HttpServlet {

@@ -5,16 +5,16 @@ import java.time.LocalDateTime;
 
 public class User {
 
-    private int           userId;
-    private String        username;
-    private String        passwordHash;
-    private String        email;
-    private String        role;
-    private int           loginStreak;
-    private int           coins;
-    private LocalDate     lastLogin;
-    private boolean       locked;
-    private int           failedAttempts;
+    private int userId;
+    private String username;
+    private String passwordHash;
+    private String email;
+    private String role;
+    private int loginStreak;
+    private int coins;
+    private LocalDate lastLogin;
+    private boolean locked;
+    private int failedAttempts;
     private LocalDateTime createdAt;
 
 
@@ -22,14 +22,14 @@ public class User {
 
     // constructor for new registrations
     public User(String username, String passwordHash, String email) {
-        this.username     = username;
+        this.username  = username;
         this.passwordHash = passwordHash;
-        this.email        = email;
-        this.role         = "user";
-        this.coins        = 100;
-        this.loginStreak  = 0;
+        this.email = email;
+        this.role  = "user";
+        this.coins = 100;
+        this.loginStreak = 0;
         this.failedAttempts = 0;
-        this.locked       = false;
+        this.locked  = false;
     }
 
     // Getters setters

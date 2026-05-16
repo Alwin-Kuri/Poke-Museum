@@ -12,28 +12,24 @@ import org.json.*;
 
 /**
  * PokedexServlet.java — Controller
- * ─────────────────────────────────────────────────────
  * Integrates the PokeAPI (https://pokeapi.co/api/v2)
  * to fetch full Pokémon data for the detail popup.
  *
- * API Used  : PokeAPI v2
- * Auth      : None required — completely free, no key
- * Rate limit: Generous — just don't hammer it
+ * API Used: PokeAPI v2-  completely free, no key
  *
- * GET /pokedex?name=charizard   → full stats + abilities + flavour text
- * GET /pokedex?id=6             → same but by Pokédex number
+ * GET /pokedex?name=charizard -> full stats + abilities + flavour text
+ * GET /pokedex?id=6  -> same but by Pokédex number
  *
  * Two endpoints called per request:
  *   1. https://pokeapi.co/api/v2/pokemon/{name}
- *      → sprites, types, stats, abilities, height, weight
+ *      -> sprites, types, stats, abilities, height, weight
  *   2. https://pokeapi.co/api/v2/pokemon-species/{name}
- *      → flavour text (Pokédex entry), generation, habitat
+ *      -> flavour text (Pokédex entry), generation, habitat
  *
  * Response modes:
- *   ?ajax=true  → returns raw JSON string (for JS fetch calls)
- *   default     → forwards to pokedex.jsp with model attributes
- *
- * Author : Alwin Maharjan | CS5003NI
+ *   ?ajax=true -> returns raw JSON string (for JS fetch calls)
+ *   default ->forwards to pokedex.jsp with model attributes
+
  */
 @WebServlet("/pokedex")
 public class PokedexServlet extends HttpServlet {
@@ -62,7 +58,7 @@ public class PokedexServlet extends HttpServlet {
             ? name.trim().toLowerCase()
             : id.trim();
 
-        // ── Fetch from PokeAPI ─────────────────────────────
+        // Fetch from PokeAPI
         JSONObject pokeData    = null;
         JSONObject speciesData = null;
         String     errorMsg    = null;
@@ -77,7 +73,7 @@ public class PokedexServlet extends HttpServlet {
             System.err.println("[PokedexServlet] " + e.getMessage());
         }
 
-        // ── Parse and extract the data we need ────────────
+        // Parse and extract the data we need
         if (pokeData != null) {
             try {
                 // Basic info
@@ -143,7 +139,7 @@ public class PokedexServlet extends HttpServlet {
             }
         }
 
-        // ── Parse species data (flavour text + generation) ─
+        // Parse species data (flavour text + generation) ─
         if (speciesData != null) {
             try {
                 // Find first English flavour text entry
@@ -184,7 +180,7 @@ public class PokedexServlet extends HttpServlet {
 
         req.setAttribute("pokeError", errorMsg);
 
-        // ── AJAX mode — return JSON string ─────────────────
+        // AJAX mode — return JSON string
         if ("true".equals(req.getParameter("ajax"))) {
             res.setContentType("application/json;charset=UTF-8");
             JSONObject json = buildJsonResponse(req);
@@ -192,11 +188,11 @@ public class PokedexServlet extends HttpServlet {
             return;
         }
 
-        // ── Normal mode — forward to JSP ───────────────────
+        // Normal mode — forward to JSP
         req.getRequestDispatcher("/WEB-INF/pages/pokedex.jsp").forward(req, res);
     }
 
-    // ── Build JSON object from request attributes ──────────
+    // Build JSON object from request attributes
     private JSONObject buildJsonResponse(HttpServletRequest req) {
         JSONObject json = new JSONObject();
         String[] attrs = {
@@ -214,7 +210,7 @@ public class PokedexServlet extends HttpServlet {
         return json;
     }
 
-    // ── HTTP GET helper ────────────────────────────────────
+    // HTTP GET helper 
     private String httpGet(String urlString) throws IOException {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

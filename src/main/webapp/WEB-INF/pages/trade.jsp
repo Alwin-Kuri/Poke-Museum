@@ -1,9 +1,3 @@
-<%-- ═══════════════════════════════════════════════════════
-     trade.jsp — Trading Marketplace
-     Served by : TradeServlet (GET /trade)
-     JSTL used : c:forEach, c:if, c:out, c:choose, fmt
-     Author    : Alwin Maharjan | CS5003NI
-═══════════════════════════════════════════════════════ --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -70,9 +64,9 @@
         </div>
       </div>
 
-      <%-- ══════════════════════════════════════════
+      <%--
            TAB: TRADE HOME — browse open listings
-      ══════════════════════════════════════════ --%>
+      --%>
       <c:if test="${activeTab eq 'home'}">
 
         <div class="search-row">
@@ -178,9 +172,9 @@
         </c:choose>
       </c:if>
 
-      <%-- ══════════════════════════════════════════
+      <%--
            TAB: MY LISTINGS
-      ══════════════════════════════════════════ --%>
+      --%>
       <c:if test="${activeTab eq 'mine'}">
 
         <div style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:var(--bg-panel);border-bottom:1px solid var(--border);">
@@ -257,9 +251,9 @@
         </c:choose>
       </c:if>
 
-      <%-- ══════════════════════════════════════════
+      <%--
            TAB: INCOMING OFFERS
-      ══════════════════════════════════════════ --%>
+      --%>
       <c:if test="${activeTab eq 'offers'}">
         <c:choose>
           <c:when test="${empty myOffers}">

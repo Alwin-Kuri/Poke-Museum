@@ -1,17 +1,3 @@
-<%-- ═══════════════════════════════════════════════════════
-     admin-users.jsp — Admin User Management (FIXED)
-     Served by : AdminUserServlet (GET /admin/users)
-     Fixes:
-       1. Search form now submits to /admin/users (GET)
-       2. Role filter select auto-submits on change
-       3. Search input + role select pre-filled from
-          request attributes so values persist after submit
-       4. Result count feedback shown
-       5. Navbar active state driven by URI not hardcoded
-       6. Stats computed by servlet, not in JSP
-     JSTL used : c:forEach, c:if, c:out, c:choose
-     Author    : Alwin Maharjan | CS5003NI
-═══════════════════════════════════════════════════════ --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -30,7 +16,7 @@
 </head>
 <body>
 
-  <%-- ── Topbar — active class driven by URI ────────── --%>
+  <%--  Topbar — active class driven by URI  --%>
   <div class="topbar">
     <a href="${pageContext.request.contextPath}/admin/dashboard" class="topbar-logo">
       Pokémon <span>Museum</span>
@@ -96,7 +82,7 @@
         </span>
       </div>
 
-      <%-- ── Stats strip — values from servlet ──────── --%>
+      <%--  Stats strip — values from servlet  --%>
       <div class="stat-strip">
         <div class="stat-cell">
           <span class="stat-val"><c:out value="${totalUsers}"/></span>
@@ -122,11 +108,11 @@
         </div>
       </div>
 
-      <%-- ══════════════════════════════════════════════
+      <%-- 
            SEARCH + FILTER FORM
            Action points to /admin/users (GET)
            All controls submit the same form together.
-      ══════════════════════════════════════════════ --%>
+       --%>
       <form method="get"
             action="${pageContext.request.contextPath}/admin/users"
             id="user-filter-form">
@@ -177,7 +163,7 @@
         </c:if>
       </div>
 
-      <%-- ── Users table ─────────────────────────────── --%>
+      <%--  Users table  --%>
       <div class="table-wrap">
         <table class="data-table">
           <thead>

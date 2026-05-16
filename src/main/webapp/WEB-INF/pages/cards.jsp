@@ -1,12 +1,3 @@
-<%-- ═══════════════════════════════════════════════════════
-     cards.jsp — Museum Card Browse Page (UPDATED)
-     Changes:
-       + Card images use PokeAPI official artwork sprites
-       + Pokédex entry link on each card
-       + Admin edit/delete inline buttons
-       + Live search submits to /cards via GET form
-     Author : Alwin Maharjan | CS5003NI
-═══════════════════════════════════════════════════════ --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>

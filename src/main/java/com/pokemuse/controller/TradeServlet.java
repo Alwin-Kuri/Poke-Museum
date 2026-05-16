@@ -15,17 +15,14 @@ import java.util.List;
 
 /**
  * TradeServlet.java — Controller
- * ─────────────────────────────────────────────────────
- * GET  /trade                  → trading marketplace home
- * GET  /trade?tab=mine         → my listed cards
- * GET  /trade?tab=offers       → incoming offers on my listings
- * POST /trade?action=list      → list a card for trading
- * POST /trade?action=cancel    → cancel my listing
- * POST /trade?action=offer     → make an offer on someone's listing
- * POST /trade?action=accept    → accept an incoming offer
- * POST /trade?action=reject    → reject an incoming offer
- *
- * Author : Alwin Maharjan | CS5003NI
+ * GET /trade -trading marketplace home
+ * GET /trade?tab=mine -my listed cards
+ * GET /trade?tab=offers  -incoming offers on my listings
+ * POST /trade?action=list -list a card for trading
+ * POST /trade?action=cancel -cancel my listing
+ * POST /trade?action=offer -make an offer on someone's listing
+ * POST /trade?action=accept -accept an incoming offer
+ * POST /trade?action=reject - reject an incoming offer
  */
 @WebServlet("/trade")
 public class TradeServlet extends HttpServlet {
@@ -33,7 +30,7 @@ public class TradeServlet extends HttpServlet {
     private final TradeDao     tradeDao     = new TradeDao();
     private final InventoryDao inventoryDao = new InventoryDao();
 
-    // ── GET: load marketplace view ─────────────────
+    // ── GET: load marketplace view
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -63,7 +60,7 @@ public class TradeServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/pages/trade.jsp").forward(req, res);
     }
 
-    // ── POST: handle all trade actions ────────────
+    // ── POST: handle all trade actions
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {

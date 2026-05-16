@@ -9,12 +9,12 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
 </head>
 <body>
-  <!-- Full screen background image -->
+  <%-- Full screen background image --%>
   <img src="${pageContext.request.contextPath}/images/util/ero404.png" 
        class="bg-image" 
        alt="">
 
-  <!-- Dark overlay -->
+  <%-- Dark overlay --%>
   <div class="overlay"></div>
   
   <div class="topbar">

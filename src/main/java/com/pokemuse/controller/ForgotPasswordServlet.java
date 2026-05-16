@@ -39,7 +39,7 @@ public class ForgotPasswordServlet extends HttpServlet {
     // Session key used to temporarily hold the reset target user ID
     private static final String SESSION_RESET_UID = "resetUserId";
 
-    // ── GET: show step 1 form ──────────────────────────────
+    // GET: show step 1 form 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -65,7 +65,7 @@ public class ForgotPasswordServlet extends HttpServlet {
            .forward(req, res);
     }
 
-    // ── POST: process both steps ───────────────────────────
+    // POST: process both steps 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -81,7 +81,7 @@ public class ForgotPasswordServlet extends HttpServlet {
         }
     }
 
-    // ── STEP 1: look up the user by username or email ──────
+    // STEP 1: look up the user by username or email 
     private void handleLookup(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
@@ -116,7 +116,7 @@ public class ForgotPasswordServlet extends HttpServlet {
            .forward(req, res);
     }
 
-    // ── STEP 2: validate new password and update DB ────────
+    // STEP 2: validate new password and update DB ─
     private void handleReset(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 

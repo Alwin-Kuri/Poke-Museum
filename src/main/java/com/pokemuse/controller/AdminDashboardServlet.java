@@ -12,17 +12,6 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * AdminDashboardServlet.java — Controller (FIXED)
- * ─────────────────────────────────────────────────────
- * Changes:
- *   + Now reads search, rarity, sort params from request
- *   + Passes filtered card list to JSP (not always getAllCards)
- *   + Passes filter values back to JSP so inputs stay filled
- *   + Passes undoStackSize for the undo button badge
- *
- * Author : Alwin Maharjan | CS5003NI
- */
 @WebServlet("/admin/dashboard")
 public class AdminDashboardServlet extends HttpServlet {
 
@@ -36,7 +25,7 @@ public class AdminDashboardServlet extends HttpServlet {
         // Guard — admin only
         if (SessionUtil.requireAdmin(req, res)) return;
 
-        // ── Read filter / search / sort params ─────────────
+        // Read filter / search / sort params 
         String search  = ValidationUtil.sanitise(req.getParameter("search"));
         String rarity  = ValidationUtil.sanitise(req.getParameter("rarity"));
         String sort    = ValidationUtil.sanitise(req.getParameter("sort"));
@@ -51,7 +40,7 @@ public class AdminDashboardServlet extends HttpServlet {
         };
         String orderDir = "value_asc".equals(sort) ? "ASC" : "DESC";
 
-        // ── Load filtered card list ─────────────────────────
+        // Load filtered card list 
         List<PokeModel> cards = CardDao.getCardsWithFilter(
             search.isEmpty() ? null : search,
             null,                              // no type filter on admin dashboard
@@ -60,24 +49,24 @@ public class AdminDashboardServlet extends HttpServlet {
             orderDir
         );
 
-        // ── Dashboard aggregate metrics ─────────────────────
-        req.setAttribute("totalCards",         CardDao.getTotalCardCount());
-        req.setAttribute("totalValue",         CardDao.getTotalCollectionValue());
-        req.setAttribute("mostValuable",       CardDao.getMostValuableCard());
-        req.setAttribute("mostRare",           CardDao.getMostRareCard());
+        // Dashboard aggregate metrics 
+        req.setAttribute("totalCards",  CardDao.getTotalCardCount());
+        req.setAttribute("totalValue",   CardDao.getTotalCollectionValue());
+        req.setAttribute("mostValuable",   CardDao.getMostValuableCard());
+        req.setAttribute("mostRare",   CardDao.getMostRareCard());
         req.setAttribute("rarityDistribution", CardDao.getRarityDistribution());
-        req.setAttribute("allUsers",           UserDao.getAllUsers());
+        req.setAttribute("allUsers",  UserDao.getAllUsers());
 
-        // ── Filtered card list for table ────────────────────
+        // Filtered card list for table
         req.setAttribute("allCards",     cards);
         req.setAttribute("resultCount",  cards.size());
 
-        // ── Pass filter values back so inputs stay filled ───
+        // Pass filter values back so inputs stay filled
         req.setAttribute("searchQuery",  search);
         req.setAttribute("filterRarity", rarity);
         req.setAttribute("sortBy",       sort);
 
-        // ── Undo stack size for the undo button badge ───────
+        // Undo stack size for the undo button badg
         req.setAttribute("undoStackSize", UndoStack.size(req.getSession()));
 
         req.getRequestDispatcher("/WEB-INF/pages/admin-dashboard.jsp")

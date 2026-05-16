@@ -7,18 +7,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * All database operations for the trading marketplace.
- * Covers: `trades` and `trade_offers` tables.
- *
- * Flow:
- *   1. User lists a card -> trades (status='open')
- *   2. Another user makes an offer -> trade_offers (status='pending')
- *   3. Listing owner accepts -> swap inventories + close trade
- *   4. Listing owner rejects -> trade_offer (status='rejected')
- *
- * Author : Alwin Maharjan | CS5003NI
- */
 public class TradeDao {
 
     //
