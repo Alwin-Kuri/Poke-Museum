@@ -3,35 +3,27 @@ package com.pokemuse.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Quest.java — Model
- * ─────────────────────────────────────────────────────
- * Represents a quest definition (Daily / Weekly / Permanent).
- * Maps to the `quests` table.
- *
- * Author : Alwin Maharjan | CS5003NI
- */
 public class Quest {
 
-    public static final String TYPE_DAILY     = "daily";
-    public static final String TYPE_WEEKLY    = "weekly";
+    public static final String TYPE_DAILY  = "daily";
+    public static final String TYPE_WEEKLY  = "weekly";
     public static final String TYPE_PERMANENT = "permanent";
 
-    private int    questId;
+    private int questId;
     private String title;
     private String description;
-    private String questType;       // daily | weekly | permanent
-    private String actionType;      // catch | login | open_pack | add_inventory | trade …
-    private int    targetCount;
-    private String rewardType;      // coins | basic_pack | elite_pack | master_pack | rare_card | badge
-    private int    rewardValue;
-    private int    rewardCardId;    // FK → pokemon_cards (0 if not a card reward)
+    private String questType;
+    private String actionType;
+    private int targetCount;
+    private String rewardType;
+    private int rewardValue;
+    private int rewardCardId;
     private boolean active;
 
-    // ── Default constructor ────────────────────────────────
+    //Default constructor
     public Quest() {}
 
-    // ── Getters & Setters ──────────────────────────────────
+    //Getters Setters
 
     public int getQuestId()                  { return questId; }
     public void setQuestId(int questId)      { this.questId = questId; }

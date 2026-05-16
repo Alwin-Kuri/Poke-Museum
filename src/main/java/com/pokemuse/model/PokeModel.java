@@ -6,17 +6,17 @@ import java.time.LocalDateTime;
 public class PokeModel {
 
     // Rarity constants
-    public static final String RARITY_COMMON    = "Common";
-    public static final String RARITY_RARE      = "Rare";
-    public static final String RARITY_EPIC      = "Epic";
+    public static final String RARITY_COMMON = "Common";
+    public static final String RARITY_RARE = "Rare";
+    public static final String RARITY_EPIC = "Epic";
     public static final String RARITY_LEGENDARY = "Legendary";
 
     // Condition constants
-    public static final String COND_MINT      = "Mint";
+    public static final String COND_MINT = "Mint";
     public static final String COND_NEAR_MINT = "Near Mint";
-    public static final String COND_GOOD      = "Good";
-    public static final String COND_FAIR      = "Fair";
-    public static final String COND_POOR      = "Poor";
+    public static final String COND_GOOD = "Good";
+    public static final String COND_FAIR = "Fair";
+    public static final String COND_POOR = "Poor";
 
     // PokeAPI sprite base URLs
     // Official high-res artwork (used on card detail pages, catch screen)
@@ -119,8 +119,13 @@ public class PokeModel {
 
     //Existing utility methods
 
+    // single check with boosted probability (feels right) instead of 3 different catch attempts with lower probability
+    // catchRate 190 (Pikachu) -> 74.5% catch chance
+    // catchRate  45 (Common)  -> 52%   catch chance 
+    // catchRate   3 (Legendary) ->  4.7% catch chance
     public double getCatchProbability() {
-        return Math.min(catchRate / 255.0, 1.0);
+    	if (catchRate <= 0) return 0.05; //5% minimum
+    	return Math.min(catchRate / 255.0, 1.0);
     }
 
     public String getRarityCssClass() {

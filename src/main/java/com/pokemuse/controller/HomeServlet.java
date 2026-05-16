@@ -52,10 +52,10 @@ public class HomeServlet extends HttpServlet {
 
     /** Loads data needed by both landing and user home pages. */
     private void loadPublicData(HttpServletRequest req) {
-        // Featured cards — top 6 by value
+        // Featured cards — top 10 by value
         List<PokeModel> featured = CardDao.getCardsWithFilter(
                 null, null, null, "value", "DESC");
-        if (featured.size() > 6) featured = featured.subList(0, 6);
+        if (featured.size() > 10) featured = featured.subList(0, 10);
         req.setAttribute("featuredCards", featured);
 
         // Stats

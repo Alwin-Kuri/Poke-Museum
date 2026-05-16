@@ -28,7 +28,7 @@
 
   <%-- ── Hero section ────────────────────────────────── --%>
   <div class="hero">
-    <div class="hero-grid-bg"></div>
+    <div class="hero-grid-bg"><img src ="${pageContext.request.contextPath}/images/util/back.png"></div>
     <div class="hero-vignette"></div>
     <div class="hero-content">
       <div class="hero-eyebrow">Digital Pokémon Card Museum</div>
@@ -204,12 +204,12 @@
 
   <%-- ── Chatbar ──────────────────────────────────────── --%>
   <div class="chatbar">
-    <span class="chatbar-icon"></span>
+    <span class="chatbar-icon">🦇</span>
     <span class="chatbar-label">
          Developed by Alwin Maharjan
     </span>
     <div class="chatbar-right">
-      <span class="clock-display">🕐 <span class="js-clock">--:--</span></span>
+      <span class="clock-display"> <span class="js-clock">--:--</span></span>
     </div>
   </div>
 

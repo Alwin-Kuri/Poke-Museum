@@ -21,11 +21,7 @@
 
     <%-- Meta strip — user info --%>
     <div class="topbar-meta">
-      <span><span class="user-online-dot"></span>
-        <c:out value="${sessionScope.loggedInUser.username}"/>
-      </span>
-      <span>🔄 Trades <strong>0</strong></span>
-      <span>📨 Messages <strong>0</strong></span>
+		<span style="color:var(--white);font-weight:800;"><c:out value="${sessionScope.loggedInUser.username}"/></span>
     </div>
 
     <%-- Nav buttons --%>
@@ -40,6 +36,8 @@
          class="nav-btn">TRADE</a>
       <a href="${pageContext.request.contextPath}/booster"
          class="nav-btn">PACKS</a>
+      <a href="${pageContext.request.contextPath}/anime"
+         class="nav-btn">ANIME</a>
     </nav>
 
     <div class="topbar-right">
@@ -75,6 +73,8 @@
          class="sidebar-tab" data-path="/quests">QUESTS</a>
       <a href="${pageContext.request.contextPath}/catch"
          class="sidebar-tab" data-path="/catch">CATCH</a>
+      <a href="${pageContext.request.contextPath}/anime"
+         class="sidebar-tab" data-path="anime">ANIME</a>
     </nav>
 
     <%-- Main content --%>
@@ -118,8 +118,6 @@
       <%-- Featured Cards section--%>
       <div class="section-header">
         Featured Cards
-        <a href="${pageContext.request.contextPath}/cards"
-           style="font-size:11px;opacity:0.75;">View All →</a>
       </div>
 
       <%-- Search + filter row --%>
@@ -249,10 +247,9 @@
 
   <%-- Chatbar --%>
   <div class="chatbar">
-    <span class="chatbar-icon">🏛️</span>
-    <span>🇳🇵</span>
+    <span class="chatbar-icon">🦇</span>
     <span class="chatbar-label">
-      <span class="online-dot"></span> Chat (0)
+         Developed by Alwin Maharjan
     </span>
     <div class="chatbar-right">
       <span class="coins-display">

@@ -8,24 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TradeDAO.java — Data Access Object
- * ─────────────────────────────────────────────────────
  * All database operations for the trading marketplace.
  * Covers: `trades` and `trade_offers` tables.
  *
  * Flow:
- *   1. User lists a card → trades (status='open')
- *   2. Another user makes an offer → trade_offers (status='pending')
- *   3. Listing owner accepts → swap inventories + close trade
- *   4. Listing owner rejects → trade_offer (status='rejected')
+ *   1. User lists a card -> trades (status='open')
+ *   2. Another user makes an offer -> trade_offers (status='pending')
+ *   3. Listing owner accepts -> swap inventories + close trade
+ *   4. Listing owner rejects -> trade_offer (status='rejected')
  *
  * Author : Alwin Maharjan | CS5003NI
  */
 public class TradeDao {
 
-    // ═══════════════════════════════════════════════
+    //
     //  TRADE LISTINGS
-    // ═══════════════════════════════════════════════
+    //
 
     /**
      * Lists a card on the trading marketplace.
@@ -138,9 +136,9 @@ public class TradeDao {
         return 0;
     }
 
-    // ═══════════════════════════════════════════════
+    //
     //  TRADE OFFERS
-    // ═══════════════════════════════════════════════
+    //
 
     /**
      * Submits an offer on a trade listing.
@@ -304,9 +302,9 @@ public class TradeDao {
         return list;
     }
 
-    // ═══════════════════════════════════════════════
+    //
     //  PRIVATE HELPERS (used within transactions)
-    // ═══════════════════════════════════════════════
+    //
 
     private void removeFromInventory(Connection conn, int userId, int cardId) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement(
@@ -327,9 +325,9 @@ public class TradeDao {
         }
     }
 
-    // ═══════════════════════════════════════════════
+    //
     //  RESULT SET MAPPER
-    // ═══════════════════════════════════════════════
+    //
 
     private TradeListingView mapListing(ResultSet rs) throws SQLException {
         TradeListingView v  = new TradeListingView();
@@ -351,9 +349,9 @@ public class TradeDao {
         return v;
     }
 
-    // ═══════════════════════════════════════════════
+    //
     //  VIEW MODELS (inner classes for JSP binding)
-    // ═══════════════════════════════════════════════
+    //
 
     /** Represents a single trade listing row for the marketplace view. */
     public static class TradeListingView {
@@ -362,7 +360,18 @@ public class TradeDao {
         public String      listerUsername;
         public Timestamp   listedAt;
         public String      status;
-        public PokeModel card;
+        public PokeModel   card;
+
+        // EL needs this for ${listing.card}
+        public PokeModel getCard() {
+            return card;
+        }
+
+        // EL needs these for other properties
+        public int getTradeId() { return tradeId; }
+        public String getListerUsername() { return listerUsername; }
+        public Timestamp getListedAt() { return listedAt; }
+        public String getStatus() { return status; }
 
         public String getRarityCss() {
             if (card == null) return "common";
@@ -383,5 +392,16 @@ public class TradeDao {
         public double offeredValue;
         public String offeredCardType;
         public String offeredCardImg;
+
+        // Getters for JSP access
+        public int getOfferId() { return offerId; }
+        public int getTradeId() { return tradeId; }
+        public String getOffererName() { return offererName; }
+        public String getOfferedCardName() { return offeredCardName; }
+        public String getOfferedRarity() { return offeredRarity; }
+        public double getOfferedValue() { return offeredValue; }
+        public String getOfferedCardType() { return offeredCardType; }
+        public String getOfferedCardImg() { return offeredCardImg; }
+        
     }
 }

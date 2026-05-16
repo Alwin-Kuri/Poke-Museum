@@ -48,14 +48,14 @@
           <div class="form-group">
             <label class="form-label" for="password">Password</label>
             <input class="form-control" type="password" id="password" name="password"
-                   placeholder="Minimum 6 characters" required>
+                   placeholder="Minimum 8 characters" required>
           </div>
           <div class="form-group">
             <label class="form-label" for="confirmPassword">Confirm Password</label>
             <input class="form-control" type="password" id="confirmPassword" name="confirmPassword"
                    placeholder="Repeat your password" required>
           </div>
-          <button type="submit" class="btn-red btn-full">CREATE ACCOUNT →</button>
+          <button type="submit" class="btn-red btn-full">CREATE ACCOUNT </button>
         </form>
 
         <div class="login-divider"></div>

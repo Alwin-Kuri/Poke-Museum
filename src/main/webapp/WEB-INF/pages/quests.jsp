@@ -13,9 +13,7 @@
   <div class="topbar">
     <a href="${pageContext.request.contextPath}/home" class="topbar-logo">Pokémon <span>Museum</span></a>
     <div class="topbar-meta">
-      <span><span class="user-online-dot"></span>
-        <c:out value="${sessionScope.loggedInUser.username}"/>
-      </span>
+		<span style="color:var(--white);font-weight:800;"><c:out value="${sessionScope.loggedInUser.username}"/></span>
     </div>
     <nav class="topbar-nav">
       <a href="${pageContext.request.contextPath}/home" class="nav-btn">EXPLORE</a>
@@ -37,7 +35,7 @@
       <a href="${pageContext.request.contextPath}/quests" class="sidebar-tab active">QUESTS</a>
       <a href="${pageContext.request.contextPath}/catch" class="sidebar-tab">CATCH</a>
       <a href="${pageContext.request.contextPath}/trade" class="sidebar-tab">TRADE</a>
-      <a href="${pageContext.request.contextPath}/booster" class="nav-btn">PACKS</a>
+      <a href="${pageContext.request.contextPath}/booster" class="sidebar-tab">PACKS</a>
     </nav>
 
     <main class="main-content">
@@ -51,7 +49,9 @@
       </c:if>
 
       <div class="section-header">
-        🎯 Quests &amp; Achievements
+            <img class="card-poke-img"
+            src="${pageContext.request.contextPath}/images/util/quest.png"
+            alt="📦" style="width:32px;height:32px;margin-bottom:10px;margin-top:4px;"> <span style= "margin-right:1370px">Quests &amp; Achievements</span>
         <div class="header-tabs">
           <button class="header-tab active js-quest-tab"
                   onclick="switchQuestTab(this,'daily')">Daily</button>
@@ -247,7 +247,7 @@
 
   <div class="chatbar">
     <span class="chatbar-icon">🎯</span>
-    <span class="chatbar-label"><span class="online-dot"></span> Quests Active</span>
+    <span class="chatbar-label"> Quests Active</span>
     <div class="chatbar-right">
       <span class="coins-display">🪙 <c:out value="${sessionScope.loggedInUser.coins}"/></span>
       <span class="clock-display">🕐 <span class="js-clock">--:--</span></span>

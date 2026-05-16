@@ -10,17 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * UserDAO.java — Data Access Object
- * ─────────────────────────────────────────────────────
+ * UserDAO.java
  * All database operations for the `users` table.
  * Handles registration, login verification, session tracking,
  * login streak management, and account locking.
- *
- * Author : Alwin Maharjan | CS5003NI
+
  */
 public class UserDao {
 
-    // ── CREATE ─────────────────────────────────────────────
+    // ── CREATE 
 
     /**
      * Registers a new user account.
@@ -48,7 +46,7 @@ public class UserDao {
         }
     }
 
-    // ── READ ───────────────────────────────────────────────
+    // ── READ ──
 
     /** Returns a User by user_id, or null if not found. */
     public User getUserById(int userId) {
@@ -94,11 +92,11 @@ public class UserDao {
         return users;
     }
 
-    // ── LOGIN VERIFICATION ─────────────────────────────────
+    // ── LOGIN VERIFICATION 
 
     /**
      * Validates login credentials.
-     * Checks: account exists → not locked → password matches.
+     * Checks: account exists -> not locked -> password matches.
      *
      * On success: resets failed attempts, updates last_login, manages streak.
      * On failure: increments failed attempts, locks after 5.
@@ -123,7 +121,7 @@ public class UserDao {
         return user;
     }
 
-    // ── LOGIN HELPERS ──────────────────────────────────────
+    // ── LOGIN HELPERS ───
 
     /**
      * Records a failed login attempt and locks the account if threshold reached.
@@ -153,13 +151,13 @@ public class UserDao {
         int streakUpdate;
 
         if (lastLogin == null) {
-            streakUpdate = 1;                                  // first ever login
+            streakUpdate = 1; // first ever login
         } else if (lastLogin.plusDays(1).equals(today)) {
-            streakUpdate = -1;                                 // -1 means "+1 in SQL"
+            streakUpdate = -1;  // -1 means "+1 in SQL"
         } else if (lastLogin.equals(today)) {
-            streakUpdate = 0;                                  // same day — no change
+            streakUpdate = 0;   // same day — no change
         } else {
-            streakUpdate = 1;                                  // streak broken, reset to 1
+            streakUpdate = 1;  // streak broken, reset to 1
         }
 
         String sql;
@@ -185,7 +183,7 @@ public class UserDao {
         }
     }
 
-    // ── UPDATE ─────────────────────────────────────────────
+    // ── UPDATE 
 
     /**
      * Updates a user's PokéCoins balance.
@@ -233,7 +231,7 @@ public class UserDao {
         }
     }
 
-    // ── DUPLICATE CHECKS ───────────────────────────────────
+    // ── DUPLICATE CHECKS 
 
     public boolean usernameExists(String username) {
         return countWhere("username", username) > 0;
@@ -257,7 +255,7 @@ public class UserDao {
         return 0;
     }
 
-    // ── RESULT SET MAPPER ──────────────────────────────────
+    // ── RESULT SET MAPPER
 
     private User mapRow(ResultSet rs) throws SQLException {
         User user = new User();

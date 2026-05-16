@@ -1,0 +1,99 @@
+    @import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
+    :root{--bg:#1a1a1a;--bg-deep:#111;--bg-panel:#242424;--bg-card:#2c2c2c;--bg-card2:#323232;--nav:#1e1e1e;--red:#cc1a1a;--red-dark:#8a0f0f;--red-light:#e02020;--red-glow:rgba(204,26,26,.25);--gold:#ffd700;--blue:#4fc3f7;--green:#4caf50;--orange:#ff8c00;--white:#f0f0f0;--text:#dddddd;--text-dim:#999;--text-dark:#555;--border:#3a3a3a;--rar-com:#78c87a;--rar-rare:#4fc3f7;--rar-epic:#b06ef5;--rar-leg:#ffd700;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:var(--bg-deep);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+    a{text-decoration:none;color:inherit;}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--red-dark);border-radius:3px}
+
+    .topbar{background:var(--nav);border-bottom:3px solid var(--red);display:flex;align-items:center;height:52px;padding:0 16px;position:sticky;top:0;z-index:1000;flex-shrink:0;}
+    .topbar-logo{font-family:'Oxanium',monospace;font-size:20px;font-weight:800;color:var(--white);margin-right:20px;}
+    .topbar-logo span{color:var(--red);}
+    .topbar-meta{display:flex;align-items:center;gap:16px;font-size:11px;color:var(--text-dim);margin-right:auto;}
+    .user-online-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:4px;}
+    .topbar-nav{display:flex;gap:3px;margin-left:auto;}
+    .nav-btn{background:var(--red);color:var(--white);padding:7px 18px;font-family:'Oxanium',monospace;font-size:12px;font-weight:700;letter-spacing:.8px;cursor:pointer;transition:background .15s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);border:none;display:inline-flex;align-items:center;}
+    .nav-btn:hover{background:var(--red-light);}
+    .nav-btn.active{background:var(--red-dark);}
+    .topbar-right{display:flex;align-items:center;gap:12px;margin-left:14px;}
+    .streak-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,140,0,.12);border:1px solid rgba(255,140,0,.3);border-radius:12px;padding:3px 10px;font-family:'Oxanium',monospace;font-size:11px;font-weight:800;color:var(--orange);}
+    .logout-btn{background:none;border:none;color:var(--text-dim);font-size:18px;padding:4px 8px;cursor:pointer;}
+    .logout-btn:hover{color:var(--red);}
+
+    .sub-topbar{background:#161616;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:20px;padding:4px 16px;font-size:11px;color:var(--text-dim);height:30px;flex-shrink:0;}
+    .coins-display{margin-left:auto;font-family:'Oxanium',monospace;font-weight:800;color:var(--gold);font-size:12px;}
+
+    .page-layout{display:flex;flex:1;overflow:hidden;}
+    .sidebar{width:30px;background:var(--red-dark);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:3px;flex-shrink:0;border-right:1px solid var(--red);}
+    .sidebar-tab{writing-mode:vertical-rl;transform:rotate(180deg);background:var(--red);color:var(--white);font-family:'Oxanium',monospace;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;padding:10px 5px;cursor:pointer;width:26px;text-align:center;border:none;border-radius:2px;text-decoration:none;display:block;transition:background .15s;}
+    .sidebar-tab:hover{background:var(--red-light);}
+    .sidebar-tab.active{background:#111;color:var(--red);}
+    .main-content{flex:1;overflow-y:auto;background:var(--bg);display:flex;flex-direction:column;}
+
+    .section-header{background:linear-gradient(90deg,var(--red) 0%,var(--red-dark) 100%);padding:10px 18px;font-family:'Oxanium',monospace;font-size:14px;font-weight:700;color:var(--white);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+
+    .stat-strip{display:grid;grid-template-columns:repeat(4,1fr);background:#161616;border-bottom:1px solid var(--border);flex-shrink:0;}
+    .stat-cell{padding:13px 16px;border-right:1px solid var(--border);text-align:center;}
+    .stat-cell:last-child{border-right:none;}
+    .stat-val{font-family:'Oxanium',monospace;font-size:22px;font-weight:800;color:var(--red);display:block;}
+    .stat-lbl{font-size:9px;color:var(--text-dark);text-transform:uppercase;letter-spacing:.8px;}
+
+    .search-row{display:flex;gap:8px;padding:10px 14px;background:var(--bg-panel);border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap;flex-shrink:0;}
+    .search-input{flex:1;min-width:160px;padding:8px 12px;background:var(--bg-deep);border:1px solid var(--border);border-radius:4px;color:var(--white);font-size:12px;outline:none;font-family:'Nunito',sans-serif;}
+    .search-input:focus{border-color:var(--red);}
+    .search-input::placeholder{color:#555;}
+    .filter-select{padding:8px 10px;background:var(--bg-deep);border:1px solid var(--border);border-radius:4px;color:var(--text-dim);font-size:11px;outline:none;font-family:'Nunito',sans-serif;}
+    .filter-select:focus{border-color:var(--red);}
+    .filter-select option{background:var(--bg-deep);}
+    .search-btn{background:var(--red);border:none;color:var(--white);padding:8px 14px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;}
+    .search-btn:hover{background:var(--red-light);}
+
+    /* Card grid */
+    .poke-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;padding:16px;}
+    .poke-card{background:var(--bg-card);border-radius:8px;overflow:hidden;border:1px solid var(--border);transition:transform .2s,border-color .2s,box-shadow .2s;cursor:pointer;position:relative;}
+    .poke-card:hover{transform:translateY(-3px);border-color:var(--red);box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 12px var(--red-glow);}
+    .poke-card.legendary{border-color:rgba(255,215,0,.2);}
+    .poke-card.legendary:hover{border-color:var(--gold);box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 16px rgba(255,215,0,.3);}
+    .poke-card.epic{border-color:rgba(176,110,245,.2);}
+    .poke-card.rare{border-color:rgba(79,195,247,.2);}
+
+    /* Pokéball image area */
+    .card-img-area{padding:14px;display:flex;align-items:center;justify-content:center;background:var(--bg-panel);position:relative;}
+    .pokeball-bg{width:88px;height:88px;border-radius:50%;background:radial-gradient(circle at 38% 38%,#3a3a3a,#1a1a1a);border:3px solid #444;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0;}
+    .pokeball-bg::before{content:'';position:absolute;top:50%;left:0;right:0;height:2px;background:#444;transform:translateY(-50%);}
+    .pokeball-bg::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;background:#555;border:2px solid #666;z-index:2;}
+    .card-poke-img{position:relative;z-index:3;width:70px;height:70px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.8));}
+    .card-poke-emoji{font-size:38px;position:relative;z-index:3;filter:drop-shadow(0 2px 4px rgba(0,0,0,.8));line-height:1;}
+
+    .rar-badge{position:absolute;top:8px;right:8px;font-size:8px;font-weight:800;font-family:'Oxanium',monospace;letter-spacing:.8px;padding:2px 7px;border-radius:10px;text-transform:uppercase;}
+    .rar-common{background:rgba(120,200,122,.12);color:var(--rar-com);border:1px solid rgba(120,200,122,.3);}
+    .rar-rare{background:rgba(79,195,247,.12);color:var(--rar-rare);border:1px solid rgba(79,195,247,.3);}
+    .rar-epic{background:rgba(176,110,245,.12);color:var(--rar-epic);border:1px solid rgba(176,110,245,.3);}
+    .rar-legendary{background:rgba(255,215,0,.12);color:var(--rar-leg);border:1px solid rgba(255,215,0,.4);}
+
+    .card-name-bar{background:var(--bg-card2);padding:6px 10px 4px;font-weight:800;font-size:12px;color:var(--white);text-align:center;line-height:1.3;}
+    .card-type-tag{font-size:9px;color:var(--text-dim);font-weight:600;display:block;margin-top:2px;}
+    .card-stats-row{padding:5px 10px;background:var(--bg-card2);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--text-dim);}
+    .card-val{color:var(--gold);font-weight:800;font-family:'Oxanium',monospace;font-size:11px;}
+    .card-actions{display:flex;gap:4px;padding:5px 7px;background:var(--bg-card);border-top:1px solid var(--border);}
+    .card-btn{flex:1;background:var(--red);border:none;color:var(--white);font-size:9px;font-weight:800;font-family:'Oxanium',monospace;padding:5px 4px;border-radius:3px;cursor:pointer;transition:background .15s;letter-spacing:.3px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;}
+    .card-btn:hover{background:var(--red-light);}
+    .card-btn.ghost{background:rgba(255,255,255,.07);color:var(--text-dim);border:1px solid var(--border);}
+    .card-btn.ghost:hover{background:rgba(255,255,255,.12);color:var(--white);}
+
+    .empty-state{text-align:center;padding:40px 20px;color:var(--text-dark);}
+    .empty-state .empty-icon{font-size:40px;margin-bottom:12px;display:block;}
+
+    /* Toast */
+    .toast{position:fixed;bottom:55px;right:18px;background:var(--bg-panel);border:1px solid var(--green);border-left:4px solid var(--green);border-radius:4px;padding:11px 18px;font-size:13px;font-weight:700;color:var(--white);z-index:9999;animation:slideUp .3s ease;display:flex;align-items:center;gap:10px;max-width:320px;box-shadow:0 4px 20px rgba(0,0,0,.5);}
+    .toast.error{border-color:var(--red);border-left-color:var(--red);}
+    @keyframes slideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+    /* Confetti */
+    .confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:9999;}
+    @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(220px) rotate(720deg);opacity:0}}
+
+    .chatbar{height:36px;background:var(--nav);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 12px;gap:12px;flex-shrink:0;margin-top:auto;}
+    .online-dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
+    .chatbar-label{font-size:11px;color:var(--text-dim);display:flex;align-items:center;gap:5px;}
+    .chatbar-right{margin-left:auto;display:flex;align-items:center;gap:14px;}
+    .clock-display{font-family:'Oxanium',monospace;font-size:12px;font-weight:700;color:var(--gold);}

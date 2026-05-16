@@ -20,7 +20,7 @@
   <div class="topbar">
     <a href="${pageContext.request.contextPath}/home" class="topbar-logo">Pokémon <span>Museum</span></a>
     <div class="topbar-meta">
-      <span><span class="user-online-dot"></span><c:out value="${sessionScope.loggedInUser.username}"/></span>
+      <span style="color:var(--white);font-weight:800;"><c:out value="${sessionScope.loggedInUser.username}"/></span>
       <span>🔄 Active Listings <strong><c:out value="${openCount}"/></strong></span>
     </div>
     <nav class="topbar-nav">
@@ -52,7 +52,9 @@
 
       <%-- Section header with tabs --%>
       <div class="section-header">
-        🔄 Trading Station
+       <img class="card-poke-img"
+            src="${pageContext.request.contextPath}/images/util/tradecentre.png"
+            alt="📦" style="width:32px;height:32px;margin-bottom:10px;">Trading Station
         <div class="header-tabs">
           <a href="${pageContext.request.contextPath}/trade?tab=home"
              class="header-tab <c:if test="${activeTab eq 'home'}">active</c:if>">Trade Home</a>

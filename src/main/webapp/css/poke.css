@@ -1057,14 +1057,16 @@ img { max-width: 100%; }
 .hero {
   position: relative;
   min-height: 380px;
-  background: var(--bg-panel);
+  background: url('../images/util/back.png') center center / cover no-repeat;
   border-bottom: 3px solid var(--red);
   display: flex;
   align-items: center;
   overflow: hidden;
   flex-shrink: 0;
 }
+
 .hero-grid-bg {
+  display: none;
   position: absolute; inset: 0;
   background:
     repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 32px),

@@ -15,7 +15,7 @@ import com.pokemuse.config.DBConfig;
 @WebServlet("/catch")
 public class CatchServlet extends HttpServlet {
 
-    private final CardDao      cardDao      = new CardDao();
+    private final CardDao cardDao = new CardDao();
     private final InventoryDao inventoryDao = new InventoryDao();
 
     // GET: show catch arena with random wild Pokemon
@@ -55,12 +55,14 @@ public class CatchServlet extends HttpServlet {
             return;
         }
 
-        // Running 3 shake checks
+        //single roll determines catch, 3 shakes are visual only
         double catchProb = wildCard.getCatchProbability();
-        boolean shake1   = Math.random() < catchProb;
-        boolean shake2   = Math.random() < catchProb;
-        boolean shake3   = Math.random() < catchProb;
-        boolean caught   = shake1 && shake2 && shake3;
+        boolean caught   = Math.random() < catchProb;
+
+        // Shake results are for animation display only — always show 3 shakes but only the final outcome matters
+        boolean shake1 = caught || Math.random() < 0.6; // pass most of the time
+        boolean shake2 = caught || Math.random() < 0.4; // suspense on shake 2
+        boolean shake3 = caught; // shake 3 = true only if caught
 
         // Log the attempt
         logCatchAttempt(userId, cardId, shake1, shake2, shake3, caught);

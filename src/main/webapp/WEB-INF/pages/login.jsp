@@ -39,21 +39,21 @@
         <%-- Success message after registration --%>
         <c:if test="${param.registered eq 'true'}">
           <div class="alert-success">
-            ✅ Account created! Please log in to enter the museum.
+            Account created! Please log in to enter the museum.
           </div>
         </c:if>
 
         <%-- Success message after logout --%>
         <c:if test="${param.logout eq 'true'}">
           <div class="alert-success">
-            👋 You have been logged out. See you next time, Trainer!
+            You have been logged out. See you next time, Trainer!
           </div>
         </c:if>
 
         <%-- Session expired redirect --%>
         <c:if test="${param.error eq 'session'}">
           <div class="alert-error">
-            ⏱️ Your session expired. Please log in again.
+            Your session expired. Please log in again.
           </div>
         </c:if>
 
@@ -88,7 +88,7 @@
           </div>
 
           <button type="submit" class="btn-red btn-full">
-            ENTER THE MUSEUM →
+            ENTER THE MUSEUM
           </button>
 
         </form>
@@ -110,7 +110,7 @@
 
   <%-- Bottom chatbar --%>
   <div class="chatbar">
-    <span class="chatbar-icon">🔒</span>
+    <span class="chatbar-icon"> </span>
     <span class="chatbar-label">Secure Login Portal</span>
     <div class="chatbar-right">
       <span class="clock-display">🕐 <span class="js-clock">--:--</span></span>

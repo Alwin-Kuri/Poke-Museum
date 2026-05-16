@@ -14,162 +14,228 @@ import org.json.*;
 /**
  * AnimeServlet.java — Controller
  * ─────────────────────────────────────────────────────
- * Integrates the YouTube Data API v3 to fetch and display
- * Pokémon anime episodes inside PokéMuseum.
+ * Combines TWO external APIs for the anime watch page:
  *
- * API Used   : YouTube Data API v3
- * Endpoint   : https://www.googleapis.com/youtube/v3/search
- * Auth       : API Key (no OAuth needed — public data only)
- * Quota cost : 100 units per search request (free tier = 10,000/day)
+ *   1. JIKAN API v4 (https://api.jikan.moe/v4)
+ *      → No API key required. Free. Rate limit: 3 req/sec.
+ *      → Provides: episode titles, air dates, scores,
+ *                  filler flags, anime synopsis, rating
+ *      → Used for: episode list, season metadata
  *
- * GET  /anime             → show episode browser with default results
- * GET  /anime?q=xyz       → search episodes by keyword
- * GET  /anime?season=XY   → filter by season name
- * GET  /anime?videoId=xxx → show a specific video in the player
+ *   2. YOUTUBE DATA API v3
+ *      → Requires API key (free tier: 10,000 units/day)
+ *      → Used for: finding video embeds by episode title
+ *      → Falls back gracefully if quota exceeded
  *
- * How the API integration works:
- *   1. Servlet builds a URL to the YouTube search endpoint
- *   2. Sends an HTTP GET request with the API key + query params
- *   3. Parses the JSON response to extract video IDs + metadata
- *   4. Stores results as a List<Map> in request scope
- *   5. JSP renders the results using JSTL c:forEach
+ * GET /anime                     → default: Indigo League ep list
+ * GET /anime?malId=527           → specific anime by MAL ID
+ * GET /anime?malId=527&page=2    → paginated episode list
+ * GET /anime?videoId=xxx         → play a specific YouTube video
+ * GET /anime?search=pikachu      → search YouTube for episodes
  *
  * Author : Alwin Maharjan | CS5003NI
  */
 @WebServlet("/anime")
 public class AnimeServlet extends HttpServlet {
 
-    // ── YouTube API Configuration ──────────────────────
-    // Replace YOUR_API_KEY with your actual key from Google Cloud Console
-    // Steps to get a key:
-    //   1. Go to https://console.cloud.google.com/
-    //   2. Create a project → Enable APIs → YouTube Data API v3
-    //   3. Credentials → Create API Key → copy the key
-    //   4. Paste it below (or load from a properties file for security)
-    private static final String API_KEY        = "AIzaSyBVX649X59_-XYWVpdo1ChZNPZbZBgkPxc";
+    // ── YouTube API config ─────────────────────────────────
+    // Get your free key: https://console.cloud.google.com/
+    // Enable: YouTube Data API v3
+    // Create credentials: API Key
+    private static final String YT_API_KEY  = "AIzaSyBVX649X59_-XYWVpdo1ChZNPZbZBgkPxc";
+    private static final String YT_SEARCH   = "https://www.googleapis.com/youtube/v3/search";
+    private static final int    YT_RESULTS  = 6;
 
-    // The official Pokémon YouTube channel ID
-    // This ensures we only get official Pokémon content
-    private static final String POKEMON_CHANNEL_ID = "UCFctpiB_Hnlk3ejWfHqSm6Q";
+    // ── Jikan API config ───────────────────────────────────
+    // No key needed — just call it directly
+    private static final String JIKAN_BASE  = "https://api.jikan.moe/v4";
 
-    // Number of results per page
-    private static final int    MAX_RESULTS    = 12;
-
-    // Base YouTube API endpoint
-    private static final String YT_SEARCH_URL  =
-        "https://www.googleapis.com/youtube/v3/search";
-    private static final String YT_VIDEO_URL   =
-        "https://www.googleapis.com/youtube/v3/videos";
-
-    // Season filter options shown in the UI
-    private static final String[][] SEASONS = {
-        { "all",        "All Episodes"          },
-        { "Indigo+League+pokemon+anime",   "Season 1 – Indigo League"    },
-        { "Orange+Islands+pokemon+anime",  "Season 2 – Orange Islands"   },
-        { "Johto+pokemon+anime",           "Season 3-5 – Johto"          },
-        { "Hoenn+pokemon+anime",           "Season 6-8 – Hoenn"          },
-        { "Sinnoh+pokemon+anime",          "Season 10-13 – Sinnoh"       },
-        { "Unova+pokemon+anime",           "Season 14-16 – Unova"        },
-        { "Kalos+pokemon+anime",           "Season 17-19 – Kalos"        },
-        { "Alola+pokemon+anime",           "Season 20-22 – Alola"        },
-        { "Journeys+pokemon+anime",        "Season 23-25 – Journeys"     },
-        { "Horizons+pokemon+anime",        "Season 26 – Horizons"        },
+    // ── Known Pokémon anime MAL IDs ────────────────────────
+    // These are the official MyAnimeList IDs for each series
+    private static final Object[][] SEASONS = {
+        { 527,   "Indigo League",          "Season 1" },
+        { 2116,  "Orange Islands",         "Season 2" },
+        { 569,   "Johto Journeys",         "Season 3" },
+        { 568,   "Johto League Champions", "Season 4" },
+        { 1572,  "Advanced (Hoenn)",       "Season 6" },
+        { 1341,  "Diamond & Pearl",        "Season 10"},
+        { 9142,  "Black & White",          "Season 14"},
+        { 23037, "XY (Kalos)",             "Season 17"},
+        { 34240, "Sun & Moon (Alola)",     "Season 20"},
+        { 40856, "Journeys",               "Season 23"},
+        { 55701, "Horizons",               "Season 26"},
     };
+
+    // Default anime to show on first load
+    private static final int DEFAULT_MAL_ID = 527;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        // Require login to access
         if (SessionUtil.requireLogin(req, res)) return;
 
-        String searchQuery = req.getParameter("q");
-        String season      = req.getParameter("season");
-        String videoId     = req.getParameter("videoId");
-        String videoTitle  = req.getParameter("videoTitle");
+        // ── Read request params ────────────────────────────
+        int    malId    = parseSafe(req.getParameter("malId"), DEFAULT_MAL_ID);
+        int    page     = parseSafe(req.getParameter("page"), 1);
+        String videoId  = req.getParameter("videoId");
+        String vidTitle = req.getParameter("videoTitle");
+        String ytSearch = req.getParameter("search");
+        String activeTab= req.getParameter("tab") != null
+                          ? req.getParameter("tab") : "episodes";
 
-        // Build the search query string
-        String query;
-        if (searchQuery != null && !searchQuery.isBlank()) {
-            query = "Pokemon anime " + searchQuery.trim();
-        } else if (season != null && !season.equals("all") && !season.isBlank()) {
-            query = season.replace("+", " ");
-        } else {
-            // Default: fetch popular Pokémon anime episodes
-            query = "Pokemon anime episode official";
-        }
-
-        // Fetch results from YouTube API
-        List<Map<String, String>> videos = new ArrayList<>();
-        String apiError = null;
+        // ── Jikan: fetch anime metadata ────────────────────
+        Map<String, Object> animeInfo = new HashMap<>();
+        List<Map<String, Object>> episodes = new ArrayList<>();
+        boolean hasNextPage = false;
+        String jikanError = null;
 
         try {
-            videos = fetchYouTubeVideos(query);
+            // Anime info (title, synopsis, rating, image)
+            String infoJson = httpGet(JIKAN_BASE + "/anime/" + malId);
+            JSONObject infoRoot = new JSONObject(infoJson);
+            JSONObject data = infoRoot.optJSONObject("data");
+            if (data != null) {
+                animeInfo.put("title",    data.optString("title_english",
+                                           data.optString("title", "Pokémon")));
+                animeInfo.put("synopsis", trimText(data.optString("synopsis", ""), 300));
+                animeInfo.put("episodes", data.optInt("episodes", 0));
+                animeInfo.put("score",    data.optDouble("score", 0.0));
+                animeInfo.put("status",   data.optString("status", ""));
+                animeInfo.put("year",     data.optInt("year", 0));
+
+                // Main image
+                JSONObject images = data.optJSONObject("images");
+                if (images != null) {
+                    JSONObject jpg = images.optJSONObject("jpg");
+                    if (jpg != null) {
+                        animeInfo.put("imageUrl", jpg.optString("large_image_url", ""));
+                    }
+                }
+
+                // Trailer YouTube ID from Jikan
+                JSONObject trailer = data.optJSONObject("trailer");
+                if (trailer != null) {
+                    animeInfo.put("trailerId", trailer.optString("youtube_id", ""));
+                }
+            }
         } catch (Exception e) {
-            apiError = "Could not load videos: " + e.getMessage();
-            System.err.println("[AnimeServlet] YouTube API error: " + e.getMessage());
+            jikanError = "Could not load anime info: " + e.getMessage();
+            System.err.println("[AnimeServlet.fetchAnimeInfo] " + e.getMessage());
         }
 
-        // Pass data to JSP
-        req.setAttribute("videos",       videos);
-        req.setAttribute("seasons",      SEASONS);
-        req.setAttribute("searchQuery",  searchQuery != null ? searchQuery : "");
-        req.setAttribute("activeSeason", season      != null ? season      : "all");
-        req.setAttribute("activeVideoId",    videoId);
-        req.setAttribute("activeVideoTitle", videoTitle);
-        req.setAttribute("apiError",     apiError);
-        req.setAttribute("resultCount",  videos.size());
+        try {
+            // Episode list — paginated (25 per page from Jikan)
+            String epJson = httpGet(JIKAN_BASE + "/anime/" + malId
+                                    + "/episodes?page=" + page);
+            JSONObject epRoot = new JSONObject(epJson);
+            JSONArray  epData = epRoot.optJSONArray("data");
+
+            // Check pagination
+            JSONObject pagination = epRoot.optJSONObject("pagination");
+            if (pagination != null) {
+                hasNextPage = pagination.optBoolean("has_next_page", false);
+            }
+
+            if (epData != null) {
+                for (int i = 0; i < epData.length(); i++) {
+                    JSONObject ep = epData.getJSONObject(i);
+                    Map<String, Object> epMap = new LinkedHashMap<>();
+                    epMap.put("malId",  ep.optInt("mal_id", 0));
+                    epMap.put("title",  ep.optString("title", "Episode " + ep.optInt("mal_id")));
+                    epMap.put("titleJp",ep.optString("title_japanese", ""));
+                    epMap.put("aired",  formatDate(ep.optString("aired", "")));
+                    epMap.put("score",  ep.optDouble("score", 0.0));
+                    epMap.put("filler", ep.optBoolean("filler", false));
+                    epMap.put("recap",  ep.optBoolean("recap", false));
+                    episodes.add(epMap);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("[AnimeServlet.fetchEpisodes] " + e.getMessage());
+        }
+
+        // ── YouTube: search for videos ─────────────────────
+        List<Map<String, String>> ytVideos = new ArrayList<>();
+        String ytError = null;
+        boolean ytConfigured = !YT_API_KEY.equals("YOUR_YOUTUBE_API_KEY_HERE");
+
+        if (ytConfigured) {
+            try {
+                // Build search query
+                String query = (ytSearch != null && !ytSearch.isBlank())
+                    ? "Pokemon anime " + ytSearch
+                    : "Pokemon " + animeInfo.getOrDefault("title", "anime") + " official";
+
+                String ytJson = httpGet(YT_SEARCH
+                    + "?part=snippet"
+                    + "&q=" + URLEncoder.encode(query, StandardCharsets.UTF_8)
+                    + "&type=video"
+                    + "&maxResults=" + YT_RESULTS
+                    + "&key=" + YT_API_KEY
+                    + "&order=relevance"
+                    + "&safeSearch=strict");
+
+                JSONObject ytRoot = new JSONObject(ytJson);
+
+                // Check for API error
+                if (ytRoot.has("error")) {
+                    ytError = ytRoot.getJSONObject("error").optString("message", "YouTube API error");
+                } else {
+                    JSONArray items = ytRoot.optJSONArray("items");
+                    if (items != null) {
+                        for (int i = 0; i < items.length(); i++) {
+                            JSONObject item    = items.getJSONObject(i);
+                            JSONObject idObj   = item.optJSONObject("id");
+                            JSONObject snippet = item.optJSONObject("snippet");
+                            if (idObj == null || snippet == null) continue;
+                            String vid = idObj.optString("videoId", "");
+                            if (vid.isEmpty()) continue;
+
+                            String thumb = "";
+                            JSONObject thumbs = snippet.optJSONObject("thumbnails");
+                            if (thumbs != null && thumbs.has("high")) {
+                                thumb = thumbs.getJSONObject("high").optString("url", "");
+                            }
+
+                            Map<String, String> v = new LinkedHashMap<>();
+                            v.put("videoId",   vid);
+                            v.put("title",     snippet.optString("title", ""));
+                            v.put("thumbnail", thumb);
+                            v.put("channel",   snippet.optString("channelTitle", ""));
+                            v.put("published", formatDate(snippet.optString("publishedAt", "")));
+                            ytVideos.add(v);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                ytError = "YouTube search failed: " + e.getMessage();
+                System.err.println("[AnimeServlet.YouTube] " + e.getMessage());
+            }
+        }
+
+        // ── Set all attributes for JSP ─────────────────────
+        req.setAttribute("animeInfo",     animeInfo);
+        req.setAttribute("episodes",      episodes);
+        req.setAttribute("ytVideos",      ytVideos);
+        req.setAttribute("seasons",       SEASONS);
+        req.setAttribute("activeMalId",   malId);
+        req.setAttribute("activePage",    page);
+        req.setAttribute("hasNextPage",   hasNextPage);
+        req.setAttribute("prevPage",      Math.max(1, page - 1));
+        req.setAttribute("nextPage",      page + 1);
+        req.setAttribute("activeVideoId", videoId);
+        req.setAttribute("activeTitle",   vidTitle);
+        req.setAttribute("activeTab",     activeTab);
+        req.setAttribute("ytSearch",      ytSearch != null ? ytSearch : "");
+        req.setAttribute("ytConfigured",  ytConfigured);
+        req.setAttribute("jikanError",    jikanError);
+        req.setAttribute("ytError",       ytError);
 
         req.getRequestDispatcher("/WEB-INF/pages/anime.jsp").forward(req, res);
     }
 
-    // ══════════════════════════════════════════════════
-    //  YouTube API Call — fetches video metadata
-    // ══════════════════════════════════════════════════
-
-    /**
-     * Calls the YouTube Data API v3 search endpoint.
-     * Returns a list of video maps, each containing:
-     *   videoId, title, description, thumbnail, channelTitle, publishedAt
-     *
-     * API endpoint used:
-     *   GET https://www.googleapis.com/youtube/v3/search
-     *     ?part=snippet
-     *     &q={query}
-     *     &type=video
-     *     &maxResults=12
-     *     &key={API_KEY}
-     *     &videoCategoryId=1  (Film & Animation — narrows to anime content)
-     *     &order=relevance
-     */
-    private List<Map<String, String>> fetchYouTubeVideos(String query)
-            throws IOException {
-
-        // URL-encode the query
-        String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
-
-        // Build the full API URL
-        String apiUrl = YT_SEARCH_URL
-            + "?part=snippet"
-            + "&q=" + encodedQuery
-            + "&type=video"
-            + "&maxResults=" + MAX_RESULTS
-            + "&key=" + API_KEY
-            + "&order=relevance"
-            + "&relevanceLanguage=en"
-            + "&safeSearch=strict";
-
-        // Make the HTTP GET request
-        String jsonResponse = httpGet(apiUrl);
-
-        // Parse the JSON response
-        return parseSearchResponse(jsonResponse);
-    }
-
-    /**
-     * Sends an HTTP GET request and returns the response body as a String.
-     * Uses java.net.HttpURLConnection (no extra libraries needed).
-     */
+    // ── HTTP GET helper ────────────────────────────────────
     private String httpGet(String urlString) throws IOException {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -177,10 +243,9 @@ public class AnimeServlet extends HttpServlet {
         conn.setConnectTimeout(8000);
         conn.setReadTimeout(8000);
         conn.setRequestProperty("Accept", "application/json");
+        conn.setRequestProperty("User-Agent", "PokéMuseum/1.0 (Educational Project)");
 
         int status = conn.getResponseCode();
-
-        // Read response stream
         InputStream stream = (status >= 200 && status < 300)
             ? conn.getInputStream()
             : conn.getErrorStream();
@@ -190,98 +255,32 @@ public class AnimeServlet extends HttpServlet {
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) sb.append(line);
+            if (status == 429) throw new IOException("Rate limited by API. Try again in a moment.");
+            if (status >= 400) throw new IOException("HTTP " + status + ": " + sb);
             return sb.toString();
         } finally {
             conn.disconnect();
         }
     }
 
-    /**
-     * Parses the YouTube search API JSON response.
-     * Extracts: videoId, title, description, thumbnail URL,
-     *           channel name, publish date.
-     *
-     * YouTube search response structure:
-     * {
-     *   "items": [
-     *     {
-     *       "id": { "videoId": "abc123" },
-     *       "snippet": {
-     *         "title": "...",
-     *         "description": "...",
-     *         "thumbnails": { "high": { "url": "..." } },
-     *         "channelTitle": "...",
-     *         "publishedAt": "2023-01-01T00:00:00Z"
-     *       }
-     *     }
-     *   ]
-     * }
-     */
-    private List<Map<String, String>> parseSearchResponse(String json) {
-        List<Map<String, String>> videos = new ArrayList<>();
+    // ── Helpers ────────────────────────────────────────────
 
-        try {
-            JSONObject root  = new JSONObject(json);
+    /** Trim text to maxLen chars, append ellipsis if truncated */
+    private String trimText(String text, int maxLen) {
+        if (text == null || text.length() <= maxLen) return text;
+        return text.substring(0, maxLen).trim() + "...";
+    }
 
-            // Check for API error in response
-            if (root.has("error")) {
-                JSONObject error = root.getJSONObject("error");
-                String message = error.optString("message", "Unknown API error");
-                throw new RuntimeException("YouTube API error: " + message);
-            }
+    /** Format ISO date string to readable format */
+    private String formatDate(String iso) {
+        if (iso == null || iso.length() < 10) return "";
+        return iso.substring(0, 10); // "2024-01-15"
+    }
 
-            JSONArray items = root.optJSONArray("items");
-            if (items == null) return videos;
-
-            for (int i = 0; i < items.length(); i++) {
-                JSONObject item    = items.getJSONObject(i);
-                JSONObject idObj   = item.optJSONObject("id");
-                JSONObject snippet = item.optJSONObject("snippet");
-
-                if (idObj == null || snippet == null) continue;
-
-                String videoId = idObj.optString("videoId", "");
-                if (videoId.isEmpty()) continue; // skip non-video results
-
-                // Extract thumbnail — prefer high quality, fall back to default
-                String thumbnail = "";
-                JSONObject thumbs = snippet.optJSONObject("thumbnails");
-                if (thumbs != null) {
-                    if (thumbs.has("high")) {
-                        thumbnail = thumbs.getJSONObject("high").optString("url", "");
-                    } else if (thumbs.has("medium")) {
-                        thumbnail = thumbs.getJSONObject("medium").optString("url", "");
-                    } else if (thumbs.has("default")) {
-                        thumbnail = thumbs.getJSONObject("default").optString("url", "");
-                    }
-                }
-
-                // Format publish date (2023-04-15T12:00:00Z → Apr 15, 2023)
-                String rawDate    = snippet.optString("publishedAt", "");
-                String pubDate    = rawDate.length() >= 10 ? rawDate.substring(0, 10) : rawDate;
-
-                // Truncate long descriptions
-                String desc = snippet.optString("description", "");
-                if (desc.length() > 140) desc = desc.substring(0, 137) + "...";
-
-                // Build the video metadata map
-                Map<String, String> video = new LinkedHashMap<>();
-                video.put("videoId",      videoId);
-                video.put("title",        snippet.optString("title", "Unknown Title"));
-                video.put("description",  desc);
-                video.put("thumbnail",    thumbnail);
-                video.put("channelTitle", snippet.optString("channelTitle", ""));
-                video.put("publishedAt",  pubDate);
-                video.put("embedUrl",     "https://www.youtube.com/embed/" + videoId
-                                          + "?autoplay=1&rel=0&modestbranding=1");
-                video.put("watchUrl",     "https://www.youtube.com/watch?v=" + videoId);
-
-                videos.add(video);
-            }
-        } catch (JSONException e) {
-            System.err.println("[AnimeServlet.parseSearchResponse] JSON parse error: " + e.getMessage());
-        }
-
-        return videos;
+    /** Safe integer parse with default */
+    private int parseSafe(String s, int defaultVal) {
+        if (s == null || s.isBlank()) return defaultVal;
+        try { return Integer.parseInt(s.trim()); }
+        catch (NumberFormatException e) { return defaultVal; }
     }
 }

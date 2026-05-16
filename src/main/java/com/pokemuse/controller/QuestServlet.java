@@ -109,21 +109,21 @@ public class QuestServlet extends HttpServlet {
     // Create progress rows for any quests not yet tracked
     private void initUserQuestProgress(int userId) {
         String sql =
-            "INSERT IGNORE INTO user_quest_progress (user_id, quest_id, reset_date) " +
-            "SELECT ?, quest_id, " +
-            "  CASE quest_type " +
-            "    WHEN 'daily'  THEN CURDATE() + INTERVAL 1 DAY " +
-            "    WHEN 'weekly' THEN NEXT_DAY(CURDATE(), 'MONDAY') " +
-            "    ELSE NULL " +
-            "  END " +
-            "FROM quests WHERE is_active = 1";
-        try (Connection conn = DBConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("[QuestServlet.initUserQuestProgress] " + e.getMessage());
-        }
+                "INSERT IGNORE INTO user_quest_progress (user_id, quest_id, reset_date) " +
+                "SELECT ?, quest_id, " +
+                "  CASE quest_type " +
+                "    WHEN 'daily'  THEN DATE_ADD(CURDATE(), INTERVAL 1 DAY) " +
+                "    WHEN 'weekly' THEN DATE_ADD(CURDATE(), INTERVAL (9 - DAYOFWEEK(CURDATE())) DAY) " +
+                "    ELSE NULL " +
+                "  END " +
+                "FROM quests WHERE is_active = 1";
+            try (Connection conn = DBConfig.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, userId);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                System.err.println("[QuestServlet.initUserQuestProgress] " + e.getMessage());
+            }
     }
 
     // Claim reward: add coins to user, mark quest claimed ─

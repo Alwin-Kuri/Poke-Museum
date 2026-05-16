@@ -1,21 +1,17 @@
 /**
- * pokemuse.js — PokéMuseum Shared JavaScript
- * ─────────────────────────────────────────────────────
  * Handles all client-side interactivity:
- *   • Live clock update
- *   • Toast notifications
- *   • Confetti animation on catch success
- *   • Pokéball throw + shake animation
- *   • Booster pack reveal with staggered animations
- *   • Live AJAX card search
- *   • Quest progress tab switching
- *
- * Author : Alwin Maharjan | CS5003NI
+ *  Live clock update
+ *  Toast notifications
+ *  Confetti animation on catch success
+ *  Pokéball throw + shake animation
+ *  Booster pack reveal with staggered animations
+ *  Live AJAX card search
+ *  Quest progress tab switching
  */
 
-/* ═══════════════════════════════════════════════════════
+/*  
    1. CLOCK — updates every minute
-═══════════════════════════════════════════════════════ */
+ */
 function updateClock() {
   const now = new Date();
   const hh  = String(now.getHours()).padStart(2, '0');
@@ -28,9 +24,9 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 30000);
 
-/* ═══════════════════════════════════════════════════════
+/*  
    2. TOAST NOTIFICATIONS
-═══════════════════════════════════════════════════════ */
+ */
 function showToast(message, isError = false) {
   // Remove any existing toast first
   const old = document.querySelector('.toast');
@@ -45,9 +41,9 @@ function showToast(message, isError = false) {
   setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3200);
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    3. CONFETTI — fires on successful Pokémon catch
-═══════════════════════════════════════════════════════ */
+ */
 function spawnConfetti() {
   const colours = ['#ffd700', '#cc1a1a', '#4fc3f7', '#4caf50', '#b06ef5', '#ff8c00'];
   const count = 34;
@@ -71,10 +67,10 @@ function spawnConfetti() {
   }
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    4. CATCH MECHANIC — full animation sequence
    Called from catch.jsp form submission intercept
-═══════════════════════════════════════════════════════ */
+ */
 const CatchSystem = {
 
   currentPokemon: null, // {name, rarity, catchRate} — set from JSP EL
@@ -163,12 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ═══════════════════════════════════════════════════════
+/*  
    5. BOOSTER PACK — client-side reveal animation
    Actual card data comes from the server response.
    This function animates cards that were already injected
    into .revealed-area by the JSP.
-═══════════════════════════════════════════════════════ */
+ */
 function animateRevealedCards() {
   document.querySelectorAll('.revealed-card').forEach((card, i) => {
     card.style.opacity = '0';
@@ -184,9 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ═══════════════════════════════════════════════════════
+/*  
    6. PACK SELECTOR — visual selection state
-═══════════════════════════════════════════════════════ */
+ */
 function selectPack(type, el) {
   document.querySelectorAll('.pack-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
@@ -196,10 +192,10 @@ function selectPack(type, el) {
   if (packInput) packInput.value = type;
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    7. LIVE SEARCH — debounced AJAX card search
    Sends request to /cards?search=... and replaces grid
-═══════════════════════════════════════════════════════ */
+ */
 let searchTimer = null;
 
 function liveSearch(inputEl) {
@@ -222,9 +218,9 @@ function liveSearch(inputEl) {
   }, 320);
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    8. QUEST TAB SWITCHING (client-side, no reload)
-═══════════════════════════════════════════════════════ */
+ */
 function switchQuestTab(tabBtn, type) {
   // Update tab active states
   document.querySelectorAll('.js-quest-tab').forEach(b => b.classList.remove('active'));
@@ -236,9 +232,9 @@ function switchQuestTab(tabBtn, type) {
   });
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    9. CONFIRM DIALOGS for destructive actions
-═══════════════════════════════════════════════════════ */
+ */
 function confirmDelete(formId, pokemonName) {
   if (confirm('Delete "' + pokemonName + '" from the museum? This cannot be undone (but can be undone via the Undo stack).')) {
     document.getElementById(formId).submit();
@@ -251,10 +247,10 @@ function confirmRemoveInventory(formId, pokemonName) {
   }
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    10. SIDEBAR TAB ACTIVE STATE
     Highlights the correct sidebar tab based on current URL
-═══════════════════════════════════════════════════════ */
+ */
 document.addEventListener('DOMContentLoaded', () => {
   const path = window.location.pathname;
   document.querySelectorAll('.sidebar-tab[data-path]').forEach(tab => {
@@ -264,9 +260,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-/* ═══════════════════════════════════════════════════════
+/*  
    11. IMAGE PREVIEW — for admin add/edit card form
-═══════════════════════════════════════════════════════ */
+ */
 function previewImage(input) {
   const preview = document.getElementById('img-preview');
   if (!preview || !input.files || !input.files[0]) return;
@@ -275,9 +271,9 @@ function previewImage(input) {
   reader.readAsDataURL(input.files[0]);
 }
 
-/* ═══════════════════════════════════════════════════════
+/*  
    12. PAGE-LOAD ANIMATION — stagger card entries
-═══════════════════════════════════════════════════════ */
+ */
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.poke-card').forEach((card, i) => {
     card.style.opacity = '0';

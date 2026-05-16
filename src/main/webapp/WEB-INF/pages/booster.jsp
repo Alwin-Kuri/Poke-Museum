@@ -14,9 +14,7 @@
   <div class="topbar">
     <a href="${pageContext.request.contextPath}/home" class="topbar-logo">Pokémon <span>Museum</span></a>
     <div class="topbar-meta">
-      <span><span class="user-online-dot"></span>
-        <c:out value="${sessionScope.loggedInUser.username}"/>
-      </span>
+		<span style="color:var(--white);font-weight:800;"><c:out value="${sessionScope.loggedInUser.username}"/></span>
     </div>
     <nav class="topbar-nav">
       <a href="${pageContext.request.contextPath}/home"    class="nav-btn">EXPLORE</a>
@@ -24,6 +22,7 @@
       <a href="${pageContext.request.contextPath}/catch"   class="nav-btn">CATCH</a>
       <a href="${pageContext.request.contextPath}/trade"   class="nav-btn">TRADE</a>
       <a href="${pageContext.request.contextPath}/booster" class="nav-btn active">PACKS</a>
+      <a href="${pageContext.request.contextPath}/anime"   class="nav-btn">ANIME</a>
     </nav>
     <div class="topbar-right">
       <span class="streak-badge">🔥 <c:out value="${sessionScope.loggedInUser.loginStreak}"/></span>
@@ -37,14 +36,21 @@
       <a href="${pageContext.request.contextPath}/inventory" class="sidebar-tab">MY CARDS</a>
       <a href="${pageContext.request.contextPath}/quests"    class="sidebar-tab">QUESTS</a>
       <a href="${pageContext.request.contextPath}/booster"   class="sidebar-tab active">PACKS</a>
+      <a href="${pageContext.request.contextPath}/anime"    class="sidebar-tab">ANIME</a>
     </nav>
 
     <main class="main-content">
-      <div class="section-header">📦 Booster Pack Simulator</div>
+      <div class="section-header">
+             <img class="card-poke-img"
+            src="${pageContext.request.contextPath}/images/util/booster.png"
+            alt="📦" style="width:60px;height:40px;margin-bottom:10px;margin-top:4px;">
+      <span style= "margin-right:1580px">Booster Pack Simulator</span>
+                   <img class="card-poke-img"
+            src="${pageContext.request.contextPath}/images/util/chibi6.png"
+            alt="📦" style="width:60px;height:40px;margin-bottom:10px;margin-top:4px;"></div>
 
       <div style="padding:12px 16px 4px;font-size:11px;color:var(--text-dim);">
-        Choose a pack type and open it to reveal 5 random Pokémon cards.
-        All pulled cards are automatically added to your inventory.
+
       </div>
 
       <%-- Pack selection form--%>
@@ -59,7 +65,7 @@
             <%-- Basic Pack --%>
             <div class="pack-card selected" id="pack-basic"
                  onclick="selectPack('basic', this)">
-              <span class="pack-icon">🎴</span>
+              <span class="pack-icon"><img src="${pageContext.request.contextPath}/images/util/basic.png" style="height:400px;width:300px"></span>
               <div class="pack-name">Basic Pack</div>
               <div class="pack-desc">Standard odds. Good for beginners starting their collection.</div>
               <div>
@@ -77,7 +83,7 @@
             <%-- Elite Pack --%>
             <div class="pack-card" id="pack-elite"
                  onclick="selectPack('elite', this)">
-              <span class="pack-icon">💎</span>
+              <span class="pack-icon"><img src="${pageContext.request.contextPath}/images/util/elite.png" style="height:400px;width:300px"></span>
               <div class="pack-name">Elite Pack</div>
               <div class="pack-desc">Better odds for experienced trainers hunting rare finds.</div>
               <div>
@@ -95,7 +101,7 @@
             <%-- Master Pack --%>
             <div class="pack-card" id="pack-master"
                  onclick="selectPack('master', this)">
-              <span class="pack-icon">🏆</span>
+              <span class="pack-icon"><img src="${pageContext.request.contextPath}/images/util/master.png" style="height:400px;width:300px"></span>
               <div class="pack-name">Master Pack</div>
               <div class="pack-desc">Guaranteed Epic. Real shot at Legendary. For champions only.</div>
               <div>
@@ -189,8 +195,10 @@
   </div>
 
   <div class="chatbar">
-    <span class="chatbar-icon">📦</span>
-    <span class="chatbar-label"><span class="online-dot"></span> Booster Station</span>
+    <span class="chatbar-icon"> </span>
+    <span class="chatbar-label">
+         Developed by Alwin Maharjan
+    </span>
     <div class="chatbar-right">
       <span class="coins-display">🪙 <c:out value="${sessionScope.loggedInUser.coins}"/></span>
       <span class="clock-display">🕐 <span class="js-clock">--:--</span></span>

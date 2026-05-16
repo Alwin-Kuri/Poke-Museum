@@ -152,7 +152,7 @@
           </div>
 
           <div style="display:flex;gap:10px;margin-top:6px;">
-            <button type="submit" class="btn-red">➕ Add Card to Museum</button>
+            <button type="submit" class="btn-red">Add Card to Museum</button>
             <a href="${pageContext.request.contextPath}/cards" class="btn-ghost">Cancel</a>
           </div>
 
@@ -162,7 +162,7 @@
   </div>
 
   <div class="chatbar">
-    <span class="chatbar-icon">➕</span>
+    <span class="chatbar-icon"> </span>
     <span class="chatbar-label">Add New Card</span>
     <div class="chatbar-right">
       <span class="clock-display">🕐 <span class="js-clock">--:--</span></span>
