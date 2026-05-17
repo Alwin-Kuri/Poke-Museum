@@ -390,6 +390,9 @@ public class TradeDao {
         public double getOfferedValue() { return offeredValue; }
         public String getOfferedCardType() { return offeredCardType; }
         public String getOfferedCardImg() { return offeredCardImg; }
+        public String getListedCardName() { return listedCardName; }
+        public String getListedRarity() { return listedRarity; }
+        public double getListedValue() { return listedValue; }
         
     }
 }
