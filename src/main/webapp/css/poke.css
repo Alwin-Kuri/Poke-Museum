@@ -94,6 +94,48 @@ img { max-width: 100%; }
   gap: 0;
 }
 
+/* Hamburger button for small screens */
+.topbar-hamburger {
+  display: none; /* shown via media query */
+  background: transparent;
+  border: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  cursor: pointer;
+  padding: 6px;
+}
+.topbar-hamburger .bar {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  position: relative;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+.topbar-hamburger .bar::before,
+.topbar-hamburger .bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+.topbar-hamburger .bar::before { transform: translateY(-6px); }
+.topbar-hamburger .bar::after  { transform: translateY(6px); }
+
+/* Open state => X icon */
+.topbar.open .topbar-hamburger .bar { background: transparent; }
+.topbar.open .topbar-hamburger .bar::before { transform: rotate(45deg); }
+.topbar.open .topbar-hamburger .bar::after  { transform: rotate(-45deg); }
+
+
 .topbar-logo {
   font-family: 'Oxanium', monospace;
   font-size: 20px;
@@ -988,20 +1030,14 @@ img { max-width: 100%; }
 /*  
    21. LOGIN PAGE SPECIFIC
   */
-.login-page {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  background: var(--bg-deep);
-}
 .login-card {
   background: var(--bg-panel);
   border: 1px solid var(--border);
   border-top: 3px solid var(--red);
   border-radius: var(--radius);
-  width: 380px;
+  /* allow the card to shrink on small screens while capping its width */
+  max-width: 420px;
+  width: 100%;
   overflow: hidden;
   animation: slideUp 0.4s ease;
 }
@@ -1255,6 +1291,12 @@ img { max-width: 100%; }
   .poke-grid-6   { grid-template-columns: repeat(3, 1fr); }
   .pack-grid     { grid-template-columns: 1fr; }
   .topbar-meta   { display: none; }
+
+  /* Hide the full nav and show a hamburger which toggles the menu */
+  .topbar-hamburger { display: inline-flex; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); z-index: 1200; }
+  .topbar-nav { display: none; position: absolute; top: var(--topbar-h); right: 12px; flex-direction: column; gap: 6px; background: var(--nav); padding: 8px; border-radius: 8px; box-shadow: 0 8px 26px rgba(0,0,0,0.6); z-index: 1100; }
+  .topbar.open .topbar-nav { display: flex; }
+  .topbar-nav .nav-btn { padding: 8px 12px; white-space: nowrap; }
 }
 @media (max-width: 600px) {
   .hero-content  { padding: 30px 20px; }
@@ -1263,4 +1305,11 @@ img { max-width: 100%; }
   .poke-grid     { grid-template-columns: repeat(2, 1fr); }
   .stat-strip    { grid-template-columns: repeat(2, 1fr); }
   .topbar-nav .nav-btn { padding: 7px 12px; font-size: 10px; }
+}
+
+@media (max-width: 420px) {
+  .form-card { padding: 18px; }
+  .login-body { padding: 14px 16px 16px; }
+  .topbar-logo { font-size: 18px; }
+  .topbar { padding: 0 10px; }
 }

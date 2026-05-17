@@ -20,7 +20,7 @@
   </div>
 
   <div class="login-page">
-    <div class="login-card" style="max-width:420px;width:100%;">
+    <div class="login-card">
       <div class="login-header">
         <div class="login-pokeball"></div>
         <div class="login-title">Create Account</div>
@@ -67,8 +67,11 @@
   </div>
 
   <div class="chatbar">
-    <span class="chatbar-icon">📝</span>
+    <span class="chatbar-icon"> </span>
     <span class="chatbar-label">Registration</span>
+    <div class="chatbar-right">
+      <span class="clock-display">🕐 <span class="js-clock">--:--</span></span>
+    </div>
   </div>
   <script src="${pageContext.request.contextPath}/js/pokemuse.js"></script>
 </body>

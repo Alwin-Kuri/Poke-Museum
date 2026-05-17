@@ -258,6 +258,37 @@ document.addEventListener('DOMContentLoaded', () => {
       tab.classList.add('active');
     }
   });
+  
+  // Responsive topbar hamburger: inject button and wire toggle behavior
+  const topbar = document.querySelector('.topbar');
+  if (topbar) {
+    // Only add once
+    if (!topbar.querySelector('.topbar-hamburger')) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'topbar-hamburger';
+      btn.setAttribute('aria-label', 'Toggle navigation');
+      btn.innerHTML = '<span class="bar"></span>';
+      // Append the hamburger to the end of the topbar so flex placement and margin rules work consistently
+      topbar.appendChild(btn);
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        topbar.classList.toggle('open');
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!topbar.classList.contains('open')) return;
+        if (!topbar.contains(e.target)) topbar.classList.remove('open');
+      }, true);
+
+      // Close menu when resizing beyond breakpoint
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 900 && topbar.classList.contains('open')) topbar.classList.remove('open');
+      });
+    }
+  }
 });
 
 /*  

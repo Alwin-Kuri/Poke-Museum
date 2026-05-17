@@ -143,19 +143,54 @@
           <c:forEach var="card" items="${pulledCards}" varStatus="status">
             <div class="revealed-card ${card.rarityCssClass}"
                  style="animation-delay:${status.index * 0.18}s;">
-              <span class="rev-emoji">
-                <c:choose>
-                  <c:when test="${card.type eq 'Fire'}">🔥</c:when>
-                  <c:when test="${card.type eq 'Water'}">🌊</c:when>
-                  <c:when test="${card.type eq 'Electric'}">⚡</c:when>
-                  <c:when test="${card.type eq 'Psychic'}">🔮</c:when>
-                  <c:when test="${card.type eq 'Grass'}">🌿</c:when>
-                  <c:when test="${card.type eq 'Dragon'}">🐉</c:when>
-                  <c:when test="${card.type eq 'Ghost'}">👻</c:when>
-                  <c:when test="${card.type eq 'Fairy'}">🌸</c:when>
-                  <c:otherwise>🃏</c:otherwise>
-                </c:choose>
-              </span>
+				<div style="height: 50px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+				  <c:choose>
+				    <%-- 1. PokeAPI Official Artwork --%>
+				    <c:when test="${card.pokedexNumber > 0}">
+				      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${card.pokedexNumber}.png"
+				           alt="<c:out value='${card.name}'/>"
+				           style="max-height: 50px; max-width: 50px; object-fit: contain;"
+				           onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+				      <span class="rev-emoji" style="display:none;">
+				        <c:choose>
+				          <c:when test="${card.type eq 'Fire'}">🔥</c:when>
+				          <c:when test="${card.type eq 'Water'}">🌊</c:when>
+				          <c:when test="${card.type eq 'Electric'}">⚡</c:when>
+				          <c:when test="${card.type eq 'Psychic'}">🔮</c:when>
+				          <c:when test="${card.type eq 'Grass'}">🌿</c:when>
+				          <c:when test="${card.type eq 'Dragon'}">🐉</c:when>
+				          <c:when test="${card.type eq 'Ghost'}">👻</c:when>
+				          <c:when test="${card.type eq 'Fairy'}">🌸</c:when>
+				          <c:otherwise>🃏</c:otherwise>
+				        </c:choose>
+				      </span>
+				    </c:when>
+				    
+				    <%-- 2. Admin Uploaded Image --%>
+				    <c:when test="${not empty card.imagePath}">
+				      <img src="${pageContext.request.contextPath}/images/<c:out value='${card.imagePath}'/>"
+				           alt="<c:out value='${card.name}'/>"
+				           style="max-height: 50px; max-width: 50px; object-fit: contain;">
+				    </c:when>
+				
+				    <%-- 3. Emoji Fallback --%>
+				    <c:otherwise>
+				      <span class="rev-emoji">
+				        <c:choose>
+				          <c:when test="${card.type eq 'Fire'}">🔥</c:when>
+				          <c:when test="${card.type eq 'Water'}">🌊</c:when>
+				          <c:when test="${card.type eq 'Electric'}">⚡</c:when>
+				          <c:when test="${card.type eq 'Psychic'}">🔮</c:when>
+				          <c:when test="${card.type eq 'Grass'}">🌿</c:when>
+				          <c:when test="${card.type eq 'Dragon'}">🐉</c:when>
+				          <c:when test="${card.type eq 'Ghost'}">👻</c:when>
+				          <c:when test="${card.type eq 'Fairy'}">🌸</c:when>
+				          <c:otherwise>🃏</c:otherwise>
+				        </c:choose>
+				      </span>
+				    </c:otherwise>
+				  </c:choose>
+				</div>
               <div class="rev-name"><c:out value="${card.name}"/></div>
               <div class="rev-rarity rar-${card.rarityCssClass}">
                 <c:out value="${card.rarity}"/>
