@@ -1030,6 +1030,15 @@ img { max-width: 100%; }
 /*  
    21. LOGIN PAGE SPECIFIC
   */
+  
+.login-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: var(--bg-deep);
+}
 .login-card {
   background: var(--bg-panel);
   border: 1px solid var(--border);
