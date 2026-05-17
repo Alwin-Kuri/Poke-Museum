@@ -200,16 +200,26 @@
                 <div class="trade-card" style="<c:if test="${listing.status ne 'open'}">opacity:0.6;</c:if>">
                   <div class="trade-card-top">
                     <div class="trade-ball">
-                      <span class="ball-emoji">
-                        <c:choose>
-                          <c:when test="${listing.card.type eq 'Fire'}">🔥</c:when>
-                          <c:when test="${listing.card.type eq 'Water'}">🌊</c:when>
-                          <c:when test="${listing.card.type eq 'Electric'}">⚡</c:when>
-                          <c:when test="${listing.card.type eq 'Psychic'}">🔮</c:when>
-                          <c:when test="${listing.card.type eq 'Grass'}">🌿</c:when>
-                          <c:otherwise>🃏</c:otherwise>
-                        </c:choose>
-                      </span>
+                      <c:choose>
+                        <c:when test="${not empty listing.card.imagePath}">
+                          <img src="${pageContext.request.contextPath}/images/<c:out value='${listing.card.imagePath}'/>"
+                               alt="<c:out value='${listing.card.name}'/>">
+                        </c:when>
+                        <c:otherwise>
+                          <span class="ball-emoji">
+                            <c:choose>
+                              <c:when test="${listing.card.type eq 'Fire'}">🔥</c:when>
+                              <c:when test="${listing.card.type eq 'Water'}">🌊</c:when>
+                              <c:when test="${listing.card.type eq 'Electric'}">⚡</c:when>
+                              <c:when test="${listing.card.type eq 'Psychic'}">🔮</c:when>
+                              <c:when test="${listing.card.type eq 'Grass'}">🌿</c:when>
+                              <c:when test="${listing.card.type eq 'Dragon'}">🐉</c:when>
+                              <c:when test="${listing.card.type eq 'Ghost'}">👻</c:when>
+                              <c:otherwise>🃏</c:otherwise>
+                            </c:choose>
+                          </span>
+                        </c:otherwise>
+                      </c:choose>
                     </div>
                     <%-- Status badge --%>
                     <span style="position:absolute;top:8px;right:8px;font-size:9px;font-weight:800;
