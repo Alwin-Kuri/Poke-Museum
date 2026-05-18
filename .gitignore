@@ -1,0 +1,108 @@
+
+# Java Compiled Output 
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Maven Build Output
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Eclipse IDE Files
+.classpath
+.project
+.settings/
+.loadpath
+.recommenders
+*.launch
+.factorypath
+
+# IntelliJ IDEA Files
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# NetBeans Files
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+build/
+
+# VS Code
+.vscode/
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Tomcat Deployment
+# Never commit local Tomcat work directory
+work/
+logs/
+temp/
+
+# Database Config
+# If you move DB credentials to a properties file, ignore it
+db.properties
+database.properties
+application.properties
+*.env
+.env
+.env.local
+.env.production
+
+# API Keys — MOST IMPORTANT 
+# These files should never be committed.
+# Store API keys in these files locally and keep them here.
+secrets.properties
+api-keys.properties
+youtube-key.txt
+config-secret.properties
+
+# Uploaded Card Images
+# Comment this out if you want to commit seed images.
+# Uncomment to prevent large image files from being tracked.
+# src/main/webapp/images/cards/*.png
+# src/main/webapp/images/cards/*.jpg
+# src/main/webapp/images/cards/*.jpeg
+# src/main/webapp/images/cards/*.gif
+# src/main/webapp/images/cards/*.webp
+
+# JARs in WEB-INF/lib
+# Uncomment if you are using Maven and JARs are declared
+# in pom.xml — they should not be committed then.
+# src/main/webapp/WEB-INF/lib/*.jar
+
+# Log Files
+*.log
+*.log.*
+catalina.out
+
+# Backup Files
+*.bak
+*.backup
+*.orig
+*.tmp
+*.swp
+*.swo
+*~
+
+# Test Output
+test-output/
+surefire-reports/

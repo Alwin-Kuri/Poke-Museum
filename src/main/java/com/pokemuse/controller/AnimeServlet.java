@@ -4,6 +4,7 @@ import com.pokemuse.util.SessionUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import java.util.Properties;
 
 import java.io.*;
 import java.net.*;
@@ -12,45 +13,42 @@ import java.util.*;
 import org.json.*;
 
 /**
- * AnimeServlet.java — Controller
- * ─────────────────────────────────────────────────────
  * Combines TWO external APIs for the anime watch page:
  *
  *   1. JIKAN API v4 (https://api.jikan.moe/v4)
- *      → No API key required. Free. Rate limit: 3 req/sec.
- *      → Provides: episode titles, air dates, scores,
+ *      -> No API key required. Free. Rate limit: 3 req/sec.
+ *      -> Provides: episode titles, air dates, scores,
  *                  filler flags, anime synopsis, rating
- *      → Used for: episode list, season metadata
+ *      -> Used for: episode list, season metadata
  *
  *   2. YOUTUBE DATA API v3
- *      → Requires API key (free tier: 10,000 units/day)
- *      → Used for: finding video embeds by episode title
- *      → Falls back gracefully if quota exceeded
+ *      -> Requires API key (free tier: 10,000 units/day)
+ *      -> Used for: finding video embeds by episode title
+ *      -> Falls back gracefully if quota exceeded
  *
- * GET /anime                     → default: Indigo League ep list
- * GET /anime?malId=527           → specific anime by MAL ID
- * GET /anime?malId=527&page=2    → paginated episode list
- * GET /anime?videoId=xxx         → play a specific YouTube video
- * GET /anime?search=pikachu      → search YouTube for episodes
+ * GET /anime -> default: Indigo League ep list
+ * GET /anime?malId=527 -> specific anime by MAL ID
+ * GET /anime?malId=527&page=2 -> paginated episode list
+ * GET /anime?videoId=xxx -> play a specific YouTube video
+ * GET /anime?search=pikachu -> search YouTube for episodes
  *
  * Author : Alwin Maharjan | CS5003NI
  */
 @WebServlet("/anime")
 public class AnimeServlet extends HttpServlet {
 
-    // ── YouTube API config ─────────────────────────────────
+    // YouTube API config
     // Get your free key: https://console.cloud.google.com/
     // Enable: YouTube Data API v3
     // Create credentials: API Key
-    private static final String YT_API_KEY  = "AIzaSyBVX649X59_-XYWVpdo1ChZNPZbZBgkPxc";
     private static final String YT_SEARCH   = "https://www.googleapis.com/youtube/v3/search";
     private static final int    YT_RESULTS  = 6;
 
-    // ── Jikan API config ───────────────────────────────────
+    // Jikan API config
     // No key needed — just call it directly
     private static final String JIKAN_BASE  = "https://api.jikan.moe/v4";
 
-    // ── Known Pokémon anime MAL IDs ────────────────────────
+    // Known Pokémon anime MAL IDs
     // These are the official MyAnimeList IDs for each series
     private static final Object[][] SEASONS = {
         { 527,   "Indigo League",          "Season 1" },
@@ -75,7 +73,7 @@ public class AnimeServlet extends HttpServlet {
 
         if (SessionUtil.requireLogin(req, res)) return;
 
-        // ── Read request params ────────────────────────────
+        // Read request params 
         int    malId    = parseSafe(req.getParameter("malId"), DEFAULT_MAL_ID);
         int    page     = parseSafe(req.getParameter("page"), 1);
         String videoId  = req.getParameter("videoId");
@@ -84,7 +82,7 @@ public class AnimeServlet extends HttpServlet {
         String activeTab= req.getParameter("tab") != null
                           ? req.getParameter("tab") : "episodes";
 
-        // ── Jikan: fetch anime metadata ────────────────────
+        // Jikan: fetch anime metadata 
         Map<String, Object> animeInfo = new HashMap<>();
         List<Map<String, Object>> episodes = new ArrayList<>();
         boolean hasNextPage = false;
@@ -155,10 +153,11 @@ public class AnimeServlet extends HttpServlet {
             System.err.println("[AnimeServlet.fetchEpisodes] " + e.getMessage());
         }
 
-        // ── YouTube: search for videos ─────────────────────
+        // YouTube: search for videos
+        String apiKey = loadApiKey(req);
         List<Map<String, String>> ytVideos = new ArrayList<>();
         String ytError = null;
-        boolean ytConfigured = !YT_API_KEY.equals("YOUR_YOUTUBE_API_KEY_HERE");
+        boolean ytConfigured = !apiKey.equals("YOUR_YOUTUBE_API_KEY_HERE");
 
         if (ytConfigured) {
             try {
@@ -172,7 +171,7 @@ public class AnimeServlet extends HttpServlet {
                     + "&q=" + URLEncoder.encode(query, StandardCharsets.UTF_8)
                     + "&type=video"
                     + "&maxResults=" + YT_RESULTS
-                    + "&key=" + YT_API_KEY
+                    + "&key=" + apiKey
                     + "&order=relevance"
                     + "&safeSearch=strict");
 
@@ -214,7 +213,7 @@ public class AnimeServlet extends HttpServlet {
             }
         }
 
-        // ── Set all attributes for JSP ─────────────────────
+        // Set all attributes for JSP
         req.setAttribute("animeInfo",     animeInfo);
         req.setAttribute("episodes",      episodes);
         req.setAttribute("ytVideos",      ytVideos);
@@ -235,7 +234,7 @@ public class AnimeServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/pages/anime.jsp").forward(req, res);
     }
 
-    // ── HTTP GET helper ────────────────────────────────────
+    // HTTP GET helper
     private String httpGet(String urlString) throws IOException {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -263,7 +262,7 @@ public class AnimeServlet extends HttpServlet {
         }
     }
 
-    // ── Helpers ────────────────────────────────────────────
+    // Helpers
 
     /** Trim text to maxLen chars, append ellipsis if truncated */
     private String trimText(String text, int maxLen) {
@@ -275,6 +274,27 @@ public class AnimeServlet extends HttpServlet {
     private String formatDate(String iso) {
         if (iso == null || iso.length() < 10) return "";
         return iso.substring(0, 10); // "2024-01-15"
+    }
+    
+    /** Load YouTube API key from environment variable or config file */
+    private String loadApiKey(HttpServletRequest req) {
+        Properties props = new Properties();
+
+        try (InputStream input =
+                req.getServletContext().getResourceAsStream("/WEB-INF/secrets.properties")) {
+
+            if (input == null) {
+                System.err.println("secrets.properties NOT FOUND in WEB-INF");
+                return "YOUR_YOUTUBE_API_KEY_HERE";
+            }
+
+            props.load(input);
+            return props.getProperty("YT_API_KEY", "YOUR_YOUTUBE_API_KEY_HERE");
+
+        } catch (IOException e) {
+            System.err.println("Error loading API key: " + e.getMessage());
+            return "YOUR_YOUTUBE_API_KEY_HERE";
+        }
     }
 
     /** Safe integer parse with default */
